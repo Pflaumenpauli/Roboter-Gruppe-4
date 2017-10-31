@@ -1,0 +1,90 @@
+Tiny GitHub HowTo
+Download
+Cloning existing GibHub project to your computer
+
+    create a directory on your computer, where you want to store your local copy of the project
+
+    open a terminal (if not done yet)
+
+    cd to your newly created project root directory
+
+    type git clone [url] and insert the git repository url instead of [url]
+
+    If everything worked fine, you now have your own local copy of the project!
+
+Downloading the most recent project state
+
+    open a terminal and cd to the project root directory
+
+    type git pull
+
+    If everything worked fine, you now have an up-to-date copy of the project!
+
+    Tip
+
+        Use git pull each time before you start working to avoid evil merge conflicts!
+
+Upload
+Checking the status of your local project copy
+
+    open a terminal, cd to any project directory and then type git status
+
+    → many interesting status info of your project will be shown, such as the branch you’re currently on, whether your local project contains the latest changes uploaded to the project, and a list of files with changes that are not staged (which means waiting to be uploaded) yet
+
+Uploading your changes or newly created documents
+
+    open a terminal and type git add [filelist] and replace [filelist] by one or many paths to files you’ve changed or newly created and that you want to upload
+
+    Tip
+
+        Always specify the files you want to stage, even if there are lots of them! git status will help you identify them. (Don’t simply type git add without the filelist, because then all files that were changed or created are being staged (including useless metadata files created by your IDE)!)
+
+    → these files are now staged, which means waiting to be uploaded
+
+    if you think you’ve made enough changes to upload a new version of the project and staged all these changes, type git commit
+
+    now a screen with a twinkling cursor and lots of text will appear
+
+    type in a short message that describes the changes that you’re about to upload (such as Inserted "Hello World" button to user interface)
+
+    press Ctrl+X to finish message typing
+
+    press Y to confirm this
+
+    press Enter to confirm that you want to confirm
+
+    Tip
+
+        For good Git style, please always write a useful commit message ;-)!
+
+    → now you’ve locally created a new project version, called commit
+
+    to upload that commit, type git push
+
+    If everything worked fine (and your computer tells something like writing objects…, you’ve successfully uploaded your changes to the project!
+
+    If some conflicts occured while trying to upload, see the Solving merge conflicts section
+
+Solving merge conflicts
+
+    to be filled with content
+
+Project structure
+Creating and switching branches
+
+    open a terminal and cd to any project directory
+
+    to show all available branches, type git branch
+
+    to switch to another branch, type git checkout [branchname]
+
+    Tip
+
+        Before you can switch to another branch, all changes you made to the current branch need to be staged (git add [filelist]).
+
+    to create a new branch, type git branch [branchname]
+
+    Tip
+
+        For good Git style, always work inside a branch other than the so called master branch. Only move your work to the master branch, if they are proved to be correct and ment to remain in the project till the end of time!
+
