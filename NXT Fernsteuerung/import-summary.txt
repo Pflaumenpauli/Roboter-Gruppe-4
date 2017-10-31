@@ -1,0 +1,225 @@
+ECLIPSE ANDROID PROJECT IMPORT SUMMARY
+======================================
+
+Ignored Files:
+--------------
+The following files were *not* copied into the new Gradle project; you
+should evaluate whether these are still needed in your project and if
+so manually move them:
+
+* .DS_Store
+* doc/
+* doc/allclasses-frame.html
+* doc/allclasses-noframe.html
+* doc/constant-values.html
+* doc/de/
+* doc/de/amr/
+* doc/de/amr/plt/
+* doc/de/amr/plt/rcParkingRobot/
+* doc/de/amr/plt/rcParkingRobot/AndroidHmiPlt.ConnectThread.html
+* doc/de/amr/plt/rcParkingRobot/AndroidHmiPlt.MessageHandler.html
+* doc/de/amr/plt/rcParkingRobot/AndroidHmiPlt.ParkSlotHandler.html
+* doc/de/amr/plt/rcParkingRobot/AndroidHmiPlt.PositionHandler.html
+* doc/de/amr/plt/rcParkingRobot/AndroidHmiPlt.ReaderThread.html
+* doc/de/amr/plt/rcParkingRobot/AndroidHmiPlt.StatusHandler.html
+* doc/de/amr/plt/rcParkingRobot/AndroidHmiPlt.html
+* doc/de/amr/plt/rcParkingRobot/IAndroidHmi.ParkingSlot.ParkingSlotStatus.html
+* doc/de/amr/plt/rcParkingRobot/IAndroidHmi.ParkingSlot.html
+* doc/de/amr/plt/rcParkingRobot/IAndroidHmi.Position.html
+* doc/de/amr/plt/rcParkingRobot/IAndroidHmi.html
+* doc/de/amr/plt/rcParkingRobot/class-use/
+* doc/de/amr/plt/rcParkingRobot/class-use/AndroidHmiPlt.ConnectThread.html
+* doc/de/amr/plt/rcParkingRobot/class-use/AndroidHmiPlt.MessageHandler.html
+* doc/de/amr/plt/rcParkingRobot/class-use/AndroidHmiPlt.ParkSlotHandler.html
+* doc/de/amr/plt/rcParkingRobot/class-use/AndroidHmiPlt.PositionHandler.html
+* doc/de/amr/plt/rcParkingRobot/class-use/AndroidHmiPlt.ReaderThread.html
+* doc/de/amr/plt/rcParkingRobot/class-use/AndroidHmiPlt.StatusHandler.html
+* doc/de/amr/plt/rcParkingRobot/class-use/AndroidHmiPlt.html
+* doc/de/amr/plt/rcParkingRobot/class-use/IAndroidHmi.ParkingSlot.ParkingSlotStatus.html
+* doc/de/amr/plt/rcParkingRobot/class-use/IAndroidHmi.ParkingSlot.html
+* doc/de/amr/plt/rcParkingRobot/class-use/IAndroidHmi.Position.html
+* doc/de/amr/plt/rcParkingRobot/class-use/IAndroidHmi.html
+* doc/de/amr/plt/rcParkingRobot/package-frame.html
+* doc/de/amr/plt/rcParkingRobot/package-summary.html
+* doc/de/amr/plt/rcParkingRobot/package-tree.html
+* doc/de/amr/plt/rcParkingRobot/package-use.html
+* doc/de/amr/plt/rcTestapp/
+* doc/de/amr/plt/rcTestapp/BluetoothActivity.html
+* doc/de/amr/plt/rcTestapp/MainActivity.html
+* doc/de/amr/plt/rcTestapp/class-use/
+* doc/de/amr/plt/rcTestapp/class-use/BluetoothActivity.html
+* doc/de/amr/plt/rcTestapp/class-use/MainActivity.html
+* doc/de/amr/plt/rcTestapp/package-frame.html
+* doc/de/amr/plt/rcTestapp/package-summary.html
+* doc/de/amr/plt/rcTestapp/package-tree.html
+* doc/de/amr/plt/rcTestapp/package-use.html
+* doc/deprecated-list.html
+* doc/help-doc.html
+* doc/index-files/
+* doc/index-files/index-1.html
+* doc/index-files/index-10.html
+* doc/index-files/index-11.html
+* doc/index-files/index-12.html
+* doc/index-files/index-13.html
+* doc/index-files/index-14.html
+* doc/index-files/index-15.html
+* doc/index-files/index-16.html
+* doc/index-files/index-17.html
+* doc/index-files/index-18.html
+* doc/index-files/index-19.html
+* doc/index-files/index-2.html
+* doc/index-files/index-3.html
+* doc/index-files/index-4.html
+* doc/index-files/index-5.html
+* doc/index-files/index-6.html
+* doc/index-files/index-7.html
+* doc/index-files/index-8.html
+* doc/index-files/index-9.html
+* doc/index.html
+* doc/overview-frame.html
+* doc/overview-summary.html
+* doc/overview-tree.html
+* doc/package-list
+* doc/resources/
+* doc/resources/inherit.gif
+* doc/stylesheet.css
+* doc/stylesheetOfficial.css
+* proguard-project.txt
+
+Replaced Jars with Dependencies:
+--------------------------------
+The importer recognized the following .jar files as third party
+libraries and replaced them with Gradle dependencies instead. This has
+the advantage that more explicit version information is known, and the
+libraries can be updated automatically. However, it is possible that
+the .jar file in your project was of an older version than the
+dependency we picked, which could render the project not compileable.
+You can disable the jar replacement in the import wizard and try again:
+
+android-support-v4.jar => com.android.support:support-v4:18.0.0
+
+Moved Files:
+------------
+Android Gradle projects use a different directory structure than ADT
+Eclipse projects. Here's how the projects were restructured:
+
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/ => app/src/main/java/
+* AndroidManifest.xml => app/src/main/AndroidManifest.xml
+* assets/ => app/src/main/assets/
+* libs/pccomm.jar => app/libs/pccomm.jar
+* res/ => app/src/main/res/
+* src/ => app/src/main/java/
+* src/.DS_Store => app/src/main/resources/.DS_Store
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/.DS_Store => app/src/main/resources/.DS_Store
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/.DS_Store => app/src/main/resources/doc/.DS_Store
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/allclasses-frame.html => app/src/main/resources/doc/allclasses-frame.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/allclasses-noframe.html => app/src/main/resources/doc/allclasses-noframe.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/constant-values.html => app/src/main/resources/doc/constant-values.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/deprecated-list.html => app/src/main/resources/doc/deprecated-list.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/help-doc.html => app/src/main/resources/doc/help-doc.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-1.html => app/src/main/resources/doc/index-files/index-1.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-10.html => app/src/main/resources/doc/index-files/index-10.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-11.html => app/src/main/resources/doc/index-files/index-11.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-12.html => app/src/main/resources/doc/index-files/index-12.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-13.html => app/src/main/resources/doc/index-files/index-13.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-14.html => app/src/main/resources/doc/index-files/index-14.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-15.html => app/src/main/resources/doc/index-files/index-15.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-16.html => app/src/main/resources/doc/index-files/index-16.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-2.html => app/src/main/resources/doc/index-files/index-2.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-3.html => app/src/main/resources/doc/index-files/index-3.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-4.html => app/src/main/resources/doc/index-files/index-4.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-5.html => app/src/main/resources/doc/index-files/index-5.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-6.html => app/src/main/resources/doc/index-files/index-6.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-7.html => app/src/main/resources/doc/index-files/index-7.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-8.html => app/src/main/resources/doc/index-files/index-8.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index-files/index-9.html => app/src/main/resources/doc/index-files/index-9.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/index.html => app/src/main/resources/doc/index.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/overview-frame.html => app/src/main/resources/doc/overview-frame.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/overview-summary.html => app/src/main/resources/doc/overview-summary.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/overview-tree.html => app/src/main/resources/doc/overview-tree.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/package-list => app/src/main/resources/doc/package-list
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/IControl.ControlMode.html => app/src/main/resources/doc/parkingRobot/IControl.ControlMode.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/IControl.html => app/src/main/resources/doc/parkingRobot/IControl.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/IMonitor.html => app/src/main/resources/doc/parkingRobot/IMonitor.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/IMonitor.monitorMode.html => app/src/main/resources/doc/parkingRobot/IMonitor.monitorMode.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/INavigation.ParkingSlot.ParkingSlotStatus.html => app/src/main/resources/doc/parkingRobot/INavigation.ParkingSlot.ParkingSlotStatus.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/INavigation.ParkingSlot.html => app/src/main/resources/doc/parkingRobot/INavigation.ParkingSlot.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/INavigation.html => app/src/main/resources/doc/parkingRobot/INavigation.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/INxtHmi.Mode.html => app/src/main/resources/doc/parkingRobot/INxtHmi.Mode.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/INxtHmi.html => app/src/main/resources/doc/parkingRobot/INxtHmi.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/IPerception.AngleDifferenceMeasurement.html => app/src/main/resources/doc/parkingRobot/IPerception.AngleDifferenceMeasurement.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/IPerception.EncoderSensor.html => app/src/main/resources/doc/parkingRobot/IPerception.EncoderSensor.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/IPerception.OdoDifferenceMeasurement.html => app/src/main/resources/doc/parkingRobot/IPerception.OdoDifferenceMeasurement.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/IPerception.OdoSensor.html => app/src/main/resources/doc/parkingRobot/IPerception.OdoSensor.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/IPerception.html => app/src/main/resources/doc/parkingRobot/IPerception.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/IControl.ControlMode.html => app/src/main/resources/doc/parkingRobot/class-use/IControl.ControlMode.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/IControl.html => app/src/main/resources/doc/parkingRobot/class-use/IControl.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/IMonitor.html => app/src/main/resources/doc/parkingRobot/class-use/IMonitor.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/IMonitor.monitorMode.html => app/src/main/resources/doc/parkingRobot/class-use/IMonitor.monitorMode.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/INavigation.ParkingSlot.ParkingSlotStatus.html => app/src/main/resources/doc/parkingRobot/class-use/INavigation.ParkingSlot.ParkingSlotStatus.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/INavigation.ParkingSlot.html => app/src/main/resources/doc/parkingRobot/class-use/INavigation.ParkingSlot.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/INavigation.html => app/src/main/resources/doc/parkingRobot/class-use/INavigation.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/INxtHmi.Mode.html => app/src/main/resources/doc/parkingRobot/class-use/INxtHmi.Mode.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/INxtHmi.html => app/src/main/resources/doc/parkingRobot/class-use/INxtHmi.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/IPerception.AngleDifferenceMeasurement.html => app/src/main/resources/doc/parkingRobot/class-use/IPerception.AngleDifferenceMeasurement.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/IPerception.EncoderSensor.html => app/src/main/resources/doc/parkingRobot/class-use/IPerception.EncoderSensor.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/IPerception.OdoDifferenceMeasurement.html => app/src/main/resources/doc/parkingRobot/class-use/IPerception.OdoDifferenceMeasurement.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/IPerception.OdoSensor.html => app/src/main/resources/doc/parkingRobot/class-use/IPerception.OdoSensor.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/class-use/IPerception.html => app/src/main/resources/doc/parkingRobot/class-use/IPerception.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/ControlRST.html => app/src/main/resources/doc/parkingRobot/hsamr0/ControlRST.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/ControlThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/ControlThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/GuidanceAT.CurrentStatus.html => app/src/main/resources/doc/parkingRobot/hsamr0/GuidanceAT.CurrentStatus.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/GuidanceAT.html => app/src/main/resources/doc/parkingRobot/hsamr0/GuidanceAT.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/HmiPLT.Command.html => app/src/main/resources/doc/parkingRobot/hsamr0/HmiPLT.Command.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/HmiPLT.html => app/src/main/resources/doc/parkingRobot/hsamr0/HmiPLT.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/HmiReaderThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/HmiReaderThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/HmiSenderThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/HmiSenderThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/Monitor.html => app/src/main/resources/doc/parkingRobot/hsamr0/Monitor.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/MonitorThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/MonitorThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/NavigationAT.html => app/src/main/resources/doc/parkingRobot/hsamr0/NavigationAT.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/NavigationThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/NavigationThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/PerceptionPMP.html => app/src/main/resources/doc/parkingRobot/hsamr0/PerceptionPMP.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/PerceptionThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/PerceptionThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/ControlRST.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/ControlRST.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/ControlThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/ControlThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/GuidanceAT.CurrentStatus.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/GuidanceAT.CurrentStatus.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/GuidanceAT.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/GuidanceAT.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/HmiPLT.Command.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/HmiPLT.Command.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/HmiPLT.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/HmiPLT.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/HmiReaderThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/HmiReaderThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/HmiSenderThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/HmiSenderThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/Monitor.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/Monitor.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/MonitorThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/MonitorThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/NavigationAT.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/NavigationAT.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/NavigationThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/NavigationThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/PerceptionPMP.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/PerceptionPMP.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/class-use/PerceptionThread.html => app/src/main/resources/doc/parkingRobot/hsamr0/class-use/PerceptionThread.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/package-frame.html => app/src/main/resources/doc/parkingRobot/hsamr0/package-frame.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/package-summary.html => app/src/main/resources/doc/parkingRobot/hsamr0/package-summary.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/package-tree.html => app/src/main/resources/doc/parkingRobot/hsamr0/package-tree.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/hsamr0/package-use.html => app/src/main/resources/doc/parkingRobot/hsamr0/package-use.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/package-frame.html => app/src/main/resources/doc/parkingRobot/package-frame.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/package-summary.html => app/src/main/resources/doc/parkingRobot/package-summary.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/package-tree.html => app/src/main/resources/doc/parkingRobot/package-tree.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/parkingRobot/package-use.html => app/src/main/resources/doc/parkingRobot/package-use.html
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/script.js => app/src/main/resources/doc/script.js
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/doc/stylesheet.css => app/src/main/resources/doc/stylesheet.css
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/src/.DS_Store => app/src/main/resources/src/.DS_Store
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/src/parkingRobot/.DS_Store => app/src/main/resources/src/parkingRobot/.DS_Store
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/view/Datendarstellung.m => app/src/main/resources/view/Datendarstellung.m
+* /Users/paulforster/prozessleittechnik/Auftrag_Stephan/Ausgangssituation/NXT/view/NXTData.txt => app/src/main/resources/view/NXTData.txt
+
+Next Steps:
+-----------
+You can now build the project. The Gradle project needs network
+connectivity to download dependencies.
+
+Bugs:
+-----
+If for some reason your project does not build, and you determine that
+it is due to a bug or limitation of the Eclipse to Gradle importer,
+please file a bug at http://b.android.com with category
+Component-Tools.
+
+(This import summary is for your information only, and can be deleted
+after import once you are satisfied with the results.)
