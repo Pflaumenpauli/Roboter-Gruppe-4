@@ -16,226 +16,14 @@
             android:id="@+id/buttonSetupBluetooth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/button"
+            android:layout_alignBottom="@+id/button"
             android:layout_alignParentLeft="true"
-            android:layout_alignParentRight="false"
-            android:layout_alignParentTop="true"
-            android:layout_marginBottom="30dp"
-            android:layout_marginLeft="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
             android:text="@string/setupBluetooth" />
 
-        <TextView
-            android:id="@+id/textViewLabelBluetooth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/buttonSetupBluetooth"
-            android:layout_toLeftOf="@+id/textViewValueBluetooth"
-            android:paddingLeft="30dp"
-            android:text="@string/bluetooth_label"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewValueBluetooth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewLabelBluetooth"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:gravity="right"
-            android:paddingRight="30dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewValueLabel"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textViewLabelBluetooth"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@+id/textViewValueStatus"
-            android:paddingLeft="30dp"
-            android:text="@string/textview_status"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewValueStatus"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewValueLabel"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textViewValueLabel"
-            android:gravity="right"
-            android:paddingRight="30dp"
-            android:textAppearance="?android:attr/textAppearanceLarge"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewLabelX"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textViewValueLabel"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@+id/textViewValueX"
-            android:paddingLeft="30dp"
-            android:text="@string/x_Value"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewValueX"
-            android:layout_width="wrap_content"
-            android:layout_height="34dp"
-            android:layout_alignBaseline="@+id/textViewLabelX"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textViewLabelX"
-            android:gravity="right"
-            android:paddingRight="30dp"
-            android:textSize="24dp" >
-        </TextView>
-
-        <TextView
-            android:id="@+id/textViewLabelY"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textViewLabelX"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@+id/textViewValueY"
-            android:paddingLeft="30dp"
-            android:text="@string/y_Value"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewValueY"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewLabelY"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textViewLabelY"
-            android:gravity="right"
-            android:paddingRight="30dp"
-            android:textSize="24dp" >
-        </TextView>
-
-        <TextView
-            android:id="@+id/TextViewLableAngle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textViewLabelY"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@+id/TextViewValueAngle"
-            android:paddingLeft="30dp"
-            android:text="@string/angle_Value"
-            android:textAppearance="?android:attr/textAppearanceSmall"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/TextViewValueAngle"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/TextViewLableAngle"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/TextViewLableAngle"
-            android:gravity="right"
-            android:paddingRight="30dp"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewLabelDistanceFront"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/TextViewLableAngle"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@+id/textViewValueDistanceFront"
-            android:paddingLeft="30dp"
-            android:text="@string/distance_front_value"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewValueDistanceFront"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewLabelDistanceFront"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textViewLabelDistanceFront"
-            android:gravity="right"
-            android:paddingRight="30dp"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewLabelDistanceBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textViewLabelDistanceFront"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@+id/textViewValueDistanceBack"
-            android:paddingLeft="30dp"
-            android:text="@string/distance_back_value"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewValueDistanceBack"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewLabelDistanceBack"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textViewLabelDistanceBack"
-            android:gravity="right"
-            android:paddingRight="30dp"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewLabelDistanceFrontSide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textViewLabelDistanceBack"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@+id/textViewValueDistanceFrontSide"
-            android:paddingLeft="30dp"
-            android:text="@string/distance_front_side_value"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewValueDistanceFrontSide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewLabelDistanceFrontSide"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textViewLabelDistanceFrontSide"
-            android:gravity="right"
-            android:paddingRight="30dp"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewLabelDistanceBackSide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentLeft="true"
-            android:layout_below="@+id/textViewLabelDistanceFrontSide"
-            android:layout_marginTop="10dp"
-            android:layout_toLeftOf="@+id/textViewValueDistanceBackSide"
-            android:paddingLeft="30dp"
-            android:text="@string/distance_back_side_value"
-            android:textSize="24dp" />
-
-        <TextView
-            android:id="@+id/textViewValueDistanceBackSide"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewLabelDistanceBackSide"
-            android:layout_alignParentRight="true"
-            android:layout_alignTop="@+id/textViewLabelDistanceBackSide"
-            android:gravity="right"
-            android:paddingRight="30dp"
-            android:textSize="24dp" />
 
         <ToggleButton
             android:id="@+id/toggleMode"
@@ -249,6 +37,111 @@
             android:text="@string/togglebutton"
             android:textOff="SCOUT"
             android:textOn="SCOUT" />
+
+        <Button
+            android:id="@+id/buttonShowData"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginEnd="19dp"
+            android:layout_marginRight="19dp"
+            android:layout_marginTop="9dp"
+            android:text="Data" />
+
+        <Button
+            android:id="@+id/button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/imageParcours"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="9dp"
+            android:text="Park_This" />
+
+        <ImageView
+            android:id="@+id/imageParcours"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            app:srcCompat="@drawable/parcours_bearbeitet_klein" />
+
+        <Button
+            android:id="@+id/buttonPause"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/button"
+            android:layout_marginLeft="23dp"
+            android:layout_marginStart="23dp"
+            android:layout_toEndOf="@+id/button"
+            android:layout_toRightOf="@+id/button"
+            android:text="Pause" />
+
+        <TextView
+            android:id="@+id/textViewMode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignLeft="@+id/buttonSetupBluetooth"
+            android:layout_alignStart="@+id/buttonSetupBluetooth"
+            android:layout_alignTop="@+id/buttonShowData"
+            android:layout_marginTop="10dp"
+            android:text="Mode:" />
+
+        <TextView
+            android:id="@+id/textViewModeValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/textViewMode"
+            android:layout_toEndOf="@+id/buttonSetupBluetooth"
+            android:layout_toRightOf="@+id/buttonSetupBluetooth"
+            android:text="ModeValue" />
+
+        <TextView
+            android:id="@+id/textViewXPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewModeValue"
+            android:layout_alignBottom="@+id/textViewModeValue"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/textViewXPositionValue"
+            android:layout_toStartOf="@+id/textViewXPositionValue"
+            android:text="x:" />
+
+        <TextView
+            android:id="@+id/textViewXPositionValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewXPosition"
+            android:layout_alignBottom="@+id/textViewXPosition"
+            android:layout_toEndOf="@+id/button"
+            android:layout_toRightOf="@+id/button"
+            android:text="xValue" />
+
+        <TextView
+            android:id="@+id/textViewYPosition"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewXPositionValue"
+            android:layout_alignBottom="@+id/textViewXPositionValue"
+            android:layout_marginEnd="7dp"
+            android:layout_marginRight="7dp"
+            android:layout_toLeftOf="@+id/textViewYPostionValue"
+            android:layout_toStartOf="@+id/textViewYPostionValue"
+            android:text="y:" />
+
+        <TextView
+            android:id="@+id/textViewYPostionValue"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/textViewYPosition"
+            android:layout_alignBottom="@+id/textViewYPosition"
+            android:layout_marginEnd="18dp"
+            android:layout_marginRight="18dp"
+            android:layout_toLeftOf="@+id/buttonShowData"
+            android:layout_toStartOf="@+id/buttonShowData"
+            android:text="yValue" />
 
     </RelativeLayout>
 

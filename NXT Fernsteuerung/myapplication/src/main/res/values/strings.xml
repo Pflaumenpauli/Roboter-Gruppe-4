@@ -1,7 +1,7 @@
 <resources>
     <string name="app_name">RCTestapp</string>
     <string name="menu_settings">Settings</string>
-    <string name="title_activity_main">RCTestapp</string>
+    <string name="title_activity_main">Parcours</string>
     <string name="title_activity_position_visualization">PositionVisualization</string>
     <string name="x_Value">x:</string>
     <string name="y_Value">y:</string>
@@ -23,4 +23,7 @@
     <string name="bluetooth_label">Bluetooth:</string>
     <string name="disconnetButton">Disconnect</string>
     <string name="bt_connect_hint">Please select a Robot from the list. Make sure it has been paired, is within bluetooth reach and has been set to connect mode.</string>
+
+    <string name="spinner">collect spinner</string>
+    <string name="backButton">Back</string>
 </resources>

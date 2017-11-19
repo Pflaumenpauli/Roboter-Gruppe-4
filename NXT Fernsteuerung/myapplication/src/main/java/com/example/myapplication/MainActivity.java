@@ -78,6 +78,16 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //what happen when someone press the data button?
+        final Button dataButton = (Button) findViewById(R.id.buttonShowData);
+        //on click call the DataActivity to choose a listed device
+        dataButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                Intent serverIntent = new Intent(getApplicationContext(),DataActivity.class);
+                startActivityForResult(serverIntent, REQUEST_SETUP_BT_CONNECTION);
+            }
+        });
+
     }
 
     @Override
