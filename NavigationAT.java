@@ -87,33 +87,44 @@ public class NavigationAT implements INavigation{
 	/**
 	 * robot specific constant: radius of left wheel
 	 */
-	static final double LEFT_WHEEL_RADIUS	= 	2.81; // only rough guess, to be measured exactly and maybe refined by experiments
+	static final double LEFT_WHEEL_RADIUS	= 	0.00281; // only rough guess, to be measured exactly and maybe refined by experiments
 	/**
 	 * robot specific constant: radius of right wheel
 	 */
-	static final double RIGHT_WHEEL_RADIUS	= 	2.765; // only rough guess, to be measured exactly and maybe refined by experiments
+	static final double RIGHT_WHEEL_RADIUS	= 	0.002765; // only rough guess, to be measured exactly and maybe refined by experiments
 	/**
 	 * robot specific constant: distance between wheels
 	 */
-	static final double WHEEL_DISTANCE		= 	151.1; // only rough guess, to be measured exactly and maybe refined by experiments
+	static final double WHEEL_DISTANCE		= 	0.1511; // only rough guess, to be measured exactly and maybe refined by experiments
 
 	/**
 	 * data fusion constants and variables
 	 */
 	// Mause sensor
-	static final double M_xPosOld = 0;
-	static final double M_yPosOld = 0;
+	double M_xPosOld = 0;
+	double M_yPosOld = 0;
 	
 	// Corner detection
-	double DIST[5];
+	double[] DIST = {0,0,0,0,0};
+	static final double TRSH_DISTN = 370;
+	static final double TRSH_DIST4 = 0;
+	static final double TRSH_DIST5 = 0;
 	
-	int CORNER_ID = 0;
+	int CORNER_ID = 1;
 	int CORNER = 0;
 	
 	// Angle verification
-	static final double TRSH_B = 0;
-	static final double TRSH_W = 0;
-	static final double TRSH_G = 0;
+	static final double TRSH_B = 30;
+	static final double TRSH_W = 60;
+	static final double TRSH_G = 90;
+	
+	// Parking
+	static final double TRSH_SG = 0;
+	static final double FGS_Dist_P = 0;
+	static final double RGS_Dist_P = 0;
+	
+	static final double LGNT_ROBOT = 200;
+	
 	
 	/**
 	 * map array of line references, whose corresponding lines form a closed chain and represent the map of the robot course
@@ -240,7 +251,7 @@ public class NavigationAT implements INavigation{
 
 		double vLeft	= (leftAngleSpeed  * Math.PI * LEFT_WHEEL_RADIUS ) / 180 ; //velocity of left  wheel in m/s
 		double vRight	= (rightAngleSpeed * Math.PI * RIGHT_WHEEL_RADIUS) / 180 ; //velocity of right wheel in m/s		
-		double w 		= (vRight - vLeft) / WHEEL_DISTANCE; //angular velocity of robot in rad/s
+		double w 		= (vRight - vLeft) / WHEEL_DISTANCE; //angular velocity of robot in rad/s							+++++
 		
 		Double R 		= new Double(( WHEEL_DISTANCE / 2 ) * ( (vLeft + vRight) / (vRight - vLeft) ));
 		double deltaT   = ((double)this.angleMeasurementLeft.getDeltaT())/1000;
@@ -262,7 +273,7 @@ public class NavigationAT implements INavigation{
 		double M_deltaY		= 0;
 		double M_dist		= 0;
 		
-		short aVerif 	= [0 0];
+		short[] aVerif = {0,0};
 		short burst 	= 0;
 		
 		double xResult 	= 0;
@@ -273,7 +284,9 @@ public class NavigationAT implements INavigation{
 		double FGS_Dist = perception.getFrontSideSensorDistance();
 		double RWS_Dist = perception.getBackSensorDistance();
 		double RGS_Dist = perception.getBackSideSensorDistance();
+		
 		double distance = 0;
+		double sum = 0;
 		
 		// Wheel odometry
 		
@@ -302,14 +315,14 @@ public class NavigationAT implements INavigation{
 		W_deltaX = Math.abs(W_xResult - this.pose.getX());
 		W_deltaY = Math.abs(W_yResult - this.pose.getY());
 		
-		W_dist	 = sqrt(W_deltaX^2 + W_deltaY^2);			// Driven distance - wheel odometry
-		W_CaRes  = Math.tan(W_deltaY, W_deltaX);			// Counted heading angle - wheel odometry ----- mozna neni potreba
+		W_dist	 = Math.sqrt(Math.pow(W_deltaX, 2) + Math.pow(W_deltaY, 2));			// Driven distance - wheel odometry
+		//W_CaRes  = Math.atan(W_delta/W_deltaX);						// Counted heading angle - wheel odometry ----- mozna neni potreba
 		
 		// Mouse sensor
 		
 		/* DOPLNIT MYSI SENSOR */
-		M_deltaX = this.UOdometry();		// dostanu deltaX, deltaY a deltaT
-		M_deltaY = this.VOdometry();
+		M_deltaX = this.mouseOdoMeasurement.getUSum()/1000;		// dostanu deltaX, deltaY a deltaT v mm
+		M_deltaY = this.mouseOdoMeasurement.getVSum()/1000;
 		
 		M_xResult = M_deltaX + M_xPosOld;
 		M_yResult = M_deltaY + M_yPosOld;
@@ -317,8 +330,8 @@ public class NavigationAT implements INavigation{
 		M_xPosOld = M_xResult;
 		M_yPosOld = M_yResult;
 		
-		M_dist	 = sqrt(M_xIncrement^2 + M_yIncrement^2);	// Driven distance - mouse sensor
-		M_aResult  = Math.tan(M_deltaY, M_deltaX);			// Counted heading angle - mouse sensor
+		M_dist	 = Math.sqrt(Math.pow(M_deltaX, 2) + Math.pow(M_deltaY, 2));	// Driven distance - mouse sensor
+		M_aResult  = Math.atan(M_deltaY/M_deltaX);			// Counted heading angle - mouse sensor
 		
 		// Evaluation of coordinates
 		
@@ -327,7 +340,7 @@ public class NavigationAT implements INavigation{
 		yResult = W_yResult;
 		
 		// Detecting the corners
-		
+		/*
 		//pridat vypocet vzdalenosti (plovouci prumer, filtrovane data...), mozna pridat i odhad souradnic v rozich
 		for (int i = 1; i <= 5; i++)
 		{
@@ -425,10 +438,10 @@ public class NavigationAT implements INavigation{
 				CORNER_ID = 0;
 			}
 		}
-		
+		*/
 		// Verify the heading angle ------------------- Mozna neni treba verifikovat pouze mimo rohy
-		if (CORNER == 0)
-		{
+		//if (CORNER == 0)
+		//{
 			// white = 0, black = 2, grey = 1
 	        if ((this.lineSensorLeft == 0) && (this.lineSensorRight == 0))		// robot moves on the line
 	        {	
@@ -492,7 +505,7 @@ public class NavigationAT implements INavigation{
 	        		aVerif[1] = 0;
 	        	}
 			}
-		}
+		//}
 		
 		// Evaluation of the angle
 		if ((aVerif[0] == 0) || (aVerif[1] == 1))
