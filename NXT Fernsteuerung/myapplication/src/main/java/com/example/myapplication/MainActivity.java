@@ -20,6 +20,8 @@ import amr.plt.rcParkingRobot.AndroidHmiPLT;
 import android.support.v7.app.AppCompatActivity;
 import parkingRobot.IGuidance;
 import parkingRobot.INxtHmi;
+import amr.plt.rcParkingRobot.BTCommunicationThread;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -32,6 +34,9 @@ public class MainActivity extends AppCompatActivity {
     AndroidHmiPLT hmiModule = null;
     //request code
     final int REQUEST_SETUP_BT_CONNECTION = 1;
+
+    //dafür wurde die Klasse BTCommunicationThread nachträglich als public deklariert
+    BTCommunicationThread btCommThread = null;
 
 
     @Override
@@ -78,13 +83,57 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+
+        //ToggleButton Pause
+        final Button buttonPause = (Button) findViewById(R.id.buttonPause);
+        buttonPause.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                //Pause
+                hmiModule.setMode(INxtHmi.Mode.PAUSE);
+                /** Code einfügen */
+            }
+        });
+
+
         //what happen when someone press the data button?
         final Button dataButton = (Button) findViewById(R.id.buttonShowData);
-        //on click call the DataActivity to choose a listed device
+        //on click call the DataActivity to see the data from the sensors
         dataButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 Intent serverIntent = new Intent(getApplicationContext(),DataActivity.class);
                 startActivityForResult(serverIntent, REQUEST_SETUP_BT_CONNECTION);
+            }
+        });
+
+
+        //someone press the Park_This button
+        final Button parkThisButton = (Button) findViewById(R.id.buttonParkThis);
+        //on click call the DataActivity to see the data from the sensors
+        parkThisButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+                hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
+                /** Code einfügen */
+            }
+        });
+
+        //someone press the Ausparken button
+        //soll nur nach dem Einparken ansprechbar sein
+        final Button buttonAusparken = (Button) findViewById(R.id.buttonAusparken);
+        buttonAusparken.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+
+                /** Code einfügen */
+            }
+        });
+
+
+        //someone press the disconnect button
+        final Button disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
+        //on click call the DataActivity to see the data from the sensors
+        disconnectButton.setOnClickListener(new View.OnClickListener() {
+            public void onClick(View v){
+
+                terminateBluetoothConnection();
             }
         });
 
@@ -153,17 +202,36 @@ public class MainActivity extends AppCompatActivity {
                 //display received data from NXT
                 if(hmiModule.connected){
                     //After establishing the connection make sure the start mode of the NXT is set to PAUSE
-//				hmiModule.setMode(Mode.PAUSE);
+                    //hmiModule.setMode(Mode.PAUSE);
 
-                    //enable toggle button
+                    //enable toggle button (Scout)
                     final ToggleButton toggleMode = (ToggleButton) findViewById(R.id.toggleMode);
                     toggleMode.setEnabled(true);
+
+                    //enable Park_This button
+                    final Button toggleParkThis = (Button) findViewById(R.id.buttonParkThis);
+                    toggleParkThis.setEnabled(true);
+
+                    //enable disconnect button
+                    final Button disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
+                    disconnectButton.setEnabled(true);
 
                     //disable connect button
                     final Button connectButton = (Button) findViewById(R.id.buttonSetupBluetooth);
                     connectButton.setEnabled(false);
 
-                    displayDataNXT();
+                   // displayDataNXT();
+                    //diese Methode wurde in die Klasse DataActivity verschoben
+
+                    //aktuelle Werte für die Value-Anzeigen in der MainActivity setzen
+                    TextView xValue = (TextView) findViewById(R.id.textViewXPositionValue);
+                    xValue.setText(String.valueOf(hmiModule.getPosition().getX()));
+
+                    TextView yValue = (TextView) findViewById(R.id.textViewYPositionValue);
+                    yValue.setText(String.valueOf(hmiModule.getPosition().getY()));
+
+                    TextView mode = (TextView) findViewById(R.id.textViewModeValue);
+                    mode.setText(String.valueOf(hmiModule.getCurrentStatus()));
                     break;
                 } else{
                     Toast.makeText(this, "Bluetooth connection failed!", Toast.LENGTH_SHORT).show();
@@ -188,6 +256,10 @@ public class MainActivity extends AppCompatActivity {
 
         //instantiate client modul
         hmiModule = new AndroidHmiPLT(btDeviceName, btDeviceAddress);
+        //daraufhin kann BTCommunicationThread initialisiert werden
+        //dafür wurde der Konstruktor nachträglich als public deklariert
+        btCommThread = new BTCommunicationThread(hmiModule);
+
 
         //connect to the specified device
         hmiModule.connect();
@@ -197,65 +269,14 @@ public class MainActivity extends AppCompatActivity {
         while (!hmiModule.isConnected()&& i<100000000/2) {
             i++;
         }
+
+        if(hmiModule.isConnected() == true){
+            btCommThread.run();
+        }else{
+            System.out.println("Not connected to any NXT.");
+        }
     }
 
-    /**
-     * Display the current data of NXT
-     */
-    private void displayDataNXT(){
-
-        new Timer().schedule(new TimerTask() {
-
-            @Override
-            public void run() {
-
-                runOnUiThread(new Runnable() {
-                    public void run() {
-                        if(hmiModule != null){
-                            //display x value
-                            final TextView fld_xPos = (TextView) findViewById(R.id.textViewValueX);
-                            fld_xPos.setText(String.valueOf(hmiModule.getPosition().getX()+" cm"));
-                            //display y value
-                            final TextView fld_yPos = (TextView) findViewById(R.id.textViewValueY);
-                            fld_yPos.setText(String.valueOf(hmiModule.getPosition().getY()+" cm"));
-                            //display angle value
-                            final TextView fld_angle = (TextView) findViewById(R.id.TextViewValueAngle);
-                            fld_angle.setText(String.valueOf(hmiModule.getPosition().getAngle()+"°"));
-                            //display status of NXT
-                            final TextView fld_status = (TextView) findViewById(R.id.textViewValueStatus);
-                            fld_status.setText(String.valueOf(hmiModule.getCurrentStatus()));
-                            //display distance front
-                            final TextView fld_distance_front = (TextView) findViewById(R.id.textViewValueDistanceFront);
-                            fld_distance_front.setText(String.valueOf(hmiModule.getPosition().getDistanceFront())+" mm");
-                            //display distance back
-                            final TextView fld_distance_back = (TextView) findViewById(R.id.textViewValueDistanceBack);
-                            fld_distance_back.setText(String.valueOf(hmiModule.getPosition().getDistanceBack())+" mm");
-                            //display distance right
-                            final TextView fld_distance_front_side = (TextView) findViewById(R.id.textViewValueDistanceFrontSide);
-                            fld_distance_front_side.setText(String.valueOf(hmiModule.getPosition().getDistanceFrontSide())+" mm");
-                            //display distance left
-                            final TextView fld_distance_back_side = (TextView) findViewById(R.id.textViewValueDistanceBackSide);
-                            fld_distance_back_side.setText(String.valueOf(hmiModule.getPosition().getDistanceBackSide())+" mm");
-                            //display bluetooth connection status
-                            final TextView fld_bluetooth = (TextView) findViewById(R.id.textViewValueBluetooth);
-                            //display connection status
-                            if(hmiModule.isConnected()){
-                                fld_bluetooth.setText("connected");
-                            } else {
-                                fld_bluetooth.setText("not connected");
-                            }
-                            //restart activity when disconnecting
-                            if(hmiModule.getCurrentStatus()== IGuidance.CurrentStatus.EXIT){
-                                terminateBluetoothConnection();
-                                restartActivity();
-                            }
-                        }
-                    }
-                });
-            }
-        }, 200, 100);
-
-    }
 
     /**
      * Terminate the bluetooth connection to NXT

@@ -16,8 +16,8 @@
             android:id="@+id/buttonSetupBluetooth"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/button"
-            android:layout_alignBottom="@+id/button"
+            android:layout_alignBaseline="@+id/buttonParkThis"
+            android:layout_alignBottom="@+id/buttonParkThis"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
             android:layout_marginLeft="25dp"
@@ -51,12 +51,19 @@
             android:text="Data" />
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/buttonParkThis"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/imageParcours"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="9dp"
+            android:enabled="false"
+            android:layout_toEndOf="@+id/buttonPause"
+            android:layout_toRightOf="@+id/buttonPause"
+            android:layout_marginLeft="23dp"
+            android:layout_marginStart="23dp"
+            android:textOff="Park_This"
+            android:textOn="Park_This"
             android:text="Park_This" />
 
         <ImageView
@@ -71,12 +78,28 @@
             android:id="@+id/buttonPause"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/button"
+            android:layout_alignBottom="@+id/toggleMode"
             android:layout_marginLeft="23dp"
             android:layout_marginStart="23dp"
-            android:layout_toEndOf="@+id/button"
-            android:layout_toRightOf="@+id/button"
+            android:layout_toEndOf="@+id/toggleMode"
+            android:layout_toRightOf="@+id/toggleMode"
             android:text="Pause" />
+
+        <Button
+            android:id="@+id/buttonDisconnect"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/buttonPause"
+            android:layout_alignBottom="@+id/buttonPause"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginEnd="11dp"
+            android:layout_marginRight="11dp"
+            android:enabled="false"
+            android:textOff="Disconnect"
+            android:textOn="Disconnect"
+            android:text="Disconnect" />
+
 
         <TextView
             android:id="@+id/textViewMode"
@@ -115,8 +138,10 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textViewXPosition"
             android:layout_alignBottom="@+id/textViewXPosition"
-            android:layout_toEndOf="@+id/button"
-            android:layout_toRightOf="@+id/button"
+            android:layout_marginEnd="8dp"
+            android:layout_marginRight="8dp"
+            android:layout_toLeftOf="@+id/textViewYPosition"
+            android:layout_toStartOf="@+id/textViewYPosition"
             android:text="xValue" />
 
         <TextView
@@ -127,12 +152,12 @@
             android:layout_alignBottom="@+id/textViewXPositionValue"
             android:layout_marginEnd="7dp"
             android:layout_marginRight="7dp"
-            android:layout_toLeftOf="@+id/textViewYPostionValue"
-            android:layout_toStartOf="@+id/textViewYPostionValue"
+            android:layout_toLeftOf="@+id/textViewYPositionValue"
+            android:layout_toStartOf="@+id/textViewYPositionValue"
             android:text="y:" />
 
         <TextView
-            android:id="@+id/textViewYPostionValue"
+            android:id="@+id/textViewYPositionValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textViewYPosition"
@@ -142,6 +167,18 @@
             android:layout_toLeftOf="@+id/buttonShowData"
             android:layout_toStartOf="@+id/buttonShowData"
             android:text="yValue" />
+
+        <Button
+            android:id="@+id/buttonAusparken"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/buttonParkThis"
+            android:layout_marginLeft="39dp"
+            android:layout_marginStart="39dp"
+            android:layout_toEndOf="@+id/buttonParkThis"
+            android:layout_toRightOf="@+id/buttonParkThis"
+            android:enabled="false"
+            android:text="Ausparken" />
 
     </RelativeLayout>
 

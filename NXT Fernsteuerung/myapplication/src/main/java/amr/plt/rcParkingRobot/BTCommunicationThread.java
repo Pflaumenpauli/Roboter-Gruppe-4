@@ -16,7 +16,7 @@ import amr.plt.rcParkingRobot.IAndroidHmi.Position;
  * @author PLT
  *
  */
-class BTCommunicationThread extends Thread {
+public class BTCommunicationThread extends Thread {
 
 	private static final String TAG_COMM_THREAD = "BTCommThread";
 
@@ -33,7 +33,7 @@ class BTCommunicationThread extends Thread {
 	/**
 	 * @param hmi
 	 */
-	BTCommunicationThread(AndroidHmiPLT hmi) {
+	public BTCommunicationThread(AndroidHmiPLT hmi) {
 		this.hmi = hmi;
 	}
 
