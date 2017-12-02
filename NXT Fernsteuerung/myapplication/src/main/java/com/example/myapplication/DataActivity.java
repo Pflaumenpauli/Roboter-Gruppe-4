@@ -54,6 +54,12 @@ public class DataActivity extends Activity {
     AndroidHmiPLT hmiModule = null;
     //request code
     final int REQUEST_SETUP_BT_CONNECTION = 1;
+    //request code
+    private final int REQUEST_ENABLE_BT	= 1;
+    //result code
+    private final int RESULT_BT_NOT_ENABLED = 3;
+
+    public static String EXTRA_DEVICE_ADDRESS = "device_adress";
 
 
     @Override
@@ -83,8 +89,7 @@ public class DataActivity extends Activity {
         //on click call the MainActivity
         backButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                Intent serverIntent = new Intent(getApplicationContext(),MainActivity.class);
-                startActivityForResult(serverIntent, REQUEST_SETUP_BT_CONNECTION);
+                onBackPressed();
             }
         });
     }
@@ -97,6 +102,11 @@ public class DataActivity extends Activity {
     }
 
     @Override
+    public void onBackPressed(){
+        super.onBackPressed();
+    }
+
+    @Override
     public void onDestroy(){
         super.onDestroy();
         if(mBtAdapter != null){
@@ -106,35 +116,6 @@ public class DataActivity extends Activity {
 
     }
 
-    /**
-     * handle pressing button with alert dialog if connected(non-Javadoc)
-     * @see android.app.Activity#onBackPressed()
-     */
-    @Override
-    public void onBackPressed() {
-        super.onBackPressed();
-
-        if (hmiModule != null && hmiModule.connected) {
-            //creating new AlertDialog
-            AlertDialog.Builder builder = new AlertDialog.Builder(this);
-            builder.setMessage("Are you sure you want to terminate the connection?")
-                    .setCancelable(false)
-                    .setPositiveButton("Yes", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            //disconnect and return to initial screen
-                            terminateBluetoothConnection();
-                            restartActivity();
-                        }
-                    })
-                    .setNegativeButton("No", new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int id) {
-                            dialog.cancel();
-                        }
-                    });
-            AlertDialog alert = builder.create();
-            alert.show();
-        }
-    }
 
     /**
      * instantiating AndroidHmiPlt object and display received data(non-Javadoc)
@@ -238,6 +219,7 @@ public class DataActivity extends Activity {
                             fld_distance_back_side.setText(String.valueOf(hmiModule.getPosition().getDistanceBackSide())+" mm");
                             //display bluetooth connection status
                             final TextView fld_bluetooth = (TextView) findViewById(R.id.textViewValueBluetooth);
+
                             //display connection status
                             if(hmiModule.isConnected()){
                                 fld_bluetooth.setText("connected");

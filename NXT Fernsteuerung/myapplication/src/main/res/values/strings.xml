@@ -26,4 +26,5 @@
 
     <string name="spinner">collect spinner</string>
     <string name="backButton">Back</string>
+    <string name="title_activity_data">Sensor Data</string>
 </resources>

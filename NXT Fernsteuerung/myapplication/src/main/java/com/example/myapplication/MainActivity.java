@@ -18,9 +18,10 @@ import android.widget.Toast;
 import android.widget.ToggleButton;
 import amr.plt.rcParkingRobot.AndroidHmiPLT;
 import android.support.v7.app.AppCompatActivity;
+
 import parkingRobot.IGuidance;
 import parkingRobot.INxtHmi;
-import amr.plt.rcParkingRobot.BTCommunicationThread;
+
 
 
 public class MainActivity extends AppCompatActivity {
@@ -34,9 +35,6 @@ public class MainActivity extends AppCompatActivity {
     AndroidHmiPLT hmiModule = null;
     //request code
     final int REQUEST_SETUP_BT_CONNECTION = 1;
-
-    //dafür wurde die Klasse BTCommunicationThread nachträglich als public deklariert
-    BTCommunicationThread btCommThread = null;
 
 
     @Override
@@ -89,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
         buttonPause.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
                 //Pause
-                hmiModule.setMode(INxtHmi.Mode.PAUSE);
+                //hmiModule.setMode(INxtHmi.Mode.PAUSE);
                 /** Code einfügen */
             }
         });
@@ -220,8 +218,7 @@ public class MainActivity extends AppCompatActivity {
                     final Button connectButton = (Button) findViewById(R.id.buttonSetupBluetooth);
                     connectButton.setEnabled(false);
 
-                   // displayDataNXT();
-                    //diese Methode wurde in die Klasse DataActivity verschoben
+                    displayDataNXT(); //method also exists in the class DataAvtivity.java
 
                     //aktuelle Werte für die Value-Anzeigen in der MainActivity setzen
                     TextView xValue = (TextView) findViewById(R.id.textViewXPositionValue);
@@ -256,10 +253,6 @@ public class MainActivity extends AppCompatActivity {
 
         //instantiate client modul
         hmiModule = new AndroidHmiPLT(btDeviceName, btDeviceAddress);
-        //daraufhin kann BTCommunicationThread initialisiert werden
-        //dafür wurde der Konstruktor nachträglich als public deklariert
-        btCommThread = new BTCommunicationThread(hmiModule);
-
 
         //connect to the specified device
         hmiModule.connect();
@@ -269,18 +262,47 @@ public class MainActivity extends AppCompatActivity {
         while (!hmiModule.isConnected()&& i<100000000/2) {
             i++;
         }
-
-        if(hmiModule.isConnected() == true){
-            btCommThread.run();
-        }else{
-            System.out.println("Not connected to any NXT.");
-        }
     }
 
-
     /**
-     * Terminate the bluetooth connection to NXT
+     * Display the current data of NXT
      */
+    private void displayDataNXT() {
+
+        new Timer().schedule(new TimerTask() {
+
+            @Override
+            public void run() {
+
+                runOnUiThread(new Runnable() {
+                    public void run() {
+                        if (hmiModule != null) {
+
+                            //display bluetooth connection status
+                            final TextView modeValue = (TextView) findViewById(R.id.textViewModeValue);
+                            modeValue.setText(String.valueOf(hmiModule.getCurrentStatus()));
+
+                            //display the values of the current position
+                            final TextView xValue = (TextView) findViewById(R.id.textViewXPositionValue);
+                            xValue.setText(String.valueOf(hmiModule.getPosition().getX()));
+                            final TextView yValue = (TextView) findViewById(R.id.textViewYPositionValue);
+                            yValue.setText(String.valueOf(hmiModule.getPosition().getY()));
+
+                            //restart activity when disconnecting
+                            if (hmiModule.getCurrentStatus() == IGuidance.CurrentStatus.EXIT) {
+                                terminateBluetoothConnection();
+                                restartActivity();
+                            }
+                        }
+                    }
+                });
+            }
+        }, 200, 100);
+    }
+
+        /**
+         * Terminate the bluetooth connection to NXT
+         */
     private void terminateBluetoothConnection(){
         Toast.makeText(this, "Bluetooth connection was terminated!", Toast.LENGTH_LONG).show();
         hmiModule.setMode(INxtHmi.Mode.DISCONNECT);

@@ -3,6 +3,15 @@
 
     <item
         is-multidex="false"
+        jar="/home/bi/Studium/7. Semester/Hauptseminar AMR/Quellcode/NXT Fernsteuerung_funktionierend!!!/nxt/build/libs/nxt.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="f3b4fba55cfe31f0a1342b380ee8a716a88c2c0c">
+        <dex dex="/home/bi/Studium/7. Semester/Hauptseminar AMR/Quellcode/NXT Fernsteuerung_funktionierend!!!/myapplication/build/intermediates/pre-dexed/debug/nxt_72acf83cdbb8d9784ac421b5a57bd279987a9854.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/bi/Studium/7. Semester/Hauptseminar AMR/Quellcode/NXT Fernsteuerung/myapplication/libs/pccomm.jar"
         jumboMode="false"
         optimize="true"
@@ -12,11 +21,20 @@
     </item>
     <item
         is-multidex="false"
+        jar="/home/bi/Studium/7. Semester/Hauptseminar AMR/Quellcode/NXT Fernsteuerung_funktionierend!!!/myapplication/libs/pccomm.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="26.0.1"
+        sha1="373ed05d2ec537429cc3f930d450732d8a854055">
+        <dex dex="/home/bi/Studium/7. Semester/Hauptseminar AMR/Quellcode/NXT Fernsteuerung_funktionierend!!!/myapplication/build/intermediates/pre-dexed/debug/pccomm_51e225eacc9a8c3c22fa37fddcb5f897c2bcfa0d.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="/home/bi/Studium/7. Semester/Hauptseminar AMR/Quellcode/NXT Fernsteuerung/nxt/build/libs/nxt.jar"
         jumboMode="false"
         optimize="true"
         revision="26.0.1"
-        sha1="ec762752f6bd06b0a61ee0ef41f231bab1f8db83">
+        sha1="4f59bf3d341f5e60faf9acc565f40bc60114790d">
         <dex dex="/home/bi/Studium/7. Semester/Hauptseminar AMR/Quellcode/NXT Fernsteuerung/myapplication/build/intermediates/pre-dexed/debug/nxt_d3b2da82e98ba6b984c99e785b4e7e4738698699.jar" />
     </item>
 
