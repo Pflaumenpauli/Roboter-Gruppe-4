@@ -695,7 +695,7 @@ public class NavigationAT implements INavigation{
 	/**
 	 * detects parking slots and manage them by initializing new slots, re-characterizing old slots or merge old and detected slots. 
 	 */
-	private void detectParkingSlot()
+	private void detectParkingSlot() // Neni dokoncena, pouvazovat
 	{
 		double xPosF1 = 0;
 		double yPosF1 = 0;
@@ -721,6 +721,11 @@ public class NavigationAT implements INavigation{
 		short SlotStatus = 0;
 		short axe = 0;
 		
+		short burstFS = 0;
+		short burstBS = 0;
+		short burstFE = 0;
+		short burstBE = 0;
+		
 		axe = this.getHeadingAxe();
 		
 		for (int i = 1; i <= 5; i++)
@@ -739,61 +744,68 @@ public class NavigationAT implements INavigation{
 		distance_B = (sum_B + this.DIST_BS[0])/5;
 		
 		// Saving the begin point of the PS
-		// pridat burst
-		if ((distance_F >= TRSH_SG) && (distance_F != FGS_Dist_P))
+		if ((distance_F >= TRSH_SG) && (burstFS == 0))
 		{
 			xPosF1 = this.pose.getX();
 			yPosF1 = this.pose.getY();
+			
+			burstFS = 1;
 		}
 		
-		if ((distance_B >= TRSH_SG) && (distance_B != RGS_Dist_P))
+		if ((distance_B >= TRSH_SG) && (burstBS == 0))
 		{
 			xPosR1 = this.pose.getX();
 			yPosR1 = this.pose.getY();
+			
+			burstBS = 1;
 		}
 				
 		// Saving the end point of the PS
 		// pridat burst
-		if ((FGS_Dist <= TRSH_SG) && (FGS_Dist != FGS_Dist_P))
+		if ((distF >= TRSH_SG) && (burstFE == 0)
 		{
 			xPosF2 = this.pose.getX();
 			yPosF2 = this.pose.getY();
+			
+			burstFE = 1;
 		}
 		
-		if ((RGS_Dist <= TRSH_SG) && (RGS_Dist != RGS_Dist_P))
+		if ((distB >= TRSH_SG) && (burstBE == 0))
 		{
 			xPosR2 = this.pose.getX();
 			yPosR2 = this.pose.getY();
-		}
-		
-		xPos1 = (xPosF1+xPosR1)/2;
-		yPos1 = (yPosF1+yPosR1)/2;
-		
-		xPos2 = (xPosF2+xPosR2)/2;
-		yPos2 = (yPosF2+yPosR2)/2;
-		
-		// Evaluatin of the slot
-		if (axe == 0)
-		{
-			if ((xPos2-xPos1) > LGNT_ROBOT)
+			
+			xPos1 = (xPosF1+xPosR1)/2;
+			yPos1 = (yPosF1+yPosR1)/2;
+			
+			xPos2 = (xPosF2+xPosR2)/2;
+			yPos2 = (yPosF2+yPosR2)/2;
+			
+			// Evaluatin of the slot
+			if (axe == 0)
 			{
-				SlotStatus = 1;
+				if ((xPos2-xPos1) > LGNT_ROBOT)
+				{
+					SlotStatus = 1;
+				}
+				else
+				{
+					SlotStatus = 0;
+				}
 			}
 			else
 			{
-				SlotStatus = 0;
+				if ((yPos2-yPos1) > LGNT_ROBOT)
+				{
+					SlotStatus = 1;
+				}
+				else
+				{
+					SlotStatus = 0;
+				}
 			}
-		}
-		else
-		{
-			if ((yPos2-yPos1) > LGNT_ROBOT)
-			{
-				SlotStatus = 1;
-			}
-			else
-			{
-				SlotStatus = 0;
-			}
+			
+			burstBE = 1;
 		}
 		
 		return; // has to be implemented by students
