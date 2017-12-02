@@ -388,6 +388,7 @@ public class NavigationAT implements INavigation{
 		double sum_F 	= 0;
 		double sum_B 	= 0;
 		short burst		= 0;
+		short corner	= 0;
 		
 		// Potom smazat !!!!!!!!!!!!!!
 		double xResult = 0;
@@ -410,7 +411,7 @@ public class NavigationAT implements INavigation{
 		
 		if (this.CORNER_ID == 4)
 		{
-			if (distance <= TRSH_DIST4)
+			if (distance_F <= TRSH_DIST4)
 			{
 				corner = 1;
 				burst = 1;
@@ -425,7 +426,7 @@ public class NavigationAT implements INavigation{
 		}
 		else if (this.CORNER_ID == 5)
 		{
-			if (distance <= TRSH_DIST5)
+			if (distance_F <= TRSH_DIST5)
 			{
 				corner = 1;
 				burst = 1;
@@ -440,7 +441,7 @@ public class NavigationAT implements INavigation{
 		}
 		else
 		{
-			if (distance <= TRSH_DISTN)
+			if (distance_F <= TRSH_DISTN)
 			{
 				corner = 1;
 				burst = 1;
@@ -480,8 +481,6 @@ public class NavigationAT implements INavigation{
 			{
 				corner = 0;
 			}
-			
-			return corner;
 		}
 		
 		if (burst == 1)			// Incrementing the corner
@@ -497,6 +496,8 @@ public class NavigationAT implements INavigation{
 				this.CORNER_ID = 0;
 			}
 		}
+		
+		return corner;
 	}
 	
 	/**
@@ -553,7 +554,7 @@ public class NavigationAT implements INavigation{
 					yDiff_W = Math.abs(this.W_yResult - yId);
 					yDiff_M = Math.abs(this.M_yResult - yId);
 					
-					if (yDiff_M < = yDiff_W)
+					if (yDiff_M <= yDiff_W)
 					{
 						yResult = this.M_yResult;
 					}
@@ -564,7 +565,7 @@ public class NavigationAT implements INavigation{
 				}
 				else if (axe == 1)	// movement in y direction
 				{
-					yresult = this.M_yResult;
+					yResult = this.M_yResult;
 					
 					switch (this.CORNER_ID)
 					{
@@ -577,7 +578,7 @@ public class NavigationAT implements INavigation{
 					xDiff_W = Math.abs(this.W_xResult - xId);
 					xDiff_M = Math.abs(this.M_xResult - xId);
 					
-					if (xDiff_M < = xDiff_W)
+					if (xDiff_M <= xDiff_W)
 					{
 						xResult = this.M_xResult;
 					}
@@ -616,7 +617,7 @@ public class NavigationAT implements INavigation{
 	        		aVerif[0] = 0;
 	        	}
 	        	
-	        	if (this.(M_aResult <= TRSH_B) || (this.M_aResult <= (TRSH_B - 360)))
+	        	if ((this.M_aResult <= TRSH_B) || (this.M_aResult <= (TRSH_B - 360)))
 	        	{
 	        		aVerif[1] = 1;
 	        	}
@@ -715,6 +716,11 @@ public class NavigationAT implements INavigation{
 		double pPosX = 0;
 		double pPosY = 0;
 		
+		double sum_F = 0;
+		double sum_B = 0;
+		double distance_F = 0;
+		double distance_B = 0;
+		
 		double FGS_Dist = perception.getFrontSideSensorDistance();
 		double RGS_Dist = perception.getBackSideSensorDistance();
 		
@@ -762,7 +768,7 @@ public class NavigationAT implements INavigation{
 				
 		// Saving the end point of the PS
 		// pridat burst
-		if ((distF >= TRSH_SG) && (burstFE == 0)
+		if ((distance_F >= TRSH_SG) && (burstFE == 0))
 		{
 			xPosF2 = this.pose.getX();
 			yPosF2 = this.pose.getY();
@@ -770,7 +776,7 @@ public class NavigationAT implements INavigation{
 			burstFE = 1;
 		}
 		
-		if ((distB >= TRSH_SG) && (burstBE == 0))
+		if ((distance_B >= TRSH_SG) && (burstBE == 0))
 		{
 			xPosR2 = this.pose.getX();
 			yPosR2 = this.pose.getY();
