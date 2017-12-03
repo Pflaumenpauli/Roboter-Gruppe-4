@@ -3,6 +3,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools" android:layout_width="match_parent"
+    android:id="@+id/constraintLayout"
     android:layout_height="match_parent" tools:context="com.example.myapplication.MainActivity">
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
@@ -10,7 +11,8 @@
         android:id="@+id/RelativeLayout1"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical" >
+        android:orientation="vertical"
+        tools:ignore="ExtraText">
 
         <Button
             android:id="@+id/buttonSetupBluetooth"
@@ -138,8 +140,8 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textViewXPosition"
             android:layout_alignBottom="@+id/textViewXPosition"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
+            android:layout_marginEnd="52dp"
+            android:layout_marginRight="52dp"
             android:layout_toLeftOf="@+id/textViewYPosition"
             android:layout_toStartOf="@+id/textViewYPosition"
             android:text="xValue" />
@@ -162,10 +164,10 @@
             android:layout_height="wrap_content"
             android:layout_alignBaseline="@+id/textViewYPosition"
             android:layout_alignBottom="@+id/textViewYPosition"
-            android:layout_marginEnd="18dp"
-            android:layout_marginRight="18dp"
-            android:layout_toLeftOf="@+id/buttonShowData"
-            android:layout_toStartOf="@+id/buttonShowData"
+            android:layout_marginEnd="45dp"
+            android:layout_marginRight="45dp"
+            android:layout_toLeftOf="@+id/buttonDisconnect"
+            android:layout_toStartOf="@+id/buttonDisconnect"
             android:text="yValue" />
 
         <Button
@@ -179,6 +181,105 @@
             android:layout_toRightOf="@+id/buttonParkThis"
             android:enabled="false"
             android:text="Ausparken" />
+
+        <ImageView
+            android:id="@+id/rechteck00"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/buttonShowData"
+            android:layout_marginLeft="300dp"
+            android:layout_marginStart="300dp"
+            android:layout_marginTop="258dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/rechteck2" />
+
+         <ImageView
+             android:id="@+id/rechteck060"
+             android:layout_width="wrap_content"
+             android:layout_height="wrap_content"
+             android:layout_alignTop="@+id/buttonShowData"
+             android:layout_marginLeft="300dp"
+             android:layout_marginStart="300dp"
+             android:layout_marginTop="135dp"
+             android:visibility="invisible"
+             app:srcCompat="@drawable/rechteck2"/>
+
+        <ImageView
+            android:id="@+id/rechteck3060"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/buttonShowData"
+            android:layout_marginLeft="360dp"
+            android:layout_marginStart="360dp"
+            android:layout_marginTop="135dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/rechteck2"/>
+
+
+
+        <ImageView
+            android:id="@+id/rechteck3030"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/buttonShowData"
+            android:layout_marginStart="360dp"
+            android:layout_marginLeft="360dp"
+            android:layout_marginTop="195dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/rechteck2"/>
+
+
+        <ImageView
+            android:id="@+id/rechteck15030"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/buttonShowData"
+            android:layout_marginStart="608dp"
+            android:layout_marginLeft="608dp"
+            android:layout_marginTop="195dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/rechteck2"/>
+
+        <ImageView
+            android:id="@+id/rechteck15060"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/buttonShowData"
+            android:layout_marginStart="608dp"
+            android:layout_marginLeft="608dp"
+            android:layout_marginTop="135dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/rechteck2"/>
+
+
+
+        <ImageView
+            android:id="@+id/rechteck18060"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/buttonShowData"
+            android:layout_marginStart="669dp"
+            android:layout_marginLeft="669dp"
+            android:layout_marginTop="135dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/rechteck2"/>
+
+        <ImageView
+            android:id="@+id/rechteck1800"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/buttonShowData"
+            android:layout_marginStart="669dp"
+            android:layout_marginLeft="669dp"
+            android:layout_marginTop="258dp"
+            android:visibility="invisible"
+            app:srcCompat="@drawable/rechteck2"/>
+
+        <com.example.myapplication.ZeichenView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#80ffffff"/>
+
 
     </RelativeLayout>
 

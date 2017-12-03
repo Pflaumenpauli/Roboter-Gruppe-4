@@ -1,9 +1,0 @@
-<component name="libraryTable">
-  <library name="pccomm">
-    <CLASSES>
-      <root url="jar://$PROJECT_DIR$/myapplication/libs/pccomm.jar!/" />
-    </CLASSES>
-    <JAVADOC />
-    <SOURCES />
-  </library>
-</component>

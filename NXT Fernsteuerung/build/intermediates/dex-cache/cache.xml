@@ -34,7 +34,7 @@
         jumboMode="false"
         optimize="true"
         revision="26.0.1"
-        sha1="4f59bf3d341f5e60faf9acc565f40bc60114790d">
+        sha1="b8fcb24cb06027e42aca296fdf7dfd00deaa8a7a">
         <dex dex="/home/bi/Studium/7. Semester/Hauptseminar AMR/Quellcode/NXT Fernsteuerung/myapplication/build/intermediates/pre-dexed/debug/nxt_d3b2da82e98ba6b984c99e785b4e7e4738698699.jar" />
     </item>
 

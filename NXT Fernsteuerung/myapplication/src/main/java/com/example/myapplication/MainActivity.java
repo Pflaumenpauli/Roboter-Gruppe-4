@@ -2,17 +2,26 @@ package com.example.myapplication;
 
 import java.util.Timer;
 import java.util.TimerTask;
+
+import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.bluetooth.BluetoothAdapter;
 import android.bluetooth.BluetoothDevice;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Canvas;
+import android.os.Build;
 import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Menu;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -22,9 +31,14 @@ import android.support.v7.app.AppCompatActivity;
 import parkingRobot.IGuidance;
 import parkingRobot.INxtHmi;
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+
 
 
 public class MainActivity extends AppCompatActivity {
+    private ZeichenView zview;
 
     //representing local Bluetooth adapter
     BluetoothAdapter mBtAdapter = null;
@@ -32,15 +46,34 @@ public class MainActivity extends AppCompatActivity {
     BluetoothDevice btDevice = null;
     //instance handels bluetooth communication to NXT
 
-    AndroidHmiPLT hmiModule = null;
+    public static AndroidHmiPLT hmiModule = null;
     //request code
     final int REQUEST_SETUP_BT_CONNECTION = 1;
+
+    //name and address of the device
+    String btDeviceAddress="";
+    String btDeviceName="";
 
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        zview =new ZeichenView(this);
+        zview.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
+        zview.setBackgroundColor(Color.TRANSPARENT);
+
+        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.constraintLayout);
+        layout.addView(zview);
+
+       /* Context context = getApplicationContext();
+        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
+        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
+        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
+        System.out.println("dpHeight = " + dpHeight);
+        System.out.println("dpWidth = " + dpWidth);*/
+
 
         //get the BT-Adapter
         mBtAdapter = BluetoothAdapter.getDefaultAdapter();
@@ -86,9 +119,26 @@ public class MainActivity extends AppCompatActivity {
         final Button buttonPause = (Button) findViewById(R.id.buttonPause);
         buttonPause.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                //Pause
-                //hmiModule.setMode(INxtHmi.Mode.PAUSE);
                 /** Code einfügen */
+
+                //set button Scout or button park_this or ausparken as unchecked
+                final ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleMode);
+                final Button park_this = (Button) findViewById(R.id.buttonParkThis);
+                final Button ausparken = (Button) findViewById(R.id.buttonAusparken);
+
+                //wir gehen davon aus, dass nach Pause wieder in den Scout Modus zurück gekehrt wird
+                toggleButton.setEnabled(true);
+                toggleButton.setChecked(false);
+
+                if(park_this.isEnabled() == true){
+                    park_this.setEnabled(false);
+                }
+                if(ausparken.isEnabled() == true){
+                    ausparken.setEnabled(false);
+                }
+
+                hmiModule.setMode(INxtHmi.Mode.PAUSE);
+                Log.e("Toggle","Toggled to Pause");
             }
         });
 
@@ -130,8 +180,8 @@ public class MainActivity extends AppCompatActivity {
         //on click call the DataActivity to see the data from the sensors
         disconnectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-
                 terminateBluetoothConnection();
+
             }
         });
 
@@ -222,10 +272,10 @@ public class MainActivity extends AppCompatActivity {
 
                     //aktuelle Werte für die Value-Anzeigen in der MainActivity setzen
                     TextView xValue = (TextView) findViewById(R.id.textViewXPositionValue);
-                    xValue.setText(String.valueOf(hmiModule.getPosition().getX()));
+                    xValue.setText(String.valueOf(hmiModule.getPosition().getX() + " cm"));
 
                     TextView yValue = (TextView) findViewById(R.id.textViewYPositionValue);
-                    yValue.setText(String.valueOf(hmiModule.getPosition().getY()));
+                    yValue.setText(String.valueOf(hmiModule.getPosition().getY() + " cm"));
 
                     TextView mode = (TextView) findViewById(R.id.textViewModeValue);
                     mode.setText(String.valueOf(hmiModule.getCurrentStatus()));
@@ -248,8 +298,8 @@ public class MainActivity extends AppCompatActivity {
         btDevice = mBtAdapter.getRemoteDevice(address);
 
         //get name and address of the device
-        String btDeviceAddress = btDevice.getAddress();
-        String btDeviceName = btDevice.getName();
+        btDeviceAddress = btDevice.getAddress();
+        btDeviceName = btDevice.getName();
 
         //instantiate client modul
         hmiModule = new AndroidHmiPLT(btDeviceName, btDeviceAddress);
@@ -284,9 +334,9 @@ public class MainActivity extends AppCompatActivity {
 
                             //display the values of the current position
                             final TextView xValue = (TextView) findViewById(R.id.textViewXPositionValue);
-                            xValue.setText(String.valueOf(hmiModule.getPosition().getX()));
+                            xValue.setText(String.valueOf(hmiModule.getPosition().getX() + " cm"));
                             final TextView yValue = (TextView) findViewById(R.id.textViewYPositionValue);
-                            yValue.setText(String.valueOf(hmiModule.getPosition().getY()));
+                            yValue.setText(String.valueOf(hmiModule.getPosition().getY() + " cm"));
 
                             //restart activity when disconnecting
                             if (hmiModule.getCurrentStatus() == IGuidance.CurrentStatus.EXIT) {
@@ -312,6 +362,26 @@ public class MainActivity extends AppCompatActivity {
             //wait until disconnected
         }
         hmiModule = null;
+
+        //start a new MainActivity
+        Intent serverIntent = new Intent(getApplicationContext(),MainActivity.class);
+        startActivityForResult(serverIntent, REQUEST_SETUP_BT_CONNECTION);
+
+        //Alternative zum Code mit neuem Intent
+        //Oberfläche zurücksetzen
+        //enable bluetooth connection button
+        /*final Button connectButton = (Button) findViewById(R.id.buttonSetupBluetooth);
+        connectButton.setEnabled(true);
+        //disable scout, Park_this, ausparken and disconnect button
+        final ToggleButton toggleMode = (ToggleButton) findViewById(R.id.toggleMode);
+        toggleMode.setEnabled(false);
+        final Button parkThis = (Button) findViewById(R.id.buttonParkThis);
+        parkThis.setEnabled(false);
+        final Button ausparken = (Button) findViewById(R.id.buttonAusparken);
+        ausparken.setEnabled(false);
+        final Button disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
+        disconnectButton.setEnabled(false);*/
+
     }
 
     /**
@@ -322,5 +392,32 @@ public class MainActivity extends AppCompatActivity {
         startActivity(restartIntent);
         finish();
     }
+
+    public static AndroidHmiPLT getHmiModule(){
+        return hmiModule;
+    }
+
+
+
+
+     /*public boolean onTouchEvent(MotionEvent e) {
+        float xpos= e.getX();
+        float ypos= e.getRawY();
+        switch (e.getAction())
+        {
+            case MotionEvent.ACTION_DOWN:
+                Log.d("DEBUG", "On touch (down)" + String.valueOf(xpos) + String.valueOf(ypos));
+            case MotionEvent.ACTION_UP:
+                Log.d("DEBUG", "On touch (up)" + String.valueOf(xpos) + String.valueOf(ypos));
+            case MotionEvent.ACTION_MOVE:
+                Log.d("DEBUG", "On touch (move)" + String.valueOf(xpos) + String.valueOf(ypos));
+                break;
+        }
+        System.out.println("xPos: " + xpos);
+        System.out.println("yPos: " + ypos);
+
+        return true;
+
+    }*/
 
 }

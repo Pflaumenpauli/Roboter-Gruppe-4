@@ -15,6 +15,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Messenger;
 import android.util.Log;
+import android.widget.Button;
 
 /**
  * Reference implementation of Android HMI module for communication with NXT robot. The module is used by instantiating it with  
@@ -111,7 +112,6 @@ public class AndroidHmiPLT implements IAndroidHmi {
 		}
 	
 		connected = false;
-		
 	}
 
 	/**

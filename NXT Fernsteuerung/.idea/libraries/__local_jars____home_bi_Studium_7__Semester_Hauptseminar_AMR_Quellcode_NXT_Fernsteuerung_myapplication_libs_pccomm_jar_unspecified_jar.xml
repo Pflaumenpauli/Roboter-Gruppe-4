@@ -1,0 +1,9 @@
+<component name="libraryTable">
+  <library name="__local_jars__:/home/bi/Studium/7. Semester/Hauptseminar AMR/Quellcode/NXT Fernsteuerung/myapplication/libs/pccomm.jar:unspecified@jar">
+    <CLASSES>
+      <root url="jar://$PROJECT_DIR$/myapplication/libs/pccomm.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES />
+  </library>
+</component>

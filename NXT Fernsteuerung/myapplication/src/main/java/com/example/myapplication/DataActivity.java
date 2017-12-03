@@ -67,18 +67,8 @@ public class DataActivity extends Activity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_data);
 
-        //get the BT-Adapter
-        mBtAdapter = BluetoothAdapter.getDefaultAdapter();
-        System.out.println("mBtAdapter" + mBtAdapter);
+        hmiModule = MainActivity.getHmiModule();
 
-        //If the adapter is null, then Bluetooth is not supported
-        if (mBtAdapter == null) {
-            Toast.makeText(this, "Bluetooth is not available", Toast.LENGTH_LONG).show();
-            finish();
-            return;
-        }else{
-            hmiModule = new AndroidHmiPLT("nxtName", "nxtAddress");
-        }
 
         //Anzeige starten
         displayDataNXT();
@@ -92,6 +82,7 @@ public class DataActivity extends Activity {
                 onBackPressed();
             }
         });
+
     }
 
 
@@ -134,17 +125,42 @@ public class DataActivity extends Activity {
                 //display received data from NXT
                 if(hmiModule.connected){
                     //After establishing the connection make sure the start mode of the NXT is set to PAUSE
-//				hmiModule.setMode(Mode.PAUSE);
 
-                    //enable toggle button
-                    final ToggleButton toggleMode = (ToggleButton) findViewById(R.id.toggleMode);
-                    toggleMode.setEnabled(true);
+                    //display x value
+                    final TextView fld_xPos = (TextView) findViewById(R.id.textViewValueX);
+                    fld_xPos.setText(String.valueOf(hmiModule.getPosition().getX()+" cm"));
+                    //display y value
+                    final TextView fld_yPos = (TextView) findViewById(R.id.textViewValueY);
+                    fld_yPos.setText(String.valueOf(hmiModule.getPosition().getY()+" cm"));
+                    //display angle value
+                    final TextView fld_angle = (TextView) findViewById(R.id.TextViewValueAngle);
+                    fld_angle.setText(String.valueOf(hmiModule.getPosition().getAngle()+"°"));
+                    //display status of NXT
+                    final TextView fld_status = (TextView) findViewById(R.id.textViewValueStatus);
+                    fld_status.setText(String.valueOf(hmiModule.getCurrentStatus()));
+                    //display distance front
+                    final TextView fld_distance_front = (TextView) findViewById(R.id.textViewValueDistanceFront);
+                    fld_distance_front.setText(String.valueOf(hmiModule.getPosition().getDistanceFront())+" mm");
+                    //display distance back
+                    final TextView fld_distance_back = (TextView) findViewById(R.id.textViewValueDistanceBack);
+                    fld_distance_back.setText(String.valueOf(hmiModule.getPosition().getDistanceBack())+" mm");
+                    //display distance right
+                    final TextView fld_distance_front_side = (TextView) findViewById(R.id.textViewValueDistanceFrontSide);
+                    fld_distance_front_side.setText(String.valueOf(hmiModule.getPosition().getDistanceFrontSide())+" mm");
+                    //display distance left
+                    final TextView fld_distance_back_side = (TextView) findViewById(R.id.textViewValueDistanceBackSide);
+                    fld_distance_back_side.setText(String.valueOf(hmiModule.getPosition().getDistanceBackSide())+" mm");
+                    //display bluetooth connection status
+                    final TextView fld_bluetooth = (TextView) findViewById(R.id.textViewValueBluetooth);
 
-                    //disable connect button
-                    final Button connectButton = (Button) findViewById(R.id.buttonSetupBluetooth);
-                    connectButton.setEnabled(false);
+                    //display connection status
+                    if(hmiModule.isConnected()){
+                        fld_bluetooth.setText("connected");
+                    } else {
+                        fld_bluetooth.setText("not connected");
+                    }
 
-                    displayDataNXT();
+                    //displayDataNXT();
                     break;
                 } else{
                     Toast.makeText(this, "Bluetooth connection failed!", Toast.LENGTH_SHORT).show();
