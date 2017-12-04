@@ -3,6 +3,7 @@ package com.example.myapplication;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import android.annotation.SuppressLint;
 import android.app.ActionBar;
 import android.app.Activity;
 import android.app.AlertDialog;
@@ -11,7 +12,9 @@ import android.bluetooth.BluetoothDevice;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.graphics.Canvas;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.constraint.ConstraintLayout;
@@ -21,7 +24,9 @@ import android.view.Menu;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ToggleButton;
@@ -38,7 +43,6 @@ import android.graphics.Paint;
 
 
 public class MainActivity extends AppCompatActivity {
-    private ZeichenView zview;
 
     //representing local Bluetooth adapter
     BluetoothAdapter mBtAdapter = null;
@@ -54,25 +58,46 @@ public class MainActivity extends AppCompatActivity {
     String btDeviceAddress="";
     String btDeviceName="";
 
+    //Skalierungswerte
+    static final double XSKAL = 2.06;
+    static final double YSKAL = 2.41;
+    float xBild, yBild;
+    float xRobo, yRobo;
 
+    Canvas canvas;
+    Paint pinsel;
+
+    @SuppressLint("NewApi")
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        zview =new ZeichenView(this);
-        zview.setLayoutParams(new ActionBar.LayoutParams(ActionBar.LayoutParams.MATCH_PARENT, ActionBar.LayoutParams.MATCH_PARENT));
-        zview.setBackgroundColor(Color.TRANSPARENT);
+        // in deiner Activity ausführen, sonst noch getActivity() vor getResources()
+        DisplayMetrics metrics = getResources().getDisplayMetrics();
 
-        ConstraintLayout layout = (ConstraintLayout) findViewById(R.id.constraintLayout);
-        layout.addView(zview);
+        double ySize = metrics.heightPixels ;
+        double xSize = metrics.widthPixels ;
 
-       /* Context context = getApplicationContext();
-        DisplayMetrics displayMetrics = context.getResources().getDisplayMetrics();
-        float dpHeight = displayMetrics.heightPixels / displayMetrics.density;
-        float dpWidth = displayMetrics.widthPixels / displayMetrics.density;
-        System.out.println("dpHeight = " + dpHeight);
-        System.out.println("dpWidth = " + dpWidth);*/
+        // Bildschirmgrösse in Zoll
+        double screenSize = Math.sqrt(xSize * xSize + ySize * ySize);
+
+        System.out.println("ySize = " + ySize);
+        System.out.println("xSize = " + xSize);
+        System.out.println("screenSize = " + screenSize);
+
+
+        RelativeLayout layout = (RelativeLayout) findViewById(R.id.viewLayout);
+        pinsel = new Paint();
+        pinsel.setColor(Color.rgb(64, 64, 255));
+        pinsel.setStrokeWidth(5);
+
+        Bitmap bitmap = Bitmap.createBitmap(1024, 552, Bitmap.Config.ARGB_8888);
+        canvas = new Canvas(bitmap);
+        layout.setBackground(new BitmapDrawable(bitmap));
+
+        //Anfangspunkt setzen
+        zeichnen(0, 0, canvas, pinsel);
 
 
         //get the BT-Adapter
@@ -327,6 +352,11 @@ public class MainActivity extends AppCompatActivity {
                 runOnUiThread(new Runnable() {
                     public void run() {
                         if (hmiModule != null) {
+                            //rudimentäres Zeichnen des gefahrenen Pfades
+                            xRobo = hmiModule.getPosition().getX();
+                            yRobo = hmiModule.getPosition().getY();
+                            zeichnen(xRobo, yRobo, canvas, pinsel);
+
 
                             //display bluetooth connection status
                             final TextView modeValue = (TextView) findViewById(R.id.textViewModeValue);
@@ -366,22 +396,6 @@ public class MainActivity extends AppCompatActivity {
         //start a new MainActivity
         Intent serverIntent = new Intent(getApplicationContext(),MainActivity.class);
         startActivityForResult(serverIntent, REQUEST_SETUP_BT_CONNECTION);
-
-        //Alternative zum Code mit neuem Intent
-        //Oberfläche zurücksetzen
-        //enable bluetooth connection button
-        /*final Button connectButton = (Button) findViewById(R.id.buttonSetupBluetooth);
-        connectButton.setEnabled(true);
-        //disable scout, Park_this, ausparken and disconnect button
-        final ToggleButton toggleMode = (ToggleButton) findViewById(R.id.toggleMode);
-        toggleMode.setEnabled(false);
-        final Button parkThis = (Button) findViewById(R.id.buttonParkThis);
-        parkThis.setEnabled(false);
-        final Button ausparken = (Button) findViewById(R.id.buttonAusparken);
-        ausparken.setEnabled(false);
-        final Button disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
-        disconnectButton.setEnabled(false);*/
-
     }
 
     /**
@@ -419,5 +433,14 @@ public class MainActivity extends AppCompatActivity {
         return true;
 
     }*/
+
+     private void zeichnen(float xRobo, float yRobo, Canvas canvas, Paint pinsel){
+
+         xBild = (float) ((xRobo * XSKAL) + 306);
+         yBild = (float) (((yRobo * YSKAL) - 325) * (-1));
+
+         //Elemente (Punkte) zeichnen lassen
+         canvas.drawCircle(xBild, yBild, 5, pinsel);
+     }
 
 }
