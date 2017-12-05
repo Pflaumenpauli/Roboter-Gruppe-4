@@ -1,13 +1,13 @@
 package parkingRobot.hsamr0;
 
 import lejos.geom.Line;
+import lejos.geom.Point;
 import lejos.robotics.navigation.Pose;
 
 import parkingRobot.INavigation;
+import parkingRobot.INavigation.ParkingSlot.ParkingSlotStatus;
 import parkingRobot.IPerception;
 import parkingRobot.IMonitor;
-
-import parkingRobot.hsamr0.NavigationThread;
 
 
 /**
@@ -90,11 +90,11 @@ public class NavigationAT implements INavigation{
 	/**
 	 * robot specific constant: radius of left wheel
 	 */
-	static final double LEFT_WHEEL_RADIUS	= 	0.00281; // only rough guess, to be measured exactly and maybe refined by experiments
+	static final double LEFT_WHEEL_RADIUS	= 	0.0281; // only rough guess, to be measured exactly and maybe refined by experiments
 	/**
 	 * robot specific constant: radius of right wheel
 	 */
-	static final double RIGHT_WHEEL_RADIUS	= 	0.002765; // only rough guess, to be measured exactly and maybe refined by experiments
+	static final double RIGHT_WHEEL_RADIUS	= 	0.02765; // only rough guess, to be measured exactly and maybe refined by experiments
 	/**
 	 * robot specific constant: distance between wheels
 	 */
@@ -143,6 +143,9 @@ public class NavigationAT implements INavigation{
 	// Parking
 	double[] DIST_FS = {0,0,0,0,0};
 	double[] DIST_BS = {0,0,0,0,0};
+	
+	int counter = 0;
+	public INavigation.ParkingSlot[] slotList = new ParkingSlot[10];
 	
 	static final double TRSH_SG = 0;
 	static final double FGS_Dist_P = 0;
@@ -289,31 +292,31 @@ public class NavigationAT implements INavigation{
 		
 		if (R.isNaN()) 			//robot don't move
 		{ 
-			W_xResult		= this.pose.getX();
-			W_yResult		= this.pose.getY();
-			W_aResult 		= this.pose.getHeading();
+			this.W_xResult		= this.pose.getX();
+			this.W_yResult		= this.pose.getY();
+			this.W_aResult 		= this.pose.getHeading();
 		} 
 		else if (R.isInfinite()) //robot moves straight forward/backward, vLeft==vRight
 		{ 
-			W_xResult		= this.pose.getX() + vLeft * Math.cos(this.pose.getHeading()) * deltaT;
-			W_yResult		= this.pose.getY() + vLeft * Math.sin(this.pose.getHeading()) * deltaT;
-			W_aResult		= this.pose.getHeading();
+			this.W_xResult		= this.pose.getX() + vLeft * Math.cos(this.pose.getHeading()) * deltaT;
+			this.W_yResult		= this.pose.getY() + vLeft * Math.sin(this.pose.getHeading()) * deltaT;
+			this.W_aResult		= this.pose.getHeading();
 		} 
 		else 
 		{			
 			ICCx = this.pose.getX() - R.doubleValue() * Math.sin(this.pose.getHeading());
 			ICCy = this.pose.getY() + R.doubleValue() * Math.cos(this.pose.getHeading());
 		
-			W_xResult 		= Math.cos(w * deltaT) * (this.pose.getX()-ICCx) - Math.sin(w * deltaT) * (this.pose.getY() - ICCy) + ICCx;
-			W_yResult 		= Math.sin(w * deltaT) * (this.pose.getX()-ICCx) + Math.cos(w * deltaT) * (this.pose.getY() - ICCy) + ICCy;
-			W_aResult 		= this.pose.getHeading() + w * deltaT;
+			this.W_xResult 		= Math.cos(w * deltaT) * (this.pose.getX()-ICCx) - Math.sin(w * deltaT) * (this.pose.getY() - ICCy) + ICCx;
+			this.W_yResult 		= Math.sin(w * deltaT) * (this.pose.getX()-ICCx) + Math.cos(w * deltaT) * (this.pose.getY() - ICCy) + ICCy;
+			this.W_aResult 		= this.pose.getHeading() + w * deltaT;
 		}
 		
-		W_deltaX = Math.abs(W_xResult - this.pose.getX());
-		W_deltaY = Math.abs(W_yResult - this.pose.getY());
+		this.W_deltaX = Math.abs(this.W_xResult - this.pose.getX());
+		this.W_deltaY = Math.abs(this.W_yResult - this.pose.getY());
 		
-		W_dist	 = Math.sqrt(Math.pow(W_deltaX, 2) + Math.pow(W_deltaY, 2));	// Driven distance - wheel odometry
-		//W_CaRes  = Math.atan(W_dist/W_deltaX);								// Counted heading angle - wheel odometry ----- mozna neni potreba
+		this.W_dist	 = Math.sqrt(Math.pow(this.W_deltaX, 2) + Math.pow(this.W_deltaY, 2));	// Driven distance - wheel odometry
+		//W_CaRes  = Math.atan(W_dist/W_deltaX);						// Counted heading angle - wheel odometry ----- mozna neni potreba
 	}
 	
 	/**
@@ -321,17 +324,57 @@ public class NavigationAT implements INavigation{
 	 */
 	private void mauseOdometrie()
 	{
-		M_deltaX = this.mouseOdoMeasurement.getUSum()/1000;		// dostanu deltaX, deltaY a deltaT v m
-		M_deltaY = this.mouseOdoMeasurement.getVSum()/1000;
+		short axe = 0;
 		
-		M_xResult = M_deltaX + M_xPosOld;
-		M_yResult = M_deltaY + M_yPosOld;
+		axe = this.getHeadingAxe();
+		/*	
+		switch (this.CORNER_ID)
+		{
+		case 0:
+		case 2:
+		case 4:
+		case 6:
+			this.M_deltaX = this.mouseOdoMeasurement.getUSum()/1000;
+			this.M_deltaY = this.mouseOdoMeasurement.getVSum()/1000;
+			break;
+		case 1:
+		case 3:
+		case 5:
+		case 7:
+			this.M_deltaX = this.mouseOdoMeasurement.getVSum()/1000;
+			this.M_deltaY = this.mouseOdoMeasurement.getUSum()/1000;
+			break;
+		}
+		*/
 		
-		M_xPosOld = M_xResult;
-		M_yPosOld = M_yResult;
+		switch (axe)
+		{
+		case 0:
+			this.M_deltaX = this.mouseOdoMeasurement.getUSum()/1000;
+			this.M_deltaY = this.mouseOdoMeasurement.getVSum()/1000;
+			break;
+		case 1:
+			this.M_deltaX = this.mouseOdoMeasurement.getVSum()/1000;
+			this.M_deltaY = this.mouseOdoMeasurement.getUSum()/1000;
+			break;
+		case 2:
+			// Pripad s nedefinovanou osou pohybu
+			this.M_deltaX = this.mouseOdoMeasurement.getUSum()/1000;
+			this.M_deltaY = this.mouseOdoMeasurement.getVSum()/1000;
+			break;
+		}
 		
-		M_dist		= Math.sqrt(Math.pow(M_deltaX, 2) + Math.pow(M_deltaY, 2));	// Driven distance - mouse sensor
-		M_aResult	= Math.atan(M_deltaY/M_deltaX);								// Counted heading angle - mouse sensor
+		this.M_deltaX = this.mouseOdoMeasurement.getUSum()/1000;		// dostanu deltaX, deltaY a deltaT v m
+		this.M_deltaY = this.mouseOdoMeasurement.getVSum()/1000;
+		
+		this.M_xResult = this.M_deltaX + this.M_xPosOld;
+		this.M_yResult = this.M_deltaY + this.M_yPosOld;
+		
+		this.M_xPosOld = this.M_xResult;
+		this.M_yPosOld = this.M_yResult;
+		
+		this.M_dist	 = Math.sqrt(Math.pow(this.M_deltaX, 2) + Math.pow(this.M_deltaY, 2));	// Driven distance - mouse sensor
+		this.M_aResult  = Math.atan(this.M_deltaY/this.M_deltaX);							// Counted heading angle - mouse sensor
 	}
 	
 	/**
@@ -339,6 +382,7 @@ public class NavigationAT implements INavigation{
 	 */
 	private short getHeadingAxe()
 	{
+		// On the base of wheel odometry
 		double avgX = 0;
 		double avgY = 0;
 		
@@ -349,26 +393,28 @@ public class NavigationAT implements INavigation{
 		
 		for (int i = 1; i <= 5; i++)
 		{
-			DELTA_X[i] = DELTA_X[i-1];
-			sumX = DELTA_X[i] + sumX;
+			this.DELTA_X[i] = this.DELTA_X[i-1];
+			sumX = this.DELTA_X[i] + sumX;
 			
-			DELTA_Y[i] = DELTA_Y[i-1];
-			sumY = DELTA_Y[i] + sumY;
+			this.DELTA_Y[i] = this.DELTA_Y[i-1];
+			sumY = this.DELTA_Y[i] + sumY;
 		}
 		
-		DELTA_X[0] = pose.getX();
-		avgX = (sumX + DELTA_X[0])/5;
+		//this.DELTA_X[0] = this.pose.getX();
+		this.DELTA_X[0] = this.W_xResult;
+		avgX = (sumX + this.DELTA_X[0])/5;
 		
-		DELTA_Y[0] = pose.getY();
-		avgY = (sumY + DELTA_Y[0])/5;
+		//this.DELTA_Y[0] = this.pose.getY();
+		this.DELTA_Y[0] = this.W_yResult;
+		avgY = (sumY + this.DELTA_Y[0])/5;
 		
 		if (avgX > avgY)
 		{
-			movDir = 0;
+			movDir = 0;			// x direction
 		}
 		else if (avgX < avgY)
 		{
-			movDir = 1;
+			movDir = 1;			// y direction
 		}
 		else
 		{
@@ -387,52 +433,43 @@ public class NavigationAT implements INavigation{
 		double distance_B = 0;
 		double sum_F 	= 0;
 		double sum_B 	= 0;
+		
 		short burst		= 0;
 		short corner	= 0;
 		
-		// Potom smazat !!!!!!!!!!!!!!
-		double xResult = 0;
-		double yResult = 0;
-		
 		for (int i = 1; i <= 5; i++)
 		{
-			DIST_F[i] = DIST_F[i-1];
+			this.DIST_F[i] = this.DIST_F[i-1];
 			sum_F = DIST_F[i] + sum_F;
 			
-			DIST_B[i] = DIST_B[i-1];
+			this.DIST_B[i] = this.DIST_B[i-1];
 			sum_B = DIST_B[i] + sum_B;
 		}
 		
-		DIST_F[0] = frontSensorDistance;
-		distance_F = (sum_F + DIST_F[0])/5;
+		this.DIST_F[0] = this.frontSensorDistance;
+		distance_F = (sum_F + this.DIST_F[0])/5;
 		
-		DIST_B[0] = backSensorDistance;
-		distance_B = (sum_B + DIST_B[0])/5;
+		this.DIST_B[0] = this.backSensorDistance;
+		distance_B = (sum_B + this.DIST_B[0])/5;
 		
-		if (CORNER_ID == 4)
+		if (this.CORNER_ID == 4)
 		{
-			if (distance_F <= TRSH_DIST4)
+			if (distance_B <= TRSH_DIST4)
 			{
 				corner = 1;
 				burst = 1;
-				
-				xResult = 150;
-				yResult = 30;
 			}
 			else
 			{
 				corner = 0;
 			}
 		}
-		else if (CORNER_ID == 5)
+		else if (this.CORNER_ID == 5)
 		{
 			if (distance_F <= TRSH_DIST5)
 			{
 				corner = 1;
 				burst = 1;
-				
-				xResult = 30;
-				yResult = 30;
 			}
 			else
 			{
@@ -445,37 +482,6 @@ public class NavigationAT implements INavigation{
 			{
 				corner = 1;
 				burst = 1;
-				
-				switch (CORNER_ID)
-				{
-				case 0:
-					xResult = 0;
-					yResult = 0;
-					
-					M_xPosOld = 0;
-					M_yPosOld = 0;
-					break;
-				case 1:
-					xResult = 180;
-					yResult = 0;
-					break;
-				case 2:
-					xResult = 180;
-					yResult = 60;
-					break;
-				case 3:
-					xResult = 150;
-					yResult = 60;
-					break;
-				case 6:
-					xResult = 30;
-					yResult = 60;
-					break;
-				case 7:
-					xResult = 0;
-					yResult = 60;
-					break;
-				}
 			}
 			else
 			{
@@ -487,13 +493,13 @@ public class NavigationAT implements INavigation{
 		{
 			burst = 0;
 			
-			if (CORNER_ID < 8)
+			if (this.CORNER_ID < 8)
 			{
-				CORNER_ID++;
+				this.CORNER_ID++;
 			}
 			else
 			{
-				CORNER_ID = 0;
+				this.CORNER_ID = 0;
 			}
 		}
 		
@@ -523,92 +529,160 @@ public class NavigationAT implements INavigation{
 		short corn = 0;
 		
 		// Wheel odometry
-		radOdometrie();
+		this.radOdometrie();
+		
+		// Detecting the axe of the movement
+		axe = this.getHeadingAxe();
+		
+		// Detecting the corners
+		corn = this.getCorner();
 		
 		// Mouse sensor
-		mauseOdometrie();
+		this.mauseOdometrie();
 		
 		// Data evaluation
 			
-			// Detecting the axe of the movement
-			axe = getHeadingAxe();
-			
-			// Detecting the corners
-			corn = getCorner();
-			
 			// Verify the coordinates
-			if ((lineSensorLeft == 0) && (lineSensorRight == 0))
+			if (corn == 1)
 			{
-				if (axe == 0)		// movement in x direction
+				switch (this.CORNER_ID)
 				{
-					xResult = M_xResult;
-					
-					switch (CORNER_ID)
-					{
-					case 0: yId = 0; break;
+					case 0:
+						xResult = 0;
+						yResult = 0;
+						
+						this.M_xPosOld = 0;
+						this.M_yPosOld = 0;
+						break;
+					case 1:
+						xResult = 180;
+						yResult = 0;
+						break;
 					case 2:
-					case 6: yId = 60; break;
-					case 4: yId = 30; break;
-					}
-					
-					yDiff_W = Math.abs(W_yResult - yId);
-					yDiff_M = Math.abs(M_yResult - yId);
-					
-					if (yDiff_M <= yDiff_W)
+						xResult = 180;
+						yResult = 60;
+						break;
+					case 3:
+						xResult = 150;
+						yResult = 60;
+						break;
+					case 6:
+						xResult = 30;
+						yResult = 60;
+						break;
+					case 7:
+						xResult = 0;
+						yResult = 60;
+						break;	
+				}
+			}
+			else
+			{
+				if ((this.lineSensorLeft == 0) && (this.lineSensorRight == 0))
+				{
+					if (axe == 0)		// movement in x direction
 					{
-						yResult = M_yResult;
+						xResult = this.M_xResult;
+						
+						switch (this.CORNER_ID)
+						{
+						case 0: yId = 0; break;
+						case 2:
+						case 6: yId = 60; break;
+						case 4: yId = 30; break;
+						}
+						
+						yResult = yId;
+					}
+					else if (axe == 1)	// movement in y direction
+					{
+						yResult = this.M_yResult;
+						
+						switch (this.CORNER_ID)
+						{
+						case 1: xId = 180; break;
+						case 3: xId = 150; break;
+						case 5: xId = 30; break;
+						case 7: xId = 0; break;
+						}
+
+						xResult = xId;
 					}
 					else
 					{
-						yResult = W_yResult;
+						xResult = this.M_xResult;
+						yResult = this.M_yResult;
 					}
 				}
-				else if (axe == 1)	// movement in y direction
+				else if(((this.lineSensorLeft == 0) && (this.lineSensorRight == 2)) || ((this.lineSensorLeft == 2) && (this.lineSensorRight == 0)))
 				{
-					yResult = M_yResult;
-					
-					switch (CORNER_ID)
+					if (axe == 0)		// movement in x direction
 					{
-					case 1: xId = 180; break;
-					case 3: xId = 150; break;
-					case 5: xId = 30; break;
-					case 7: xId = 0; break;
+						xResult = this.M_xResult;
+						
+						switch (this.CORNER_ID)
+						{
+						case 0: yId = 0; break;
+						case 2:
+						case 6: yId = 60; break;
+						case 4: yId = 30; break;
+						}
+						
+						yDiff_W = Math.abs(this.W_yResult - yId);
+						yDiff_M = Math.abs(this.M_yResult - yId);
+						
+						if (yDiff_M <= yDiff_W)
+						{
+							yResult = this.M_yResult;
+						}
+						else
+						{
+							yResult = this.W_yResult;
+						}
 					}
-					
-					xDiff_W = Math.abs(W_xResult - xId);
-					xDiff_M = Math.abs(M_xResult - xId);
-					
-					if (xDiff_M <= xDiff_W)
+					else if (axe == 1)	// movement in y direction
 					{
-						xResult = M_xResult;
+						yResult = this.M_yResult;
+						
+						switch (this.CORNER_ID)
+						{
+						case 1: xId = 180; break;
+						case 3: xId = 150; break;
+						case 5: xId = 30; break;
+						case 7: xId = 0; break;
+						}
+						
+						xDiff_W = Math.abs(this.W_xResult - xId);
+						xDiff_M = Math.abs(this.M_xResult - xId);
+						
+						if (xDiff_M <= xDiff_W)
+						{
+							xResult = this.M_xResult;
+						}
+						else
+						{
+							xResult = this.W_xResult;
+						}
 					}
 					else
 					{
-						xResult = W_xResult;
+						xResult = this.M_xResult;
+						yResult = this.M_yResult;
 					}
 				}
 				else
 				{
-					xResult = M_xResult;
-					yResult = M_yResult;
+					xResult = this.M_xResult;
+					yResult = this.M_yResult;
 				}
 			}
-			else if(((lineSensorLeft == 0) && (lineSensorRight == 2)) || ((lineSensorLeft == 2) && (lineSensorRight == 0)))
-			{
-				// presunout kod zeshora, nahore rovnou zapisovat idealni koordinaty
-			}
-			else
-			{
-				xResult = M_xResult;
-				yResult = M_yResult;
-			}
+			
 		
 		// Verify the heading angle
-
 			// white = 0, black = 2, grey = 1
-	        if ((lineSensorLeft == 0) && (lineSensorRight == 0))		// robot moves on the line
+	        if ((this.lineSensorLeft == 0) && (this.lineSensorRight == 0))		// robot moves on the line
 	        {	
-	        	if ((W_aResult <= TRSH_B) || (W_aResult <= (TRSH_B - 360)))		// mozna bude nutne zmenit podminku
+	        	if ((this.W_aResult <= TRSH_B) || (this.W_aResult <= (TRSH_B - 360)))		// mozna bude nutne zmenit podminku
 	        	{
 	        		aVerif[0] = 1;
 	        	}
@@ -617,7 +691,7 @@ public class NavigationAT implements INavigation{
 	        		aVerif[0] = 0;
 	        	}
 	        	
-	        	if ((M_aResult <= TRSH_B) || (M_aResult <= (TRSH_B - 360)))
+	        	if ((this.M_aResult <= TRSH_B) || (this.M_aResult <= (TRSH_B - 360)))
 	        	{
 	        		aVerif[1] = 1;
 	        	}
@@ -627,9 +701,9 @@ public class NavigationAT implements INavigation{
 	        	}
 			}
 	        // robot moves left or right from the line
-			else if(((lineSensorLeft == 0) && (lineSensorRight == 2)) || ((lineSensorLeft == 2) && (lineSensorRight == 0)))	
+			else if(((this.lineSensorLeft == 0) && (this.lineSensorRight == 2)) || ((this.lineSensorLeft == 2) && (this.lineSensorRight == 0)))	
 			{
-	        	if ((W_aResult <= TRSH_W) || (W_aResult <= (TRSH_W - 360)))
+	        	if ((this.W_aResult <= TRSH_W) || (this.W_aResult <= (TRSH_W - 360)))
 	        	{
 	        		aVerif[0] = 1;
 	        	}
@@ -638,7 +712,7 @@ public class NavigationAT implements INavigation{
 	        		aVerif[0] = 0;
 	        	}
 	        	
-	        	if ((M_aResult <= TRSH_W) || (M_aResult <= (TRSH_W - 360)))
+	        	if ((this.M_aResult <= TRSH_W) || (this.M_aResult <= (TRSH_W - 360)))
 	        	{
 	        		aVerif[1] = 1;
 	        	}
@@ -648,9 +722,9 @@ public class NavigationAT implements INavigation{
 	        	}
 			}
 	        // robot moves left or right to the grey area
-	        else if(((lineSensorLeft == 1) && (lineSensorRight == 0)) || ((lineSensorLeft == 0) && (lineSensorRight == 1)))	
+	        else if(((this.lineSensorLeft == 1) && (this.lineSensorRight == 0)) || ((this.lineSensorLeft == 0) && (this.lineSensorRight == 1)))	
 	        {
-	        	if ((W_aResult <= TRSH_G) || (W_aResult <= (TRSH_G - 360)))
+	        	if ((this.W_aResult <= TRSH_G) || (this.W_aResult <= (TRSH_G - 360)))
 	        	{
 	        		aVerif[0] = 1;
 	        	}
@@ -659,7 +733,7 @@ public class NavigationAT implements INavigation{
 	        		aVerif[0] = 0;
 	        	}
 	        	
-	        	if ((M_aResult <= TRSH_G) || (M_aResult <= (TRSH_G - 360)))
+	        	if ((this.M_aResult <= TRSH_G) || (this.M_aResult <= (TRSH_G - 360)))
 	        	{
 	        		aVerif[1] = 1;
 	        	}
@@ -672,20 +746,20 @@ public class NavigationAT implements INavigation{
 			// Evaluation of the angle
 			if ((aVerif[0] == 0) || (aVerif[1] == 1))
 			{
-				aResult = M_aResult;
+				aResult = this.M_aResult;
 			}
 			else if ((aVerif[0] == 1) || (aVerif[1] == 0))
 			{
-				aResult = W_aResult;
+				aResult = this.W_aResult;
 			}
 			else if  ((aVerif[0] == 0) || (aVerif[1] == 0))
 			{
 				// Vymyslet co tady - ani jeden uhel nebyl verifikovan
-				aResult = (W_aResult + M_aResult)/2;
+				aResult = (this.W_aResult + this.M_aResult)/2;
 			}
 			else
 			{
-				aResult = (W_aResult + M_aResult)/2;
+				aResult = (this.W_aResult + this.M_aResult)/2;
 			}
 
 		// Return pose	
@@ -696,119 +770,109 @@ public class NavigationAT implements INavigation{
 	/**
 	 * detects parking slots and manage them by initializing new slots, re-characterizing old slots or merge old and detected slots. 
 	 */
-	private void detectParkingSlot() // Neni dokoncena, pouvazovat
+	private void detectParkingSlot() // Neni dokonceno vyhodnocovani minulych slotu - jeden bude ulozen vicekrat
 	{
-		double xPosF1 = 0;
-		double yPosF1 = 0;
-		double xPosR1 = 0;
-		double yPosR1 = 0;
+		Point PosF1 = new Point(0,0);
+		Point PosF2 = new Point(0,0);
+		Point PosR1 = new Point(0,0);
+		Point PosR2 = new Point(0,0);
 		
-		double xPosF2 = 0;
-		double yPosF2 = 0;
-		double xPosR2 = 0;
-		double yPosR2 = 0;
-		
-		double xPos1 = 0;
-		double yPos1 = 0;
-		double xPos2 = 0;
-		double yPos2 = 0;
-		
-		double pPosX = 0;
-		double pPosY = 0;
+		Point PosS = new Point(0,0);
+		Point PosE = new Point(0,0);
 		
 		double sum_F = 0;
 		double sum_B = 0;
+		
 		double distance_F = 0;
 		double distance_B = 0;
 		
-		short SlotStatus = 0;
-		short axe = 0;
+		int SlotID = this.counter;
+		INavigation.ParkingSlot.ParkingSlotStatus SlotStatus = ParkingSlotStatus.NOT_SUITABLE_FOR_PARKING;
+		
+		short axe = this.getHeadingAxe();
 		
 		short burstFS = 0;
-		short burstBS = 0;
-		short burstFE = 0;
-		short burstBE = 0;
-		
-		axe = getHeadingAxe();
+		short burstRS = 0;
+		short burstFE = 1;
+		short burstRE = 1;
 		
 		for (int i = 1; i <= 5; i++)
 		{
-			DIST_FS[i] = DIST_FS[i-1];
+			this.DIST_FS[i] = this.DIST_FS[i-1];
 			sum_F = DIST_FS[i] + sum_F;
 			
-			DIST_BS[i] = DIST_BS[i-1];
+			this.DIST_BS[i] = this.DIST_BS[i-1];
 			sum_B = DIST_BS[i] + sum_B;
 		}
 		
-		DIST_FS[0] = frontSideSensorDistance;
-		distance_F = (sum_F + DIST_FS[0])/5;
+		this.DIST_FS[0] = this.frontSideSensorDistance;
+		distance_F = (sum_F + this.DIST_FS[0])/5;
 		
-		DIST_BS[0] = backSideSensorDistance;
-		distance_B = (sum_B + DIST_BS[0])/5;
+		this.DIST_BS[0] = this.backSideSensorDistance;
+		distance_B = (sum_B + this.DIST_BS[0])/5;
 		
 		// Saving the begin point of the PS
 		if ((distance_F >= TRSH_SG) && (burstFS == 0))
 		{
-			xPosF1 = this.pose.getX();
-			yPosF1 = this.pose.getY();
-			
+			PosF1.setLocation(this.pose.getX(), this.pose.getY());
 			burstFS = 1;
+			burstFE = 0;
 		}
 		
-		if ((distance_B >= TRSH_SG) && (burstBS == 0))
+		if ((distance_B >= TRSH_SG) && (burstRS == 0))
 		{
-			xPosR1 = this.pose.getX();
-			yPosR1 = this.pose.getY();
-			
-			burstBS = 1;
+			PosR1.setLocation(this.pose.getX(), this.pose.getY());
+			burstRS = 1;
+			burstRE = 0;
 		}
 				
 		// Saving the end point of the PS
-		// pridat burst
 		if ((distance_F >= TRSH_SG) && (burstFE == 0))
 		{
-			xPosF2 = this.pose.getX();
-			yPosF2 = this.pose.getY();
-			
+			PosF2.setLocation(this.pose.getX(), this.pose.getY());
+			burstFS = 0;
 			burstFE = 1;
 		}
 		
-		if ((distance_B >= TRSH_SG) && (burstBE == 0))
+		if ((distance_B >= TRSH_SG) && (burstRE == 0))
 		{
-			xPosR2 = this.pose.getX();
-			yPosR2 = this.pose.getY();
+			PosR2.setLocation(this.pose.getX(), this.pose.getY());
+			burstRS = 0;
+			//burstRE = 1;
+		}
+		
+		if ((burstRS == 0) && (burstRE == 0) && (counter < 10))
+		{
+			PosS.setLocation(((PosF1.getX() + PosR1.getX())/2), ((PosF1.getY() + PosR1.getY())/2));
+			PosE.setLocation(((PosF2.getX() + PosR2.getX())/2), ((PosF2.getY() + PosR2.getY())/2));
 			
-			xPos1 = (xPosF1+xPosR1)/2;
-			yPos1 = (yPosF1+yPosR1)/2;
-			
-			xPos2 = (xPosF2+xPosR2)/2;
-			yPos2 = (yPosF2+yPosR2)/2;
-			
-			// Evaluatin of the slot
+			// Evaluation of the slot
 			if (axe == 0)
 			{
-				if ((xPos2-xPos1) > LGNT_ROBOT)
+				if ((PosE.getX() - PosS.getX()) > LGNT_ROBOT)
 				{
-					SlotStatus = 1;
+					SlotStatus = ParkingSlotStatus.SUITABLE_FOR_PARKING;
 				}
 				else
 				{
-					SlotStatus = 0;
+					SlotStatus = ParkingSlotStatus.NOT_SUITABLE_FOR_PARKING;
 				}
 			}
 			else
 			{
-				if ((yPos2-yPos1) > LGNT_ROBOT)
+				if ((PosE.getY() - PosS.getY()) > LGNT_ROBOT)
 				{
-					SlotStatus = 1;
+					SlotStatus = ParkingSlotStatus.SUITABLE_FOR_PARKING;
 				}
 				else
 				{
-					SlotStatus = 0;
+					SlotStatus = ParkingSlotStatus.NOT_SUITABLE_FOR_PARKING;
 				}
 			}
 			
-			burstBE = 1;
+			slotList[counter++] = new INavigation.ParkingSlot(SlotID, PosE, PosS, SlotStatus, 0);
+			
+			burstRE = 1;
 		}
 		
 		return; // has to be implemented by students
