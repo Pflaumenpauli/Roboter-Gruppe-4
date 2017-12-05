@@ -391,7 +391,7 @@ public class NavigationAT implements INavigation{
 		
 		short movDir = 0;
 		
-		for (int i = 1; i <= 5; i++)
+		for (int i = 1; i <= 4; i++)
 		{
 			this.DELTA_X[i] = this.DELTA_X[i-1];
 			sumX = this.DELTA_X[i] + sumX;
@@ -437,7 +437,7 @@ public class NavigationAT implements INavigation{
 		short burst		= 0;
 		short corner	= 0;
 		
-		for (int i = 1; i <= 5; i++)
+		for (int i = 1; i <= 4; i++)
 		{
 			this.DIST_F[i] = this.DIST_F[i-1];
 			sum_F = DIST_F[i] + sum_F;
@@ -796,7 +796,7 @@ public class NavigationAT implements INavigation{
 		short burstFE = 1;
 		short burstRE = 1;
 		
-		for (int i = 1; i <= 5; i++)
+		for (int i = 1; i <= 4; i++)
 		{
 			this.DIST_FS[i] = this.DIST_FS[i-1];
 			sum_F = DIST_FS[i] + sum_F;
