@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">RCTestapp</string>
+    <string name="app_name">NXT Robot</string>
     <string name="menu_settings">Settings</string>
     <string name="title_activity_main">Parcours</string>
     <string name="title_activity_position_visualization">PositionVisualization</string>

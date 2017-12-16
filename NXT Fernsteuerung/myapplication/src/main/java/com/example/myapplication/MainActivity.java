@@ -1,7 +1,9 @@
 package com.example.myapplication;
 
+import java.util.ArrayList;
 import java.util.Timer;
 import java.util.TimerTask;
+import java.util.TreeMap;
 
 import android.annotation.SuppressLint;
 import android.app.ActionBar;
@@ -33,7 +35,9 @@ import android.widget.ToggleButton;
 import amr.plt.rcParkingRobot.AndroidHmiPLT;
 import android.support.v7.app.AppCompatActivity;
 
+import amr.plt.rcParkingRobot.IAndroidHmi;
 import parkingRobot.IGuidance;
+import parkingRobot.INavigation;
 import parkingRobot.INxtHmi;
 
 import android.graphics.Canvas;
@@ -59,13 +63,35 @@ public class MainActivity extends AppCompatActivity {
     String btDeviceName="";
 
     //Skalierungswerte
-    static final double XSKAL = 2.06;
-    static final double YSKAL = 2.41;
+    static final double XSKAL = 2.51;
+    static final double YSKAL = 3.00;
+    static final double SKALROBO = 2.51;
+    static final double BREITE_AUTO = 32;
+    static final double HOEHE_AUTO = 20;
+
     float xBild, yBild;
     float xRobo, yRobo;
+    float imageX, imageY;
+    float angle;
+
+    //relevant für die Anzeige der Parklücken (als Button)
+    TreeMap<Integer, String> treeMap;
+    String status;
+
+    //für Zugriff benötigt
+    String status1;
+    String status2;
+    String status3;
+    String status4;
+    String status5;
+    String status6;
+    String status7;
+    String status8;
+
 
     Canvas canvas;
     Paint pinsel;
+    ImageView imageRobo;
 
     @SuppressLint("NewApi")
     @Override
@@ -73,18 +99,37 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // in deiner Activity ausführen, sonst noch getActivity() vor getResources()
-        DisplayMetrics metrics = getResources().getDisplayMetrics();
+        //Bild austauschen - Test
+        ImageView wlanRot = (ImageView) findViewById(R.id.wlanBack);
+        wlanRot.setImageResource(R.drawable.achtung);
+        Toast.makeText(this, "ACHTUNG!! Abstand wird eng!!", Toast.LENGTH_LONG).show();
 
-        double ySize = metrics.heightPixels ;
-        double xSize = metrics.widthPixels ;
+        //TreeMap initialisieren
+        treeMap = new TreeMap<>();
 
-        // Bildschirmgrösse in Zoll
-        double screenSize = Math.sqrt(xSize * xSize + ySize * ySize);
+        //Anfangswerte setzen
+        xRobo = 0;
+        yRobo = 0;
 
-        System.out.println("ySize = " + ySize);
-        System.out.println("xSize = " + xSize);
-        System.out.println("screenSize = " + screenSize);
+
+        imagePositionieren(xRobo, yRobo);
+
+        //Button ParkinSlot einfügen
+        /*RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
+        Button btn = new Button(this);
+        btn.setWidth(100);
+        btn.setHeight(60);
+        btn.setText("1");
+        btn.setEnabled(false);
+        btn.setId(R.id.button_ParkingSlot1);
+        btn.setX(340);
+        btn.setY(310);
+        btn.setBackgroundColor(Color.GREEN);
+        btn.setTextColor(Color.BLACK);
+        rl.addView(btn);*/
+
+        //Button button_PS = (Button) findViewById(R.id.button_ParkingSlot);
+        //button_PS.setBackgroundColor(Color.WHITE);
 
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.viewLayout);
@@ -97,7 +142,7 @@ public class MainActivity extends AppCompatActivity {
         layout.setBackground(new BitmapDrawable(bitmap));
 
         //Anfangspunkt setzen
-        zeichnen(0, 0, canvas, pinsel);
+        zeichnen(xRobo, yRobo, canvas, pinsel);
 
 
         //get the BT-Adapter
@@ -114,8 +159,20 @@ public class MainActivity extends AppCompatActivity {
         //on click call the BluetoothActivity to choose a listed device
         connectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                Intent serverIntent = new Intent(getApplicationContext(),BluetoothActivity.class);
-                startActivityForResult(serverIntent, REQUEST_SETUP_BT_CONNECTION);
+                if(hmiModule.isConnected() == true) {
+                    //disconnect Button ausführen
+                    terminateBluetoothConnection();
+
+                    //Button Beschriftung in Connect ändern
+                    connectButton.setText("Connect");
+                }else{
+                    Intent serverIntent = new Intent(getApplicationContext(), BluetoothActivity.class);
+                    startActivityForResult(serverIntent, REQUEST_SETUP_BT_CONNECTION);
+
+                    //Button Beschriftung in Disconnect ändern
+                    connectButton.setText("Disconnect");
+                }
+
             }
         });
 
@@ -131,6 +188,8 @@ public class MainActivity extends AppCompatActivity {
                     //if toggle is checked change mode to SCOUT
                     hmiModule.setMode(INxtHmi.Mode.SCOUT);
                     Log.e("Toggle","Toggled to Scout");
+
+                    //Beschriftung ändern
                 } else{
                     // otherwise change mode to PAUSE
                     hmiModule.setMode(INxtHmi.Mode.PAUSE);
@@ -139,77 +198,178 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-        //ToggleButton Pause
-        final Button buttonPause = (Button) findViewById(R.id.buttonPause);
-        buttonPause.setOnClickListener(new View.OnClickListener() {
+        //Button Clear -> reinigt die Image Anzeige
+        final Button clearButton = (Button) findViewById(R.id.buttonClear);
+        clearButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                /** Code einfügen */
+               /** Code einfügen */
+               //neues Canvas ertellen, altes löschen
+                RelativeLayout layout = (RelativeLayout) findViewById(R.id.viewLayout);
 
-                //set button Scout or button park_this or ausparken as unchecked
-                final ToggleButton toggleButton = (ToggleButton) findViewById(R.id.toggleMode);
-                final Button park_this = (Button) findViewById(R.id.buttonParkThis);
-                final Button ausparken = (Button) findViewById(R.id.buttonAusparken);
+                Bitmap bitmap = Bitmap.createBitmap(1024, 552, Bitmap.Config.ARGB_8888);
+                canvas = new Canvas(bitmap);
+                layout.setBackground(new BitmapDrawable(bitmap));
 
-                //wir gehen davon aus, dass nach Pause wieder in den Scout Modus zurück gekehrt wird
-                toggleButton.setEnabled(true);
-                toggleButton.setChecked(false);
-
-                if(park_this.isEnabled() == true){
-                    park_this.setEnabled(false);
-                }
-                if(ausparken.isEnabled() == true){
-                    ausparken.setEnabled(false);
-                }
-
-                hmiModule.setMode(INxtHmi.Mode.PAUSE);
-                Log.e("Toggle","Toggled to Pause");
             }
         });
 
 
-        //what happen when someone press the data button?
-        final Button dataButton = (Button) findViewById(R.id.buttonShowData);
-        //on click call the DataActivity to see the data from the sensors
-        dataButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                Intent serverIntent = new Intent(getApplicationContext(),DataActivity.class);
-                startActivityForResult(serverIntent, REQUEST_SETUP_BT_CONNECTION);
-            }
-        });
 
 
-        //someone press the Park_This button
-        final Button parkThisButton = (Button) findViewById(R.id.buttonParkThis);
-        //on click call the DataActivity to see the data from the sensors
-        parkThisButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
-                /** Code einfügen */
-            }
-        });
+        if (treeMap.size() != 0) {
+            //Bestimmen, was passiert, wenn man auf die Parkbuttons drückt
+            final Button parkSlot1 = (Button) findViewById(R.id.button_ParkingSlot1);
+            final int id1 = R.id.button_ParkingSlot1;
+            parkSlot1.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                        if (treeMap.get(id1) != null) {
+                            //
+                            status1 = treeMap.get(id1);
+                            if (treeMap.get(id1) == "suitable") {
 
-        //someone press the Ausparken button
-        //soll nur nach dem Einparken ansprechbar sein
-        final Button buttonAusparken = (Button) findViewById(R.id.buttonAusparken);
-        buttonAusparken.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
+                            } else if (treeMap.get(id1) == "notsuitable") {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                //System.out.println("Es ist ein Fehler aufgetreten.");
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            });
 
-                /** Code einfügen */
-            }
-        });
+            final Button parkSlot2 = (Button) findViewById(R.id.button_ParkingSlot2);
+            final int id2 = R.id.button_ParkingSlot2;
+            parkSlot2.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                        if (treeMap.get(id2) != null) {
+                            //
+                            status2 = treeMap.get(id2);
+                            if (treeMap.get(id2) == "suitable") {
 
+                            } else if (treeMap.get(id2) == "notsuitable") {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                //System.out.println("Es ist ein Fehler aufgetreten.");
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            });
 
-        //someone press the disconnect button
-        final Button disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
-        //on click call the DataActivity to see the data from the sensors
-        disconnectButton.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v){
-                terminateBluetoothConnection();
+            final Button parkSlot3 = (Button) findViewById(R.id.button_ParkingSlot3);
+            final int id3 = R.id.button_ParkingSlot3;
+            parkSlot3.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                        if (treeMap.get(id3) != null) {
+                            //
+                            status3 = treeMap.get(id3);
+                            if (treeMap.get(id3) == "suitable") {
 
-            }
-        });
+                            } else if (treeMap.get(id3) == "notsuitable") {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                //System.out.println("Es ist ein Fehler aufgetreten.");
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            });
 
+            final Button parkSlot4 = (Button) findViewById(R.id.button_ParkingSlot4);
+            final int id4 = R.id.button_ParkingSlot4;
+            parkSlot4.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                        if (treeMap.get(id4) != null) {
+                            //
+                            status4 = treeMap.get(id4);
+                            if (treeMap.get(id4) == "suitable") {
+
+                            } else if (treeMap.get(id4) == "notsuitable") {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                //System.out.println("Es ist ein Fehler aufgetreten.");
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            });
+
+            final Button parkSlot5 = (Button) findViewById(R.id.button_ParkingSlot5);
+            final int id5 = R.id.button_ParkingSlot5;
+            parkSlot5.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                        if (treeMap.get(id5) != null) {
+                            //
+                            status5 = treeMap.get(id5);
+                            if (treeMap.get(id5) == "suitable") {
+
+                            } else if (treeMap.get(id5) == "notsuitable") {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                //System.out.println("Es ist ein Fehler aufgetreten.");
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            });
+
+            final Button parkSlot6 = (Button) findViewById(R.id.button_ParkingSlot6);
+            final int id6 = R.id.button_ParkingSlot6;
+            parkSlot6.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                        if (treeMap.get(id6) != null) {
+                            //
+                            status6 = treeMap.get(id6);
+                            if (treeMap.get(id6) == "suitable") {
+
+                            } else if (treeMap.get(id6) == "notsuitable") {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                //System.out.println("Es ist ein Fehler aufgetreten.");
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            });
+
+            final Button parkSlot7 = (Button) findViewById(R.id.button_ParkingSlot7);
+            final int id7 = R.id.button_ParkingSlot7;
+            parkSlot7.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                        if (treeMap.get(id7) != null) {
+                            //
+                            status7 = treeMap.get(id7);
+                            if (treeMap.get(id7) == "suitable") {
+
+                            } else if (treeMap.get(id7) == "notsuitable") {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                //System.out.println("Es ist ein Fehler aufgetreten.");
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            });
+
+            final Button parkSlot8 = (Button) findViewById(R.id.button_ParkingSlot8);
+            final int id8 = R.id.button_ParkingSlot8;
+            parkSlot8.setOnClickListener(new View.OnClickListener() {
+                public void onClick(View v) {
+                        if (treeMap.get(id8) != null) {
+                            //
+                            status8 = treeMap.get(id8);
+                            if (treeMap.get(id8) == "suitable") {
+
+                            } else if (treeMap.get(id8) == "notsuitable") {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                //System.out.println("Es ist ein Fehler aufgetreten.");
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    }
+            });
+        }
     }
 
     @Override
@@ -281,27 +441,10 @@ public class MainActivity extends AppCompatActivity {
                     final ToggleButton toggleMode = (ToggleButton) findViewById(R.id.toggleMode);
                     toggleMode.setEnabled(true);
 
-                    //enable Park_This button
-                    final Button toggleParkThis = (Button) findViewById(R.id.buttonParkThis);
-                    toggleParkThis.setEnabled(true);
-
-                    //enable disconnect button
-                    final Button disconnectButton = (Button) findViewById(R.id.buttonDisconnect);
-                    disconnectButton.setEnabled(true);
-
-                    //disable connect button
-                    final Button connectButton = (Button) findViewById(R.id.buttonSetupBluetooth);
-                    connectButton.setEnabled(false);
 
                     displayDataNXT(); //method also exists in the class DataAvtivity.java
 
                     //aktuelle Werte für die Value-Anzeigen in der MainActivity setzen
-                    TextView xValue = (TextView) findViewById(R.id.textViewXPositionValue);
-                    xValue.setText(String.valueOf(hmiModule.getPosition().getX() + " cm"));
-
-                    TextView yValue = (TextView) findViewById(R.id.textViewYPositionValue);
-                    yValue.setText(String.valueOf(hmiModule.getPosition().getY() + " cm"));
-
                     TextView mode = (TextView) findViewById(R.id.textViewModeValue);
                     mode.setText(String.valueOf(hmiModule.getCurrentStatus()));
                     break;
@@ -356,23 +499,23 @@ public class MainActivity extends AppCompatActivity {
                             xRobo = hmiModule.getPosition().getX();
                             yRobo = hmiModule.getPosition().getY();
                             zeichnen(xRobo, yRobo, canvas, pinsel);
+                            imagePositionieren(xRobo, yRobo);
 
 
                             //display bluetooth connection status
                             final TextView modeValue = (TextView) findViewById(R.id.textViewModeValue);
                             modeValue.setText(String.valueOf(hmiModule.getCurrentStatus()));
 
-                            //display the values of the current position
-                            final TextView xValue = (TextView) findViewById(R.id.textViewXPositionValue);
-                            xValue.setText(String.valueOf(hmiModule.getPosition().getX() + " cm"));
-                            final TextView yValue = (TextView) findViewById(R.id.textViewYPositionValue);
-                            yValue.setText(String.valueOf(hmiModule.getPosition().getY() + " cm"));
 
                             //restart activity when disconnecting
                             if (hmiModule.getCurrentStatus() == IGuidance.CurrentStatus.EXIT) {
                                 terminateBluetoothConnection();
                                 restartActivity();
                             }
+
+                            //Parklückenanzeige
+                            //Methode wird nur aufgerufen, wenn es mindestens eine Parklücke gibt
+                            //parkSlots();
                         }
                     }
                 });
@@ -436,11 +579,186 @@ public class MainActivity extends AppCompatActivity {
 
      private void zeichnen(float xRobo, float yRobo, Canvas canvas, Paint pinsel){
 
-         xBild = (float) ((xRobo * XSKAL) + 306);
-         yBild = (float) (((yRobo * YSKAL) - 325) * (-1));
+         xBild = (float) ((xRobo * XSKAL) + 100);
+         yBild = (float) (((yRobo * YSKAL) - 295) * (-1));
 
          //Elemente (Punkte) zeichnen lassen
          canvas.drawCircle(xBild, yBild, 5, pinsel);
+
+         canvas.drawLine(0, 0, 1024, 552, pinsel);
+
+     }
+
+     private void imagePositionieren(float xRobo, float yRobo){
+         //image verschieben
+         imageRobo = (ImageView) findViewById(R.id.robo);
+
+         //Winkel des Bildes getreu des aktuellen Winkels des Roboters setzen
+         if(hmiModule == null){
+             angle = 0;
+         }else{
+             angle = hmiModule.getPosition().getAngle();
+         }
+
+
+         //Werte umrechnen
+         imageX = (float) ((xRobo * SKALROBO) + (100 - BREITE_AUTO));
+         imageY = (float) (((yRobo * SKALROBO) - (248 - HOEHE_AUTO)) * (-1));
+
+         //Image verschieben (positionieren)
+         imageRobo.setY(imageY);
+         imageRobo.setX(imageX);
+         imageRobo.setRotation(angle);
+
+
+     }
+
+     private void parkSlots() {
+         int number = hmiModule.getNoOfParkingSlots();
+         AndroidHmiPLT.ParkingSlot parkingSlot;
+         float breite, hoehe;
+         float xSet, ySet;
+         float xPos, yPos;
+
+         //int-Werte der IDs setzen
+         ArrayList<Integer> ids = new ArrayList<>();
+         ids.add(0, R.id.button_ParkingSlot1);
+         ids.add(1, R.id.button_ParkingSlot2);
+         ids.add(2, R.id.button_ParkingSlot3);
+         ids.add(3, R.id.button_ParkingSlot4);
+         ids.add(4, R.id.button_ParkingSlot5);
+         ids.add(5, R.id.button_ParkingSlot6);
+         ids.add(6, R.id.button_ParkingSlot7);
+         ids.add(7, R.id.button_ParkingSlot8);
+
+
+
+         //nur nach Parklücken-Details suchen, wenn auch welche detektiert wurden
+         if (number != 0) {
+             for (int i = 0; i < number; i++) {
+                 parkingSlot = hmiModule.getParkingSlot(i);
+
+                     //Position auswählen
+                     //inklusive Reservepuffer
+                     if (parkingSlot.getBackBoundaryPosition().x <= 175) {
+                         //Button rechts im Parcours einfügen
+                         hoehe = Math.abs(parkingSlot.getBackBoundaryPosition().y - parkingSlot.getFrontBoundaryPosition().y);
+                         hoehe = (float) (((hoehe * YSKAL) - 273) * (-1));
+
+                         //Button ParkinSlot einfügen
+                         RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
+                         Button btn = new Button(this);
+                         btn.setWidth(60);
+                         btn.setHeight((int) hoehe);
+                         btn.setText(String.valueOf(i+1));
+                         btn.setEnabled(false);
+                         btn.setId(ids.get(i));
+
+                         //Werte umrechnen
+                         xPos = parkingSlot.getBackBoundaryPosition().x;
+                         yPos = parkingSlot.getBackBoundaryPosition().y;
+                         xSet = (float) ((xPos * XSKAL) + 306);
+                         ySet = (float) (((yPos * YSKAL) - 325) * (-1));
+
+                         btn.setX(xSet);
+                         btn.setY(ySet);
+                         btn.setTextColor(Color.BLACK);
+
+                         //Farbe setzen
+                         if(parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
+                             btn.setBackgroundColor(Color.GREEN);
+                             status = "suitable";
+                         }else {
+                             btn.setBackgroundColor(Color.RED);
+                             status = "notsuitable";
+                         }
+
+                         rl.addView(btn);
+
+                         //Wert der TreeMap hinzufügen
+                         treeMap.put(ids.get(i), status);
+
+                     } else if (parkingSlot.getBackBoundaryPosition().y < 20) {     //Offset berücksichtigen
+                         //Button unterhalb des Roboter einfügen
+                         breite = Math.abs(parkingSlot.getBackBoundaryPosition().x - parkingSlot.getFrontBoundaryPosition().x);
+                         breite = (float) ((breite * XSKAL) + 306);
+
+                         //Button ParkinSlot einfügen
+                         RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
+                         Button btn = new Button(this);
+                         btn.setWidth((int) breite);
+                         btn.setHeight(60);
+                         btn.setText(String.valueOf(i+1));
+                         btn.setEnabled(false);
+                         btn.setId(ids.get(i));
+
+                         //Werte umrechnen
+                         xPos = parkingSlot.getBackBoundaryPosition().x;
+                         yPos = parkingSlot.getBackBoundaryPosition().y;
+                         xSet = (float) ((xPos * XSKAL) + 306);
+                         ySet = (float) (((yPos * YSKAL) - 325) * (-1));
+
+                         btn.setX(xSet);
+                         btn.setY(ySet);
+                         btn.setTextColor(Color.BLACK);
+
+                         //Farbe setzen
+                         if(parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
+                             btn.setBackgroundColor(Color.GREEN);
+                             status = "suitable";
+                         }else {
+                             btn.setBackgroundColor(Color.RED);
+                             status = "notsuitable";
+                         }
+
+                         rl.addView(btn);
+
+                         //TreeMap setzen
+                         treeMap.put(ids.get(i), status);
+
+                     } else if (parkingSlot.getBackBoundaryPosition().y >= 20) {    //Offset berücksichtigen
+                         //Button unterhalb des Roboter einfügen
+                         breite = Math.abs(parkingSlot.getBackBoundaryPosition().x - parkingSlot.getFrontBoundaryPosition().x);
+                         breite = (float) ((breite * XSKAL) + 306);
+
+                         //Button ParkinSlot einfügen
+                         RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
+                         Button btn = new Button(this);
+                         btn.setWidth((int) breite);
+                         btn.setHeight(60);
+                         btn.setText(String.valueOf(i+1));
+                         btn.setEnabled(false);
+                         btn.setId(ids.get(i));
+
+                         //Werte umrechnen
+                         xPos = parkingSlot.getBackBoundaryPosition().x;
+                         yPos = parkingSlot.getBackBoundaryPosition().y;
+                         xSet = (float) ((xPos * XSKAL) + 306);
+                         ySet = (float) (((yPos * YSKAL) - 325) * (-1));
+                         //ySet nach oben verlagern, da immer die obere linke Ecke betrachtet wird
+                         ySet = ySet - 60;
+
+                         btn.setX(xSet);
+                         btn.setY(ySet);
+                         btn.setTextColor(Color.BLACK);
+
+                         //Farbe setzen
+                         if(parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
+                             btn.setBackgroundColor(Color.GREEN);
+                             status = "suitable";
+                         }else {
+                             btn.setBackgroundColor(Color.RED);
+                             status = "notsuitable";
+                         }
+
+                         rl.addView(btn);
+
+                         //TreeMap den Wert übergeben
+                         treeMap.put(ids.get(i), status);
+
+                     }
+             }
+         }
      }
 
 }

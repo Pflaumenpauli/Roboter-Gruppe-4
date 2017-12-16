@@ -16,57 +16,44 @@
 
         <Button
             android:id="@+id/buttonSetupBluetooth"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/buttonParkThis"
-            android:layout_alignBottom="@+id/buttonParkThis"
+            android:layout_width="125dp"
+            android:layout_height="75dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
-            android:layout_marginLeft="25dp"
-            android:layout_marginStart="25dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginLeft="12dp"
+            android:layout_marginStart="12dp"
+            android:layout_marginTop="214dp"
+            android:textSize="20sp"
             android:text="@string/setupBluetooth" />
 
 
         <ToggleButton
             android:id="@+id/toggleMode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_width="125dp"
+            android:layout_height="75dp"
             android:layout_alignBaseline="@+id/buttonSetupBluetooth"
             android:layout_alignBottom="@+id/buttonSetupBluetooth"
             android:layout_marginLeft="24dp"
             android:layout_toRightOf="@+id/buttonSetupBluetooth"
             android:onClick="onToggleClicked"
-            android:text="@string/togglebutton"
-            android:textOff="SCOUT"
+            android:textSize="20sp"
+            android:textOff="PAUSE"
             android:textOn="SCOUT" />
 
         <Button
-            android:id="@+id/buttonShowData"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginEnd="19dp"
-            android:layout_marginRight="19dp"
-            android:layout_marginTop="9dp"
-            android:text="Data" />
+            android:id="@+id/buttonClear"
+            android:layout_width="125dp"
+            android:layout_height="75dp"
+            android:layout_alignBaseline="@+id/buttonSetupBluetooth"
+            android:layout_alignBottom="@+id/buttonSetupBluetooth"
+            android:layout_marginLeft="24dp"
+            android:layout_toRightOf="@+id/toggleMode"
+            android:layout_toEndOf="@+id/toggleMode"
+            android:textSize="20sp"
+            android:text="Clear"/>
 
-        <Button
-            android:id="@+id/buttonParkThis"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/imageParcours"
-            android:layout_centerHorizontal="true"
-            android:layout_marginTop="9dp"
-            android:enabled="false"
-            android:layout_toEndOf="@+id/buttonPause"
-            android:layout_toRightOf="@+id/buttonPause"
-            android:layout_marginLeft="23dp"
-            android:layout_marginStart="23dp"
-            android:textOff="Park_This"
-            android:textOn="Park_This"
-            android:text="Park_This" />
+
 
         <ImageView
             android:id="@+id/imageParcours"
@@ -74,206 +61,71 @@
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            app:srcCompat="@drawable/parcours_bearbeitet_klein" />
-
-        <Button
-            android:id="@+id/buttonPause"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBottom="@+id/toggleMode"
-            android:layout_marginLeft="23dp"
-            android:layout_marginStart="23dp"
-            android:layout_toEndOf="@+id/toggleMode"
-            android:layout_toRightOf="@+id/toggleMode"
-            android:text="Pause" />
-
-        <Button
-            android:id="@+id/buttonDisconnect"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/buttonPause"
-            android:layout_alignBottom="@+id/buttonPause"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentRight="true"
-            android:layout_marginEnd="11dp"
-            android:layout_marginRight="11dp"
-            android:enabled="false"
-            android:textOff="Disconnect"
-            android:textOn="Disconnect"
-            android:text="Disconnect" />
+            android:layout_alignParentTop="true"
+            android:layout_alignParentLeft="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginStart="10dp"
+            app:srcCompat="@drawable/parcours_klein2" />
 
 
-        <TextView
+
+         <TextView
             android:id="@+id/textViewMode"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignLeft="@+id/buttonSetupBluetooth"
-            android:layout_alignStart="@+id/buttonSetupBluetooth"
-            android:layout_alignTop="@+id/buttonShowData"
-            android:layout_marginTop="10dp"
+            android:layout_below="@+id/imageParcours"
+            android:layout_toEndOf="@+id/toggleMode"
+            android:layout_toRightOf="@+id/toggleMode"
+            android:layout_marginLeft="200dp"
+            android:layout_marginStart="200dp"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="25dp"
+            android:textSize="20sp"
             android:text="Mode:" />
 
         <TextView
             android:id="@+id/textViewModeValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/textViewMode"
-            android:layout_toEndOf="@+id/buttonSetupBluetooth"
-            android:layout_toRightOf="@+id/buttonSetupBluetooth"
+            android:layout_toEndOf="@+id/textViewMode"
+            android:layout_toRightOf="@+id/textViewMode"
+            android:layout_below="@id/imageParcours"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_marginTop="25dp"
+            android:textSize="20sp"
             android:text="ModeValue" />
 
         <TextView
-            android:id="@+id/textViewXPosition"
+            android:id="@+id/textViewDistance"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewModeValue"
-            android:layout_alignBottom="@+id/textViewModeValue"
-            android:layout_marginEnd="8dp"
-            android:layout_marginRight="8dp"
-            android:layout_toLeftOf="@+id/textViewXPositionValue"
-            android:layout_toStartOf="@+id/textViewXPositionValue"
-            android:text="x:" />
+            android:text="driven distance: "
+            android:layout_toEndOf="@+id/textViewModeValue"
+            android:layout_toRightOf="@+id/textViewModeValue"
+            android:layout_marginLeft="100dp"
+            android:layout_marginStart="100dp"
+            android:layout_below="@+id/imageParcours"
+            android:layout_marginTop="25dp"
+            android:textSize="20sp"/>
 
         <TextView
-            android:id="@+id/textViewXPositionValue"
+            android:id="@+id/textViewDistanceValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewXPosition"
-            android:layout_alignBottom="@+id/textViewXPosition"
-            android:layout_marginEnd="52dp"
-            android:layout_marginRight="52dp"
-            android:layout_toLeftOf="@+id/textViewYPosition"
-            android:layout_toStartOf="@+id/textViewYPosition"
-            android:text="xValue" />
-
-        <TextView
-            android:id="@+id/textViewYPosition"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewXPositionValue"
-            android:layout_alignBottom="@+id/textViewXPositionValue"
-            android:layout_marginEnd="7dp"
-            android:layout_marginRight="7dp"
-            android:layout_toLeftOf="@+id/textViewYPositionValue"
-            android:layout_toStartOf="@+id/textViewYPositionValue"
-            android:text="y:" />
-
-        <TextView
-            android:id="@+id/textViewYPositionValue"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignBaseline="@+id/textViewYPosition"
-            android:layout_alignBottom="@+id/textViewYPosition"
-            android:layout_marginEnd="45dp"
-            android:layout_marginRight="45dp"
-            android:layout_toLeftOf="@+id/buttonDisconnect"
-            android:layout_toStartOf="@+id/buttonDisconnect"
-            android:text="yValue" />
-
-        <Button
-            android:id="@+id/buttonAusparken"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/buttonParkThis"
-            android:layout_marginLeft="39dp"
-            android:layout_marginStart="39dp"
-            android:layout_toEndOf="@+id/buttonParkThis"
-            android:layout_toRightOf="@+id/buttonParkThis"
-            android:enabled="false"
-            android:text="Ausparken" />
-
-        <ImageView
-            android:id="@+id/rechteck00"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/buttonShowData"
-            android:layout_marginLeft="300dp"
-            android:layout_marginStart="300dp"
-            android:layout_marginTop="258dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/rechteck2" />
-
-         <ImageView
-             android:id="@+id/rechteck060"
-             android:layout_width="wrap_content"
-             android:layout_height="wrap_content"
-             android:layout_alignTop="@+id/buttonShowData"
-             android:layout_marginLeft="300dp"
-             android:layout_marginStart="300dp"
-             android:layout_marginTop="135dp"
-             android:visibility="invisible"
-             app:srcCompat="@drawable/rechteck2"/>
-
-        <ImageView
-            android:id="@+id/rechteck3060"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/buttonShowData"
-            android:layout_marginLeft="360dp"
-            android:layout_marginStart="360dp"
-            android:layout_marginTop="135dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/rechteck2"/>
+            android:text="0.0 cm"
+            android:layout_toRightOf="@+id/textViewDistance"
+            android:layout_toEndOf="@+id/textViewDistance"
+            android:layout_marginLeft="25dp"
+            android:layout_marginStart="25dp"
+            android:layout_below="@+id/imageParcours"
+            android:layout_marginTop="25dp"
+            android:textSize="20sp"/>
 
 
 
-        <ImageView
-            android:id="@+id/rechteck3030"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/buttonShowData"
-            android:layout_marginStart="360dp"
-            android:layout_marginLeft="360dp"
-            android:layout_marginTop="195dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/rechteck2"/>
 
-
-        <ImageView
-            android:id="@+id/rechteck15030"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/buttonShowData"
-            android:layout_marginStart="608dp"
-            android:layout_marginLeft="608dp"
-            android:layout_marginTop="195dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/rechteck2"/>
-
-        <ImageView
-            android:id="@+id/rechteck15060"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/buttonShowData"
-            android:layout_marginStart="608dp"
-            android:layout_marginLeft="608dp"
-            android:layout_marginTop="135dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/rechteck2"/>
-
-
-
-        <ImageView
-            android:id="@+id/rechteck18060"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/buttonShowData"
-            android:layout_marginStart="669dp"
-            android:layout_marginLeft="669dp"
-            android:layout_marginTop="135dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/rechteck2"/>
-
-        <ImageView
-            android:id="@+id/rechteck1800"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/buttonShowData"
-            android:layout_marginStart="669dp"
-            android:layout_marginLeft="669dp"
-            android:layout_marginTop="258dp"
-            android:visibility="invisible"
-            app:srcCompat="@drawable/rechteck2"/>
 
         <RelativeLayout
             xmlns:android="http://schemas.android.com/apk/res/android"
@@ -281,6 +133,53 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:id="@+id/viewLayout" />
+
+        <ImageView
+            android:id="@+id/robo"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/auto"/>
+
+        <RelativeLayout
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/layoutParkingSlots" />
+
+        <ImageView
+            android:id="@+id/sensorenAuto"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@+id/imageParcours"
+            android:layout_toRightOf="@+id/imageParcours"
+            android:layout_marginLeft="140dp"
+            android:layout_marginTop="100dp"
+            app:srcCompat="@drawable/auto_sensoren" />
+
+        <ImageView
+            android:id="@+id/wlanFront"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/sensorenAuto"
+            android:layout_marginBottom="5dp"
+            android:layout_toEndOf="@+id/imageParcours"
+            android:layout_toRightOf="@+id/imageParcours"
+            android:layout_marginLeft="155dp"
+            android:layout_marginTop="35dp"
+            app:srcCompat="@drawable/wlan_front" />
+
+        <ImageView
+            android:id="@+id/wlanBack"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/sensorenAuto"
+            android:layout_toEndOf="@+id/imageParcours"
+            android:layout_toRightOf="@+id/imageParcours"
+            android:layout_marginLeft="155dp"
+            android:layout_marginTop="15dp"
+            app:srcCompat="@drawable/wlan_back" />
+
 
 
     </RelativeLayout>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <item type="id" name="button_ParkingSlot1"/>
+    <item type="id" name="button_ParkingSlot2"/>
+    <item type="id" name="button_ParkingSlot3"/>
+    <item type="id" name="button_ParkingSlot4"/>
+    <item type="id" name="button_ParkingSlot5"/>
+    <item type="id" name="button_ParkingSlot6"/>
+    <item type="id" name="button_ParkingSlot7"/>
+    <item type="id" name="button_ParkingSlot8"/>
+
+</resources>
