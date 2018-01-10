@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -120,7 +121,7 @@ public class BluetoothActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent data){
     	if(!mBtAdapter.isEnabled()){
 			Toast.makeText(this, "Please ensure bluetooth is enabled!", Toast.LENGTH_LONG).show();
-			
+
 			Intent finishIntent = new Intent();
             finishIntent.putExtra(EXTRA_DEVICE_ADDRESS, "finish");
             setResult(RESULT_BT_NOT_ENABLED, finishIntent);

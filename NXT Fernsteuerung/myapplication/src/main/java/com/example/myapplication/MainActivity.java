@@ -1,6 +1,7 @@
 package com.example.myapplication;
 
 import java.util.ArrayList;
+import java.util.Set;
 import java.util.Timer;
 import java.util.TimerTask;
 import java.util.TreeMap;
@@ -27,6 +28,7 @@ import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.FrameLayout;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -36,6 +38,7 @@ import amr.plt.rcParkingRobot.AndroidHmiPLT;
 import android.support.v7.app.AppCompatActivity;
 
 import amr.plt.rcParkingRobot.IAndroidHmi;
+import lejos.geom.Point;
 import parkingRobot.IGuidance;
 import parkingRobot.INavigation;
 import parkingRobot.INxtHmi;
@@ -74,6 +77,10 @@ public class MainActivity extends AppCompatActivity {
     float imageX, imageY;
     float angle;
 
+    //zwei ArrayLists, um den Pfad nach einer gewissen Zeit wieder zu löschen
+    ArrayList<Float> arrayX = new ArrayList<>();
+    ArrayList<Float> arrayY = new ArrayList<>();
+
     //relevant für die Anzeige der Parklücken (als Button)
     TreeMap<Integer, String> treeMap;
     String status;
@@ -99,10 +106,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        //Bild austauschen - Test
-        ImageView wlanRot = (ImageView) findViewById(R.id.wlanBack);
-        wlanRot.setImageResource(R.drawable.achtung);
-        Toast.makeText(this, "ACHTUNG!! Abstand wird eng!!", Toast.LENGTH_LONG).show();
 
         //TreeMap initialisieren
         treeMap = new TreeMap<>();
@@ -110,12 +113,11 @@ public class MainActivity extends AppCompatActivity {
         //Anfangswerte setzen
         xRobo = 0;
         yRobo = 0;
-
-
         imagePositionieren(xRobo, yRobo);
 
+
         //Button ParkinSlot einfügen
-        /*RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
+       /* RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
         Button btn = new Button(this);
         btn.setWidth(100);
         btn.setHeight(60);
@@ -126,22 +128,18 @@ public class MainActivity extends AppCompatActivity {
         btn.setY(310);
         btn.setBackgroundColor(Color.GREEN);
         btn.setTextColor(Color.BLACK);
-        rl.addView(btn);*/
+        rl.addView(btn); */
 
-        //Button button_PS = (Button) findViewById(R.id.button_ParkingSlot);
-        //button_PS.setBackgroundColor(Color.WHITE);
 
 
         RelativeLayout layout = (RelativeLayout) findViewById(R.id.viewLayout);
         pinsel = new Paint();
-        pinsel.setColor(Color.rgb(64, 64, 255));
+        pinsel.setColor(Color.BLUE);
+        //pinsel.setColor(Color.rgb(64, 64, 255));
         pinsel.setStrokeWidth(5);
 
-        Bitmap bitmap = Bitmap.createBitmap(1024, 552, Bitmap.Config.ARGB_8888);
-        canvas = new Canvas(bitmap);
-        layout.setBackground(new BitmapDrawable(bitmap));
-
-        //Anfangspunkt setzen
+        //Anfangspunkt setzen -> dazu muss zunächst eine neue Canvas erstellt werden
+        canvas = getNewCanvas();
         zeichnen(xRobo, yRobo, canvas, pinsel);
 
 
@@ -159,18 +157,20 @@ public class MainActivity extends AppCompatActivity {
         //on click call the BluetoothActivity to choose a listed device
         connectButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-                if(hmiModule.isConnected() == true) {
+                if(hmiModule == null){
+                    //erster Fall muss separat ausgeführt werden
+                    Intent serverIntent = new Intent(getApplicationContext(), BluetoothActivity.class);
+                    startActivityForResult(serverIntent, REQUEST_SETUP_BT_CONNECTION);
+
+                }else if(hmiModule.isConnected() == true) {
                     //disconnect Button ausführen
                     terminateBluetoothConnection();
 
-                    //Button Beschriftung in Connect ändern
-                    connectButton.setText("Connect");
+                    //Beschriftung des Buttons wird automatisch durch Start einer neuen MainActivity geändert
                 }else{
                     Intent serverIntent = new Intent(getApplicationContext(), BluetoothActivity.class);
                     startActivityForResult(serverIntent, REQUEST_SETUP_BT_CONNECTION);
 
-                    //Button Beschriftung in Disconnect ändern
-                    connectButton.setText("Disconnect");
                 }
 
             }
@@ -202,11 +202,11 @@ public class MainActivity extends AppCompatActivity {
         final Button clearButton = (Button) findViewById(R.id.buttonClear);
         clearButton.setOnClickListener(new View.OnClickListener() {
             public void onClick(View v){
-               /** Code einfügen */
                //neues Canvas ertellen, altes löschen
                 RelativeLayout layout = (RelativeLayout) findViewById(R.id.viewLayout);
 
                 Bitmap bitmap = Bitmap.createBitmap(1024, 552, Bitmap.Config.ARGB_8888);
+                bitmap.eraseColor(Color.BLUE);
                 canvas = new Canvas(bitmap);
                 layout.setBackground(new BitmapDrawable(bitmap));
 
@@ -226,6 +226,12 @@ public class MainActivity extends AppCompatActivity {
                             //
                             status1 = treeMap.get(id1);
                             if (treeMap.get(id1) == "suitable") {
+                                //Funktion zum Einparken des Fahrzeuges einfügen
+
+                                hmiModule.setMode(INxtHmi.Mode.PAUSE);
+                                //BUttonanzeige ändern
+                                final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
+                                scoutButton.setEnabled(false);
 
                             } else if (treeMap.get(id1) == "notsuitable") {
                                 Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
@@ -441,6 +447,10 @@ public class MainActivity extends AppCompatActivity {
                     final ToggleButton toggleMode = (ToggleButton) findViewById(R.id.toggleMode);
                     toggleMode.setEnabled(true);
 
+                    //Beschriftung des ConnectButtons verändern
+                    final Button connectButton = (Button) findViewById(R.id.buttonSetupBluetooth);
+                    connectButton.setText("DISCONNECT");
+
 
                     displayDataNXT(); //method also exists in the class DataAvtivity.java
 
@@ -498,6 +508,7 @@ public class MainActivity extends AppCompatActivity {
                             //rudimentäres Zeichnen des gefahrenen Pfades
                             xRobo = hmiModule.getPosition().getX();
                             yRobo = hmiModule.getPosition().getY();
+                            canvas = getNewCanvas();
                             zeichnen(xRobo, yRobo, canvas, pinsel);
                             imagePositionieren(xRobo, yRobo);
 
@@ -516,6 +527,9 @@ public class MainActivity extends AppCompatActivity {
                             //Parklückenanzeige
                             //Methode wird nur aufgerufen, wenn es mindestens eine Parklücke gibt
                             //parkSlots();
+
+                            //Aktualisierung der Sensor Bilder
+                            //sensorBilder(hmiModule);
                         }
                     }
                 });
@@ -556,36 +570,46 @@ public class MainActivity extends AppCompatActivity {
 
 
 
-
-     /*public boolean onTouchEvent(MotionEvent e) {
-        float xpos= e.getX();
-        float ypos= e.getRawY();
-        switch (e.getAction())
-        {
-            case MotionEvent.ACTION_DOWN:
-                Log.d("DEBUG", "On touch (down)" + String.valueOf(xpos) + String.valueOf(ypos));
-            case MotionEvent.ACTION_UP:
-                Log.d("DEBUG", "On touch (up)" + String.valueOf(xpos) + String.valueOf(ypos));
-            case MotionEvent.ACTION_MOVE:
-                Log.d("DEBUG", "On touch (move)" + String.valueOf(xpos) + String.valueOf(ypos));
-                break;
-        }
-        System.out.println("xPos: " + xpos);
-        System.out.println("yPos: " + ypos);
-
-        return true;
-
-    }*/
-
      private void zeichnen(float xRobo, float yRobo, Canvas canvas, Paint pinsel){
 
          xBild = (float) ((xRobo * XSKAL) + 100);
          yBild = (float) (((yRobo * YSKAL) - 295) * (-1));
 
          //Elemente (Punkte) zeichnen lassen
-         canvas.drawCircle(xBild, yBild, 5, pinsel);
+         //canvas.drawCircle(xBild, yBild, 5, pinsel);
+         //canvas.drawLine(0, 0, 1024, 552, pinsel);
 
-         canvas.drawLine(0, 0, 1024, 552, pinsel);
+         //Werte der ArrayList hinzufügen
+         //Anzahl der Punkte auf 100 begrenzen
+         if(arrayX.size() < 200){
+             //fügt den neuen Wert ans Ende der Liste ein
+             arrayX.add(xBild);
+             arrayY.add(yBild);
+         }else{
+             //der erste Wert der ArrayList muss gelöscht werden, bevor ein neuer Wert ans Ende der Liste inegfügt werden kann
+             arrayX.remove(0);
+             arrayY.remove(0);
+
+             //neue Werte hinzufügen
+             arrayX.add(xBild);
+             arrayY.add(yBild);
+         }
+
+         //canvas neu zeichnen lassen
+         for(int i=0; i<arrayX.size(); i++){
+           xBild = arrayX.get(i);
+           yBild = arrayY.get(i);
+
+           canvas.drawCircle(xBild, yBild, 5, pinsel);
+         }
+
+         //nun noch mithilfe der ArrayListen die gefahrene Strecke berechnen
+         float strecke = 0;
+         strecke = pfadberechnung(arrayX, arrayY);
+
+         //Anzeige aktualisieren
+         TextView pfadDistanz = (TextView) findViewById(R.id.textViewDistanceValue);
+         pfadDistanz.setText(strecke + " cm");
 
      }
 
@@ -597,7 +621,7 @@ public class MainActivity extends AppCompatActivity {
          if(hmiModule == null){
              angle = 0;
          }else{
-             angle = hmiModule.getPosition().getAngle();
+             angle = (360 - hmiModule.getPosition().getAngle());
          }
 
 
@@ -614,11 +638,21 @@ public class MainActivity extends AppCompatActivity {
      }
 
      private void parkSlots() {
-         int number = hmiModule.getNoOfParkingSlots();
+         int number;
+         System.out.println("no Parkingslots: " + hmiModule.getNoOfParkingSlots());
+         if(hmiModule.getNoOfParkingSlots() != 0){
+             number = hmiModule.getNoOfParkingSlots();
+         }else{
+             number = 0;
+         }
+
          AndroidHmiPLT.ParkingSlot parkingSlot;
          float breite, hoehe;
          float xSet, ySet;
          float xPos, yPos;
+
+
+
 
          //int-Werte der IDs setzen
          ArrayList<Integer> ids = new ArrayList<>();
@@ -631,12 +665,13 @@ public class MainActivity extends AppCompatActivity {
          ids.add(6, R.id.button_ParkingSlot7);
          ids.add(7, R.id.button_ParkingSlot8);
 
-
+         parkingSlot = hmiModule.getParkingSlot(1);
 
          //nur nach Parklücken-Details suchen, wenn auch welche detektiert wurden
          if (number != 0) {
              for (int i = 0; i < number; i++) {
-                 parkingSlot = hmiModule.getParkingSlot(i);
+                 //parkingSlot = hmiModule.getParkingSlot(i);
+
 
                      //Position auswählen
                      //inklusive Reservepuffer
@@ -668,9 +703,17 @@ public class MainActivity extends AppCompatActivity {
                          if(parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
                              btn.setBackgroundColor(Color.GREEN);
                              status = "suitable";
+
+                             //BUtton auswählbar
+                             btn.setEnabled(true);
+                             btn.setText("suitable");
                          }else {
                              btn.setBackgroundColor(Color.RED);
                              status = "notsuitable";
+
+                             //Button nicht auswählbar machen
+                             btn.setEnabled(false);
+                             btn.setText("not suitable");
                          }
 
                          rl.addView(btn);
@@ -706,9 +749,17 @@ public class MainActivity extends AppCompatActivity {
                          if(parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
                              btn.setBackgroundColor(Color.GREEN);
                              status = "suitable";
+
+                             //Button auswählbar machen
+                             btn.setEnabled(true);
+                             btn.setText("suitable");
                          }else {
                              btn.setBackgroundColor(Color.RED);
                              status = "notsuitable";
+
+                             //Button nicht auswählbar machen
+                             btn.setEnabled(false);
+                             btn.setText("not suitable");
                          }
 
                          rl.addView(btn);
@@ -742,13 +793,22 @@ public class MainActivity extends AppCompatActivity {
                          btn.setY(ySet);
                          btn.setTextColor(Color.BLACK);
 
+
                          //Farbe setzen
                          if(parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
                              btn.setBackgroundColor(Color.GREEN);
                              status = "suitable";
+
+                             //Button auswählbar machen
+                             btn.setEnabled(true);
+                             btn.setText("suitaböe");
                          }else {
                              btn.setBackgroundColor(Color.RED);
                              status = "notsuitable";
+
+                             //Button nicht auswählbar machen
+                             btn.setEnabled(false);
+                             btn.setText("not suitable");
                          }
 
                          rl.addView(btn);
@@ -760,5 +820,104 @@ public class MainActivity extends AppCompatActivity {
              }
          }
      }
+
+     @SuppressLint("NewApi")
+     private Canvas getNewCanvas(){
+         //neues Canvas ertellen, altes löschen
+         RelativeLayout layout = (RelativeLayout) findViewById(R.id.viewLayout);
+
+         Bitmap bitmap = Bitmap.createBitmap(1024, 552, Bitmap.Config.ARGB_8888);
+         canvas = new Canvas(bitmap);
+         layout.setBackground(new BitmapDrawable(bitmap));
+
+         return canvas;
+     }
+
+
+
+    /**
+     * Methode zur Berechnung der gefahrenen Strecke
+     *
+     * @param arrayX
+     * @param arrayY
+     */
+     public float pfadberechnung(ArrayList<Float> arrayX, ArrayList<Float> arrayY){
+         float xNeu = 0, xAlt = 0, yNeu = 0, yAlt = 0;
+         float differenzX =  0, differenzY = 0;
+         float strecke = 0, teilstrecke = 0;
+         float abweichung = 0;
+
+         if(arrayX.size() > 1){
+             xAlt = arrayX.get(arrayX.size() -2);
+             xNeu = arrayX.get(arrayX.size() -1);
+         }else if (arrayX.size() > 0){
+             xAlt = 0;
+             xNeu = arrayX.get(arrayX.size() -1);
+         }
+         else{
+             System.out.println("Es ist ein Fehler aufgetreten!");
+         }
+
+         if(arrayY.size() > 1){
+             yAlt = arrayY.get(arrayY.size() -2);
+             yNeu = arrayY.get(arrayY.size() -1);
+         }else if (differenzY > 0){
+             yAlt = 0;
+             yNeu = arrayY.get(arrayY.size() -1);
+         }
+         else{
+             System.out.println("Es ist ein Fehler aufgetreten!");
+         }
+
+
+         //Differenz berechnen
+         differenzX = Math.abs(xAlt - xNeu);
+         differenzY = Math.abs(yAlt - yNeu);
+
+         //Fallunterscheidung
+         if(differenzX <= abweichung){
+             strecke = strecke + differenzY;
+         }else if(differenzY <= abweichung){
+             strecke = strecke + differenzX;
+         }else{
+             //Satz des Pythagoras anwenden
+             //vereinfachter Fall wird betrachtet
+             teilstrecke = (float) Math.sqrt((differenzX * differenzX) + (differenzY * differenzY));
+             strecke = strecke + teilstrecke;
+         }
+
+         return strecke;
+
+     }
+
+     //Methode zur Aktualisierung der Sensorbilder, wenn die Werte in einen kritischen Bereich kommen
+    public void sensorBilder(AndroidHmiPLT hmiModule){
+         double critical = 5.0;     //Angabe in cm
+         double distBack = hmiModule.getPosition().getDistanceBack();
+         double distFront = hmiModule.getPosition().getDistanceFront();
+
+         //Bilder
+        ImageView sensorBack = (ImageView) findViewById(R.id.wlanBack);
+        ImageView sensorFront = (ImageView) findViewById(R.id.wlanFront);
+
+         //Abfrage nach einem kritischen Wert
+        if(distBack < critical){
+            //Bild hinter dem Fahrzeug ändern -> Achtung
+            sensorBack.setImageResource(R.drawable.achtung);
+            Toast.makeText(this, "ACHTUNG!! Abstand wird eng!!", Toast.LENGTH_LONG).show();
+        }else{
+            //Bild wieder zurückändern
+            sensorBack.setImageResource(R.drawable.wlan_back);
+        }
+
+        if(distFront < critical){
+            //Bild vor dem Fahrzeug ändern -> Achtung
+            sensorFront.setImageResource(R.drawable.achtung);
+            Toast.makeText(this, "ACHTUNG!! Abstand wird eng!!", Toast.LENGTH_LONG).show();
+        }else{
+            //Bild wieder zurück ändern
+            sensorFront.setImageResource(R.drawable.wlan_front);
+        }
+    }
 
 }

@@ -16,7 +16,7 @@
 
         <Button
             android:id="@+id/buttonSetupBluetooth"
-            android:layout_width="125dp"
+            android:layout_width="150dp"
             android:layout_height="75dp"
             android:layout_alignParentLeft="true"
             android:layout_alignParentStart="true"
@@ -34,12 +34,12 @@
             android:layout_height="75dp"
             android:layout_alignBaseline="@+id/buttonSetupBluetooth"
             android:layout_alignBottom="@+id/buttonSetupBluetooth"
-            android:layout_marginLeft="24dp"
+            android:layout_marginLeft="35dp"
             android:layout_toRightOf="@+id/buttonSetupBluetooth"
             android:onClick="onToggleClicked"
             android:textSize="20sp"
-            android:textOff="PAUSE"
-            android:textOn="SCOUT" />
+            android:textOff="SCOUT"
+            android:textOn="PAUSE" />
 
         <Button
             android:id="@+id/buttonClear"
@@ -66,7 +66,7 @@
             android:layout_marginTop="10dp"
             android:layout_marginLeft="10dp"
             android:layout_marginStart="10dp"
-            app:srcCompat="@drawable/parcours_klein2" />
+            app:srcCompat="@drawable/parcours4" />
 
 
 
@@ -104,8 +104,8 @@
             android:text="driven distance: "
             android:layout_toEndOf="@+id/textViewModeValue"
             android:layout_toRightOf="@+id/textViewModeValue"
-            android:layout_marginLeft="100dp"
-            android:layout_marginStart="100dp"
+            android:layout_marginLeft="75dp"
+            android:layout_marginStart="75dp"
             android:layout_below="@+id/imageParcours"
             android:layout_marginTop="25dp"
             android:textSize="20sp"/>
