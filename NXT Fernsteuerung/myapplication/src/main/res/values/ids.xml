@@ -9,4 +9,8 @@
     <item type="id" name="button_ParkingSlot7"/>
     <item type="id" name="button_ParkingSlot8"/>
 
+    <item type="id" name="PS_statisch_1"/>
+    <item type="id" name="PS_statisch_2"/>
+    <item type="id" name="PS_statisch_3"/>
+
 </resources>
