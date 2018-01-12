@@ -117,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
         imagePositionieren(xRobo, yRobo);
 
 
-        //Button ParkinSlot einfügen
+        //Button ParkingSlot einfügen
        /* RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
         Button btn = new Button(this);
         btn.setWidth(100);
@@ -216,166 +216,6 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-
-
-
-    if(hmiModule != null) {
-        //Bestimmen, was passiert, wenn man auf die Parkbuttons drückt
-        final Button parkSlot1 = (Button) findViewById(R.id.button_ParkingSlot1);
-        final int id1 = R.id.button_ParkingSlot1;
-        parkSlot1.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (treeMap.get(id1) != null) {
-                    status1 = treeMap.get(id1);
-                    if (treeMap.get(id1) == "suitable") {
-                        //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
-                        hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
-
-                        hmiModule.setMode(INxtHmi.Mode.PAUSE);
-                        //BUttonanzeige ändern
-                        final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
-                        scoutButton.setEnabled(false);
-
-                    } else if (treeMap.get(id1) == "notsuitable") {
-                        Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-
-        final Button parkSlot2 = (Button) findViewById(R.id.button_ParkingSlot2);
-        final int id2 = R.id.button_ParkingSlot2;
-        parkSlot2.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (treeMap.get(id2) != null) {
-                    status2 = treeMap.get(id2);
-                    if (treeMap.get(id2) == "suitable") {
-                        //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
-                        hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
-
-                    } else if (treeMap.get(id2) == "notsuitable") {
-                        Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-
-        final Button parkSlot3 = (Button) findViewById(R.id.button_ParkingSlot3);
-        final int id3 = R.id.button_ParkingSlot3;
-        parkSlot3.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (treeMap.get(id3) != null) {
-                    status3 = treeMap.get(id3);
-                    if (treeMap.get(id3) == "suitable") {
-                        //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
-                        hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
-
-                    } else if (treeMap.get(id3) == "notsuitable") {
-                        Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-
-        final Button parkSlot4 = (Button) findViewById(R.id.button_ParkingSlot4);
-        final int id4 = R.id.button_ParkingSlot4;
-        parkSlot4.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (treeMap.get(id4) != null) {
-                    status4 = treeMap.get(id4);
-                    if (treeMap.get(id4) == "suitable") {
-                        //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
-                        hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
-                    } else if (treeMap.get(id4) == "notsuitable") {
-                        Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-
-        final Button parkSlot5 = (Button) findViewById(R.id.button_ParkingSlot5);
-        final int id5 = R.id.button_ParkingSlot5;
-        parkSlot5.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (treeMap.get(id5) != null) {
-                    status5 = treeMap.get(id5);
-                    if (treeMap.get(id5) == "suitable") {
-                        //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
-                        hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
-
-                    } else if (treeMap.get(id5) == "notsuitable") {
-                        Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-
-        final Button parkSlot6 = (Button) findViewById(R.id.button_ParkingSlot6);
-        final int id6 = R.id.button_ParkingSlot6;
-        parkSlot6.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (treeMap.get(id6) != null) {
-                    status6 = treeMap.get(id6);
-                    if (treeMap.get(id6) == "suitable") {
-                        //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
-                        hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
-
-                    } else if (treeMap.get(id6) == "notsuitable") {
-                        Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-
-        final Button parkSlot7 = (Button) findViewById(R.id.button_ParkingSlot7);
-        final int id7 = R.id.button_ParkingSlot7;
-        parkSlot7.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (treeMap.get(id7) != null) {
-                    status7 = treeMap.get(id7);
-                    if (treeMap.get(id7) == "suitable") {
-                        //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
-                        hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
-
-                    } else if (treeMap.get(id7) == "notsuitable") {
-                        Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-
-        final Button parkSlot8 = (Button) findViewById(R.id.button_ParkingSlot8);
-        final int id8 = R.id.button_ParkingSlot8;
-        parkSlot8.setOnClickListener(new View.OnClickListener() {
-            public void onClick(View v) {
-                if (treeMap.get(id8) != null) {
-                    status8 = treeMap.get(id8);
-                    if (treeMap.get(id8) == "suitable") {
-                        //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
-                        hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
-                    } else if (treeMap.get(id8) == "notsuitable") {
-                        Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
-                    } else {
-                        Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
-                    }
-                }
-            }
-        });
-    }
 
         //Anzeige der Parklücken testen
         testenPS();
@@ -647,187 +487,7 @@ public class MainActivity extends AppCompatActivity {
 
      }
 
-     private void parkSlots() {
-         int number;
-         System.out.println("number of Parkingslots: " + hmiModule.getNoOfParkingSlots());
-         if(hmiModule.getNoOfParkingSlots() != 0){
-             number = hmiModule.getNoOfParkingSlots();
-         }else{
-             number = 0;
-         }
 
-         AndroidHmiPLT.ParkingSlot parkingSlot;
-         float breite, hoehe;
-         float xSet, ySet;
-         float xPos, yPos;
-
-
-
-
-         //int-Werte der IDs setzen
-         ArrayList<Integer> ids = new ArrayList<>();
-         ids.add(0, R.id.button_ParkingSlot1);
-         ids.add(1, R.id.button_ParkingSlot2);
-         ids.add(2, R.id.button_ParkingSlot3);
-         ids.add(3, R.id.button_ParkingSlot4);
-         ids.add(4, R.id.button_ParkingSlot5);
-         ids.add(5, R.id.button_ParkingSlot6);
-         ids.add(6, R.id.button_ParkingSlot7);
-         ids.add(7, R.id.button_ParkingSlot8);
-
-
-         //nur nach Parklücken-Details suchen, wenn auch welche detektiert wurden
-         if (number != 0) {
-             for (int i = 0; i < number; i++) {
-                 parkingSlot = hmiModule.getParkingSlot(i);
-
-                     //Position auswählen
-                     //inklusive Reservepuffer
-                     if (parkingSlot.getBackBoundaryPosition().x <= 175) {
-                         //Button rechts im Parcours einfügen
-                         hoehe = Math.abs(parkingSlot.getBackBoundaryPosition().y - parkingSlot.getFrontBoundaryPosition().y);
-                         hoehe = (float) (((hoehe * YSKAL) - 273) * (-1));
-
-                         //Button ParkinSlot einfügen
-                         RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
-                         Button btn = new Button(this);
-                         btn.setWidth(60);
-                         btn.setHeight((int) hoehe);
-                         btn.setText(String.valueOf(i+1));
-                         btn.setEnabled(false);
-                         btn.setId(ids.get(i));     //ID des Buttons setzen -> ID aus Array
-
-                         //Werte umrechnen
-                         xPos = parkingSlot.getBackBoundaryPosition().x;
-                         yPos = parkingSlot.getBackBoundaryPosition().y;
-                         xSet = (float) ((xPos * XSKAL) + 306);
-                         ySet = (float) (((yPos * YSKAL) - 325) * (-1));
-
-                         btn.setX(xSet);
-                         btn.setY(ySet);
-                         btn.setTextColor(Color.BLACK);
-
-                         //Farbe setzen
-                         if(parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
-                             btn.setBackgroundColor(Color.GREEN);
-                             status = "suitable";
-
-                             //BUtton auswählbar
-                             btn.setEnabled(true);
-                             btn.setText("suitable");
-                         }else {
-                             btn.setBackgroundColor(Color.RED);
-                             status = "notsuitable";
-
-                             //Button nicht auswählbar machen
-                             btn.setEnabled(false);
-                             btn.setText("not suitable");
-                         }
-
-                         rl.addView(btn);
-
-                         //Wert der TreeMap hinzufügen
-                         treeMap.put(ids.get(i), status);
-
-                     } else if (parkingSlot.getBackBoundaryPosition().y < 20) {     //Offset berücksichtigen
-                         //Button unterhalb des Roboter einfügen
-                         breite = Math.abs(parkingSlot.getBackBoundaryPosition().x - parkingSlot.getFrontBoundaryPosition().x);
-                         breite = (float) ((breite * XSKAL) + 306);
-
-                         //Button ParkinSlot einfügen
-                         RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
-                         Button btn = new Button(this);
-                         btn.setWidth((int) breite);
-                         btn.setHeight(60);
-                         btn.setText(String.valueOf(i+1));
-                         btn.setEnabled(false);
-                         btn.setId(ids.get(i));
-
-                         //Werte umrechnen
-                         xPos = parkingSlot.getBackBoundaryPosition().x;
-                         yPos = parkingSlot.getBackBoundaryPosition().y;
-                         xSet = (float) ((xPos * XSKAL) + 306);
-                         ySet = (float) (((yPos * YSKAL) - 325) * (-1));
-
-                         btn.setX(xSet);
-                         btn.setY(ySet);
-                         btn.setTextColor(Color.BLACK);
-
-                         //Farbe setzen
-                         if(parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
-                             btn.setBackgroundColor(Color.GREEN);
-                             status = "suitable";
-
-                             //Button auswählbar machen
-                             btn.setEnabled(true);
-                             btn.setText("suitable");
-                         }else {
-                             btn.setBackgroundColor(Color.RED);
-                             status = "notsuitable";
-
-                             //Button nicht auswählbar machen
-                             btn.setEnabled(false);
-                             btn.setText("not suitable");
-                         }
-
-                         rl.addView(btn);
-
-                         //TreeMap setzen
-                         treeMap.put(ids.get(i), status);
-
-                     } else if (parkingSlot.getBackBoundaryPosition().y >= 20) {    //Offset berücksichtigen
-                         //Button unterhalb des Roboter einfügen
-                         breite = Math.abs(parkingSlot.getBackBoundaryPosition().x - parkingSlot.getFrontBoundaryPosition().x);
-                         breite = (float) ((breite * XSKAL) + 306);
-
-                         //Button ParkinSlot einfügen
-                         RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
-                         Button btn = new Button(this);
-                         btn.setWidth((int) breite);
-                         btn.setHeight(60);
-                         btn.setText(String.valueOf(i+1));
-                         btn.setEnabled(false);
-                         btn.setId(ids.get(i));
-
-                         //Werte umrechnen
-                         xPos = parkingSlot.getBackBoundaryPosition().x;
-                         yPos = parkingSlot.getBackBoundaryPosition().y;
-                         xSet = (float) ((xPos * XSKAL) + 306);
-                         ySet = (float) (((yPos * YSKAL) - 325) * (-1));
-                         //ySet nach oben verlagern, da immer die obere linke Ecke betrachtet wird
-                         ySet = ySet - 60;
-
-                         btn.setX(xSet);
-                         btn.setY(ySet);
-                         btn.setTextColor(Color.BLACK);
-
-
-                         //Farbe setzen
-                         if(parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
-                             btn.setBackgroundColor(Color.GREEN);
-                             status = "suitable";
-
-                             //Button auswählbar machen
-                             btn.setEnabled(true);
-                             btn.setText("suitaböe");
-                         }else {
-                             btn.setBackgroundColor(Color.RED);
-                             status = "notsuitable";
-
-                             //Button nicht auswählbar machen
-                             btn.setEnabled(false);
-                             btn.setText("not suitable");
-                         }
-
-                         rl.addView(btn);
-
-                         //TreeMap den Wert übergeben
-                         treeMap.put(ids.get(i), status);
-
-                     }
-             }
-         }
-     }
 
      @SuppressLint("NewApi")
      private Canvas getNewCanvas(){
@@ -948,6 +608,305 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
+
+
+    public void parkSlots() {
+        float breite, hoehe;
+        float xSet, ySet;
+        float xPos, yPos;
+        IAndroidHmi.ParkingSlot parkingSlot;
+
+
+        int number;
+        System.out.println("number of Parkingslots: " + hmiModule.getNoOfParkingSlots());
+        if (hmiModule.getNoOfParkingSlots() != 0) {
+            number = hmiModule.getNoOfParkingSlots();
+        } else {
+            number = 0;
+        }
+
+        //int-Werte der IDs setzen
+        ArrayList<Integer> ids = new ArrayList<>();
+        ids.add(0, R.id.button_ParkingSlot1);
+        ids.add(1, R.id.button_ParkingSlot2);
+        ids.add(2, R.id.button_ParkingSlot3);
+        ids.add(3, R.id.button_ParkingSlot4);
+        ids.add(4, R.id.button_ParkingSlot5);
+        ids.add(5, R.id.button_ParkingSlot6);
+        ids.add(6, R.id.button_ParkingSlot7);
+        ids.add(7, R.id.button_ParkingSlot8);
+
+        //nur nach Parklücken-Details suchen, wenn auch welche detektiert wurden
+        if (number != 0) {
+            for (int i = 0; i < number; i++) {
+
+                //Parklücke auswählen
+                parkingSlot = hmiModule.getParkingSlot(i);
+
+                //Position auswählen
+                //inklusive Reservepuffer
+                if (parkingSlot.getBackBoundaryPosition().x >= 175) {
+                    //Button rechts im Parcours einfügen
+                    hoehe = Math.abs(parkingSlot.getBackBoundaryPosition().y - parkingSlot.getFrontBoundaryPosition().y);
+                    System.out.println("Hoehe: " + hoehe);
+                    hoehe = (float) ((hoehe * 3));
+                    System.out.println("Hoehe: " + hoehe);
+
+
+                    //Button ParkinSlot einfügen
+                    RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
+                    Button btn = new Button(this);
+                    btn.setWidth(30);
+                    btn.setHeight((int) hoehe);
+                    //btn.setHeight(150);
+                    btn.setId(ids.get(i));     //ID des Buttons setzen -> ID aus Array
+
+                    //Werte umrechnen
+                    xPos = parkingSlot.getFrontBoundaryPosition().x;
+                    yPos = parkingSlot.getFrontBoundaryPosition().y;
+
+                    //Werte umrechnen
+                    xSet = (float) ((xPos * XSKAL) + 100);
+                    ySet = (float) (((yPos * YSKAL) - 263) * (-1));
+
+                    //Verschiebung berücksichtigen
+                    xSet = xSet + VERSCHIEBUNG;
+
+                    btn.setX(xSet);
+                    btn.setY(ySet);
+                    btn.setTextColor(Color.BLACK);
+
+                    //Farbe setzen
+                    if (parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
+                        btn.setBackgroundColor(Color.GREEN);
+                        status = "suitable";
+
+                        //BUtton auswählbar
+                        btn.setEnabled(true);
+                        btn.setText("suitable");
+                    } else {
+                        btn.setBackgroundColor(Color.RED);
+                        status = "notsuitable";
+
+                        //Button nicht auswählbar machen
+                        btn.setEnabled(false);
+                        btn.setText("not suitable");
+                    }
+
+                    //ParkSlot zum Button hinzufügen
+                    btn.setHint(parkingSlot.getID());
+
+                    //andere Beschriftung wählen
+                    btn.setText(String.valueOf(i + 1));
+
+                    //OnClickListener setzen
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            Button btn = (Button) findViewById(view.getId());
+
+                            Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
+
+                            //wenn Button auswählbar ist, ist der Status "SUITABLE"
+                            if (btn.isEnabled() == true) {
+                                //ParkSlot setzen
+                                //String in Integer umwandeln
+                                int id = Integer.parseInt(btn.getHint().toString());
+                                hmiModule.setSelectedParkingSlot(id);
+                                System.out.println("Status Parklücke: " + hmiModule.getParkingSlot(id).getParkingSlotStatus());
+
+                                //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
+                                hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
+
+                                //BUttonanzeige ändern
+                                final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
+                                scoutButton.setEnabled(false);
+
+                            } else if (btn.isEnabled() == false) {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+                    rl.addView(btn);
+
+                } else if (parkingSlot.getBackBoundaryPosition().y < 20) {     //Offset berücksichtigen
+                    //Button unterhalb des Roboter einfügen
+                    breite = Math.abs(parkingSlot.getBackBoundaryPosition().x - parkingSlot.getFrontBoundaryPosition().x);
+                    breite = (float) (breite * 2.5);
+
+                    //Button ParkinSlot einfügen
+                    RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
+                    Button btn = new Button(this);
+                    btn.setWidth((int) breite);
+                    //btn.setWidth(375);
+                    btn.setHeight(30);
+                    btn.setId(ids.get(i));
+
+                    //Werte umrechnen
+                    xPos = parkingSlot.getBackBoundaryPosition().x;
+                    yPos = parkingSlot.getBackBoundaryPosition().y;
+                    //Werte umrechnen
+                    xSet = (float) ((xPos * XSKAL) + 100);
+                    ySet = (float) (((yPos * YSKAL) - 253) * (-1));
+
+                    //Verschiebung berücksichten
+                    ySet = ySet + VERSCHIEBUNG - 5;
+
+                    btn.setX(xSet);
+                    btn.setY(ySet);
+                    btn.setTextColor(Color.BLACK);
+
+                    //Farbe setzen
+                    if (parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
+                        btn.setBackgroundColor(Color.GREEN);
+                        status = "suitable";
+
+                        //Button auswählbar machen
+                        btn.setEnabled(true);
+                        btn.setText("suitable");
+                    } else {
+                        btn.setBackgroundColor(Color.RED);
+                        status = "notsuitable";
+
+                        //Button nicht auswählbar machen
+                        btn.setEnabled(false);
+                        btn.setText("not suitable");
+                    }
+
+                    //ParkSlot zum Button hinzufügen
+                    btn.setHint(parkingSlot.getID());
+
+                    //andere Beschriftung wählen
+                    btn.setText(String.valueOf(i + 1));
+
+                    //OnClickListener setzen
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            Button btn = (Button) findViewById(view.getId());
+
+                            Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
+
+                            //wenn Button auswählbar ist, ist der Status "SUITABLE"
+                            if (btn.isEnabled() == true) {
+                                //ParkSlot setzen
+                                //String in Integer umwandeln
+                                int id = Integer.parseInt(btn.getHint().toString());
+                                hmiModule.setSelectedParkingSlot(id);
+                                System.out.println("Status Parklücke: " + hmiModule.getParkingSlot(id).getParkingSlotStatus());
+
+                                //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
+                                hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
+
+                                //BUttonanzeige ändern
+                                final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
+                                scoutButton.setEnabled(false);
+
+                            } else if (btn.isEnabled() == false) {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+                    rl.addView(btn);
+
+                } else if (parkingSlot.getBackBoundaryPosition().y >= 20) {    //Offset berücksichtigen
+                    //Button unterhalb des Roboter einfügen
+                    breite = Math.abs(parkingSlot.getBackBoundaryPosition().x - parkingSlot.getFrontBoundaryPosition().x);
+                    breite = (float) (breite * 2.5);
+
+                    //Button ParkinSlot einfügen
+                    RelativeLayout rl = (RelativeLayout) findViewById(R.id.layoutParkingSlots);
+                    Button btn = new Button(this);
+                    btn.setWidth((int) breite);
+                    //btn.setWidth(200);
+                    btn.setHeight(30);
+                    btn.setId(ids.get(i));
+
+                    //Werte umrechnen
+                    xPos = parkingSlot.getBackBoundaryPosition().x;
+                    yPos = parkingSlot.getBackBoundaryPosition().y;
+                    //Werte umrechnen
+                    xSet = (float) ((xPos * XSKAL) + 100);
+                    ySet = (float) (((yPos * YSKAL) - 273) * (-1));
+
+                    //ySet nach oben verlagern, da immer die obere linke Ecke betrachtet wird
+                    ySet = ySet - 60;
+
+                    //Verschiebung berücksichtigen
+                    ySet = ySet - VERSCHIEBUNG;
+
+                    btn.setX(xSet);
+                    btn.setY(ySet);
+                    btn.setTextColor(Color.BLACK);
+
+
+                    //Farbe setzen
+                    if (parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
+                        btn.setBackgroundColor(Color.GREEN);
+                        status = "suitable";
+
+                        //Button auswählbar machen
+                        btn.setEnabled(true);
+                        btn.setText("suitaböe");
+                    } else {
+                        btn.setBackgroundColor(Color.RED);
+                        status = "notsuitable";
+
+                        //Button nicht auswählbar machen
+                        btn.setEnabled(false);
+                        btn.setText("not suitable");
+                    }
+
+                    //ParkSlot zum Button hinzufügen
+                    btn.setHint(parkingSlot.getID());
+
+                    //andere Beschriftung wählen
+                    btn.setText(String.valueOf(i + 1));
+
+                    //OnClickListener setzen
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            Button btn = (Button) findViewById(view.getId());
+
+                            Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
+
+                            //wenn Button auswählbar ist, ist der Status "SUITABLE"
+                            if (btn.isEnabled() == true) {
+                                //ParkSlot setzen
+                                //String in Integer umwandeln
+                                int id = Integer.parseInt(btn.getHint().toString());
+                                hmiModule.setSelectedParkingSlot(id);
+                                System.out.println("Status Parklücke: " + hmiModule.getParkingSlot(id).getParkingSlotStatus());
+
+                                //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
+                                hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
+
+                                //BUttonanzeige ändern
+                                final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
+                                scoutButton.setEnabled(false);
+
+                            } else if (btn.isEnabled() == false) {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+                    rl.addView(btn);
+                }
+            }
+        }
+    }
+
+
+
+
+
     public void testenPS() {
         float breite, hoehe;
         float xSet, ySet;
@@ -960,12 +919,15 @@ public class MainActivity extends AppCompatActivity {
         //statische Parklücken erstellen
         IAndroidHmi.ParkingSlot parkSlot1 = new IAndroidHmi.ParkingSlot(1, new PointF(15, 0), new PointF(135, 0), IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING);
         IAndroidHmi.ParkingSlot parkSlot2 = new IAndroidHmi.ParkingSlot(2, new PointF(180, 5), new PointF(180, 35), IAndroidHmi.ParkingSlot.ParkingSlotStatus.NOT_SUITABLE_FOR_PARKING);
-        IAndroidHmi.ParkingSlot parkSlot3 = new IAndroidHmi.ParkingSlot(3, new PointF(80, 30), new PointF(130, 30), IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING);
+        IAndroidHmi.ParkingSlot parkSlot3 = new IAndroidHmi.ParkingSlot(3, new PointF(110, 30), new PointF(130, 30), IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING);
+
+        IAndroidHmi.ParkingSlot parkSlot4 = new IAndroidHmi.ParkingSlot(3, new PointF(60, 30), new PointF(80, 30), IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING);
 
         //Parklücken der ArrayList hinzufügen
         parkSlotList.add(parkSlot1);
         parkSlotList.add(parkSlot2);
         parkSlotList.add(parkSlot3);
+        parkSlotList.add(parkSlot4);
 
         //ArrayList für die statischen IDs der Parklücken
         //int-Werte der IDs setzen
@@ -973,6 +935,7 @@ public class MainActivity extends AppCompatActivity {
         ids.add(0, R.id.PS_statisch_1);
         ids.add(1, R.id.PS_statisch_2);
         ids.add(2, R.id.PS_statisch_3);
+        ids.add(3, R.id.PS_statisch_4);
 
         //nur nach Parklücken-Details suchen, wenn auch welche detektiert wurden
         if (parkSlotList.size() != 0) {
@@ -1034,6 +997,32 @@ public class MainActivity extends AppCompatActivity {
                     //andere Beschriftung wählen
                     btn.setText(String.valueOf(i+1));
 
+                    //OnClickListener setzen
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            Button btn = (Button) findViewById(view.getId());
+
+                            Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
+
+                            //wenn Button auswählbar ist, ist der Status "SUITABLE"
+                            if (btn.isEnabled() == true) {
+                                //ParkSlot setzen -> hier kein hmiModule vorhanden
+
+                                //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
+                                //hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
+
+                                //BUttonanzeige ändern
+                                final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
+                                scoutButton.setEnabled(false);
+
+                            } else if (btn.isEnabled() == false) {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
                     rl.addView(btn);
 
                 } else if (parkingSlot.getBackBoundaryPosition().y < 20) {     //Offset berücksichtigen
@@ -1082,6 +1071,32 @@ public class MainActivity extends AppCompatActivity {
 
                     //andere Beschriftung wählen
                     btn.setText(String.valueOf(i+1));
+
+                    //OnClickListener setzen
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            Button btn = (Button) findViewById(view.getId());
+
+                            Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
+
+                            //wenn Button auswählbar ist, ist der Status "SUITABLE"
+                            if (btn.isEnabled() == true) {
+                                //ParkSlot setzen -> hier kein hmiModule vorhanden
+
+                                //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
+                                //hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
+
+                                //BUttonanzeige ändern
+                                final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
+                                scoutButton.setEnabled(false);
+
+                            } else if (btn.isEnabled() == false) {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
 
                     rl.addView(btn);
 
@@ -1136,9 +1151,35 @@ public class MainActivity extends AppCompatActivity {
                     //andere Beschriftung wählen
                     btn.setText(String.valueOf(i+1));
 
-                    rl.addView(btn);
-                }
+                    //OnClickListener setzen
+                    btn.setOnClickListener(new View.OnClickListener() {
+                        public void onClick(View view) {
+                            Button btn = (Button) findViewById(view.getId());
+
+                            Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
+
+                            //wenn Button auswählbar ist, ist der Status "SUITABLE"
+                            if (btn.isEnabled() == true) {
+                                //ParkSlot setzen -> hier kein hmiModule vorhanden
+
+                                //in den Modus ParkThis wechseln und das autonome Einparkmanöver starten
+                                //hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
+
+                                //BUttonanzeige ändern
+                                final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
+                                scoutButton.setEnabled(false);
+
+                            } else if (btn.isEnabled() == false) {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else {
+                                Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
+                            }
+                        }
+                    });
+
+                rl.addView(btn);
             }
         }
     }
+}
 }
