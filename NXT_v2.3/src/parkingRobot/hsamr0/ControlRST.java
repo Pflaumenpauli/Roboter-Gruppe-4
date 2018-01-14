@@ -345,6 +345,109 @@ public class ControlRST implements IControl {
 	 */
 	private void update_PARKCTRL_Parameter(){
 		//Aufgabe 3.4
+		switch (flag5) {
+		case 1:  
+			 x1a = 0.0;    
+			 x2a = 0.0;   
+		     x1b = 0.23; 
+			 x2b = -0.28; 
+			 thetai = 0.1;
+			 thetaf = 0;
+			 ki = 0.5;   
+			 kf =0.5;   
+		
+			a0 = x1a;
+			a1 = ki*Math.cos(thetai);
+			a2 = 3*(x1b-x1a) - 2*ki - kf;
+			a3 = 2*(x1a-x1b) + ki + kf;
+			 b0 = x2a;
+			 b1 =ki*Math.sin(thetai);
+			 b2 = 3*(x2b-x2a);
+			 b3 = 2*(x2a-x2b);
+      		 T = 5; 
+	         if(t<5) {
+	
+			 s =(Math.pow(t,2)*(3-2*t/T))/Math.pow(T,2);
+			 dots = 6*t*(1 - t/T)/Math.pow(T,2);
+				//double x1 = a0 + a1*s + a2*Math.pow(s,2) + a3*Math.pow(s,3);
+				double dx1 = a1 + 2*a2*s + 3*a3*Math.pow(s,2);
+				double ddx1 = 2*a2 + 6*a3*s;
+				//double x2 = b0 + b1*s + b2*Math.pow(s,2) + b3*Math.pow(s,3);
+				double dx2 = b1 + 2*b2*s + 3*b3*Math.pow(s,2);
+				double ddx2 = 2*b2 + 6*b3*s;
+				velocity=200*dots*Math.sqrt(Math.pow(dx1,2) +Math.pow(dx2,2)); //Geschwindigkeit600
+				angularVelocity=1.6*dots*(ddx2*dx1 - dx2*ddx1)/(Math.pow(dx1,2) +Math.pow(dx2,2)); // Winkelgeschwindigkeit
+				update_VWCTRL_Parameter();
+			    exec_VWCTRL_ALGO();
+	         }
+		      else {		    	 		   	      
+		   	        	 flag5=2;		   	            	     
+			        }
+	         break;
+		case 2:
+			   velocity=0;
+	   		  angularVelocity=2.7;
+	     	 update_VWCTRL_Parameter();
+	   		    exec_VWCTRL_ALGO();
+	   		 if (navigation.getPose().getHeading()>=0)
+	         {
+	   			velocity=0;
+	     		  angularVelocity=0;
+	     		 flag5=-1;	
+	          }	
+			
+		case -1: 
+			 x1a = 0;    
+			 x2a = 0;    
+		     x1b = 0.23; 
+			 x2b = -0.28; 
+			 thetai = 0.1;
+			 thetaf = 0;
+			 ki = 0.5;   
+			 kf =0.5;   
+		
+			a0 = x1a;
+			a1 = ki*Math.cos(thetai);
+			a2 = 3*(x1b-x1a) - 2*ki - kf;
+			a3 = 2*(x1a-x1b) + ki + kf;
+			 b0 = x2a;
+			 b1 =ki*Math.sin(thetai);
+			 b2 = 3*(x2b-x2a);
+			 b3 = 2*(x2a-x2b);
+     		 T = 5; 
+	         if(t>0.1) {
+	         t=t-0.05;//0.02
+			 s =(Math.pow(t,2)*(3-2*t/T))/Math.pow(T,2);
+			 dots = 6*t*(1 - t/T)/Math.pow(T,2);
+				//double x1 = a0 + a1*s + a2*Math.pow(s,2) + a3*Math.pow(s,3);
+				double dx1 = a1 + 2*a2*s + 3*a3*Math.pow(s,2);
+				double ddx1 = 2*a2 + 6*a3*s;
+				//double x2 = b0 + b1*s + b2*Math.pow(s,2) + b3*Math.pow(s,3);
+				double dx2 = b1 + 2*b2*s + 3*b3*Math.pow(s,2);
+				double ddx2 = 2*b2 + 6*b3*s;
+				velocity=-250*dots*Math.sqrt(Math.pow(dx1,2) +Math.pow(dx2,2)); //Geschwindigkeit600
+				angularVelocity=-1.7*dots*(ddx2*dx1 - dx2*ddx1)/(Math.pow(dx1,2) +Math.pow(dx2,2)); // Winkelgeschwindigkeit
+				update_VWCTRL_Parameter();
+			    exec_VWCTRL_ALGO();
+	         }
+		      else {
+		    	  flag5=0;
+			        }
+	         break;
+		case 0: 
+			 velocity=0;
+   		  angularVelocity=2.7;
+     			update_VWCTRL_Parameter();
+   		    exec_VWCTRL_ALGO();
+   		 if (navigation.getPose().getHeading()>=0)
+         {
+   			velocity=0;
+     		  angularVelocity=0;
+       	 this.leftMotor.stop();
+          this.rightMotor.stop(); 
+          }	
+	         
+	}
 	}
 
 	/**
@@ -582,6 +685,13 @@ public class ControlRST implements IControl {
 	private void stop(){
 		this.leftMotor.stop();
 		this.rightMotor.stop();
+	}
+
+
+	@Override
+	public void setParkingDirection(int i) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 }
