@@ -275,6 +275,9 @@ public class ControlRST implements IControl {
 	}
 	
 
+	public void setParkingDirection(int flag4) {
+		 this.flag5=flag4;
+	}
 
 	/**
 	 * set control mode
@@ -300,16 +303,16 @@ public class ControlRST implements IControl {
 		
 		switch (currentCTRLMODE)
 		{
-		  case   SETPOSE   : update_LINECTRL_Parameter();
+		  case  LINE_CTRL    : update_LINECTRL_Parameter();
 		                      exec_LINECTRL_ALGO();
 		                      break;
 		  case   VW_CTRL  :   update_VWCTRL_Parameter();
 		   					  exec_VWCTRL_ALGO();
 		   					  break; 
-		  case PARK_CTRL     : update_SETPOSE_Parameter();
+		  case SETPOSE    : update_SETPOSE_Parameter();
 			  				  exec_SETPOSE_ALGO();
 		                      break;
-		  case LINE_CTRL  :   update_PARKCTRL_Parameter();
+		  case PARK_CTRL  :   update_PARKCTRL_Parameter();
 		  					  exec_PARKCTRL_ALGO();
 		  					  break;		  					  
 		  case INACTIVE 	: exec_INACTIVE();
