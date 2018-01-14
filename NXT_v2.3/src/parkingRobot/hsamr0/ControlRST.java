@@ -104,14 +104,13 @@ public class ControlRST implements IControl {
 	double Wtarge=0;
 	double deltvauleInt=0;
 	double deltvauleLast=0;
-	// int flag0=0;   //flag=0:v/wcontrol  Koeffizient
 	//end linefollow added variable
 	
 	//start v/w added variable
 		double dTime;
 		double leftSpeed;
 		double rightSpeed;
-		double wheelDiameter = 5.6;//cm
+		double wheelDiameter = 5.6;
 		double radius;
 		double radiusL;
 		double radiusR;
@@ -120,14 +119,17 @@ public class ControlRST implements IControl {
 		double distancePerDeg = distancePerTurn/360;
 		double velocityLeft;
 		double velocityRight;
-		double velocity = 80;              //47 10
-		double angularVelocity=0;     //0.5 entspreche 2.1-Drehung um 90Â° in math. pos. Richtung;15Â°/s ;4.0-Drehung um 90Â° in math. neg. Richtung
+		double velocity = 50;              //70 oder80
+		double angularVelocity=0;     //2.1-Drehung um 90Â° in math. pos. Richtung;15Â°/s ;4.0-Drehung um 90Â° in math. neg. Richtung
+		//double temp=0;
+		//double temp1=0;
 		double MVangularVelocity;
 		double MVvelocity;
 		int leftPower=0;
 		int rightPower=0;
 		double rightAngSpeed=0;
 		double leftAngSpeed=0;
+		//double deltS=0;
 		double S=0;
 	    int Drehungrichtung=2;    //0:negativ;1:positiv;2:close Drehung
 		//public static final double addAngle = 0;
@@ -160,8 +162,7 @@ public class ControlRST implements IControl {
     	double Vergleichvalue=0 ;
     	
 	  //end SetPose added variable
-    	
-     //start PARKCTRL added variable
+    	 //start PARKCTRL added variable
     	int    flag5=1;    //flag5 -1：zuruck  1:hin 
 		double s;
 		double dots;
@@ -186,7 +187,6 @@ public class ControlRST implements IControl {
   		double thetaf; 
   		
      //end PARKCTRL added variable
-    	
 	/**
 	 * provides the reference transfer so that the class knows its corresponding navigation object (to obtain the current 
 	 * position of the car from) and starts the control thread.
@@ -275,9 +275,6 @@ public class ControlRST implements IControl {
 	}
 	
 
-	public void setParkingDirection(int flag4) {
-		 this.flag5=flag4;
-	}
 
 	/**
 	 * set control mode
@@ -303,16 +300,16 @@ public class ControlRST implements IControl {
 		
 		switch (currentCTRLMODE)
 		{
-		  case  LINE_CTRL    : update_LINECTRL_Parameter();
+		  case LINE_CTRL     : update_LINECTRL_Parameter();
 		                      exec_LINECTRL_ALGO();
 		                      break;
-		  case   VW_CTRL  :   update_VWCTRL_Parameter();
+		  case  VW_CTRL	:   update_VWCTRL_Parameter();
 		   					  exec_VWCTRL_ALGO();
 		   					  break; 
-		  case SETPOSE    : update_SETPOSE_Parameter();
+		  case SETPOSE     : update_SETPOSE_Parameter();
 			  				  exec_SETPOSE_ALGO();
 		                      break;
-		  case PARK_CTRL  :   update_PARKCTRL_Parameter();
+		  case PARK_CTRL 	: update_PARKCTRL_Parameter();
 		  					  exec_PARKCTRL_ALGO();
 		  					  break;		  					  
 		  case INACTIVE 	: exec_INACTIVE();
@@ -348,9 +345,6 @@ public class ControlRST implements IControl {
 	 */
 	private void update_PARKCTRL_Parameter(){
 		//Aufgabe 3.4
-		this.encoderRight  = perception.getControlRightEncoder();
-		this.encoderLeft  = perception.getControlLeftEncoder();
-		setPose(navigation.getPose());
 	}
 
 	/**
@@ -373,138 +367,43 @@ public class ControlRST implements IControl {
 	 */
 	
     private void exec_SETPOSE_ALGO(){
-    	//leftMotor.forward();
-		//rightMotor.forward();
+
     	//Aufgabe 3.3
     	//step 1ï¼šin first quadrant ,Originposition as the starting point
-    	switch (flag2) {
-		case 0:      
-		   if(temp==0) {
-			
-     	          x0=0;            
-    	          y0=0;             
-    	        angle0=currentPosition.getHeading();            
-    	         x1=120;                      
-    	         y1=0;                     //destination.getY();
-    	         angle1=0;             //destination.getHeading();
-		       }
-		   else if(temp==1) {
-			
-	     	       x0=120;           
-	    	      y0=0;            
-	    	       angle0=currentPosition.getHeading();             
-	    	      x1=120;                      //destination.getX();
-	    	      y1=30;                     //destination.getY();
-	    	      angle1=0;             //destination.getHeading();
-	    	    if(i==0) Vergleichvalue=currentPosition.getX()*100;
-	    	         i=1;
-			        }
+    	velocity = 40; 
+    	x0=currentPosition.getX()*100;            
+    	y0=currentPosition.getY()*100;            
+    	angle0=0;              
+    	x1=destination.getX();                    
+    	y1=destination.getY();                    
+    	angle1=destination.getHeading();             
     	deltx=x1-x0;
     	delty=y1-y0;
         S0= (float)(Math.sqrt(Math.pow(deltx,2)+Math.pow(delty,2)));
-                  if(deltx!=0) {
-                       a4=(float)(delty/deltx);  //in first quadrant ,Originposition as the starting point   Summe von Winkel
-    	               alpha1=Math.atan(a4);   //phi
-                 }
-                   else{
-                   	alpha1=Math.PI/2;
-                     }
-    	newX=(float)((navigation.getPose().getX())*100*Math.cos(alpha1)+(navigation.getPose().getY())*100*Math.sin(alpha1));
-    	newY=(float)((navigation.getPose().getY())*100*Math.cos(alpha1)-(navigation.getPose().getX())*100*Math.sin(alpha1));
-    	if(temp==1) {
-    		newY=-newY;
-    	}
-        if (flag==0) {
-        	velocity=30;
-	    	pidSetPose2.setParameter(8, 0, 80, 0);  //8 0 80 0
-        	angularVelocity=-pidSetPose2.getY(Vergleichvalue,newY);
-        	if (temp==1) {
-        		angularVelocity=-angularVelocity;
-        	}
-        	/**        	if(angularVelocity<=-2.4) {
-        		angularVelocity=-2.4;
-    		}
-    		else if (angularVelocity>=2.4) {
-    			angularVelocity=2.4;
-    		} */
-	    	update_VWCTRL_Parameter();
-		    exec_VWCTRL_ALGO(); 
-    	}
-    	else if (flag==1) {
-    		   if(flag0==0) { 
-    		      velocity=0;
-    		     angularVelocity=2.1;
-    		     update_VWCTRL_Parameter();
-    			 exec_VWCTRL_ALGO();
-    		   }
-    		   else if (flag0==1) {
-    	    		 pidSetPose2.setParameter(50, 0, 0, 0);
-    		         if(Math.abs(currentPosition.getHeading()-Math.PI/2)>0.05236/4) {
-    		        	 angularVelocity=-pidSetPose2.getY(Math.PI/2,currentPosition.getHeading());
-    		             update_VWCTRL_Parameter();
- 					     exec_VWCTRL_ALGO();
-    		         }
-    		         else {
-    	            	 temp=1;
-    	            	 flag=0;
-    	            	 flag0=0;
-    	                 this.Drehungrichtung=2;
-    		          }
-    		       }
-	    }
-    	else if(flag==2) {
-    	   if(flag0==0) {
-	    	velocity=0;
-	    	angularVelocity=4.0;
-	    	update_VWCTRL_Parameter();
-		    exec_VWCTRL_ALGO();
-    	   }
-	    	if (flag0==1) {
-	    		 pidSetPose2.setParameter(50, 0, 0, 0);
-		         if(Math.abs(currentPosition.getHeading())>0.05236/4) {
-		        	 angularVelocity=pidSetPose2.getY(0,currentPosition.getHeading());
-		             update_VWCTRL_Parameter();
-				     exec_VWCTRL_ALGO();
-		         }
-		         else {
-		     		   flag2=1;
-		     		  this.Drehungrichtung=2;
-		          }
-		         }
-	    } 
-        break;
-		case 1:
-			 velocity = 50;          
-			 angularVelocity=0;
-			update_LINECTRL_Parameter();
-           exec_LINECTRL_ALGO();
-           if((navigation.getPose().getX())*100>180) flag2=2;  //position winkel um 180   
-        break;
-		case 2:                                 //position winkel un 180 mit 90du/3s
-			 velocity = 0;          
-			 angularVelocity=4.0;
-		     update_VWCTRL_Parameter();
-			 exec_VWCTRL_ALGO();
-	        if (navigation.getPose().getHeading()>=Math.PI) flag2=3;
-	     break; 		       		
-		case 3:
-			velocity = 50;          
-			angularVelocity=0;
-			update_LINECTRL_Parameter();
-           exec_LINECTRL_ALGO();
-           if((navigation.getPose().getX())*100>40) flag2=4;    //Position der ersten Parklueck
-        break;
-        case 4:
-			update_PARKCTRL_Parameter();
-			  exec_PARKCTRL_ALGO();
-       break;		
-	} 		
- }
+    	if(deltx!=0) {
+               a4=(float)(delty/deltx);  //in first quadrant ,Originposition as the starting point   Summe von Winkel
+               alpha1=Math.atan(a4);   //phi
+         }
+           else{
+           	alpha1=Math.PI/2;
+             }
+     newX=(float)((navigation.getPose().getX())*100*Math.cos(alpha1)+(navigation.getPose().getY())*100*Math.sin(alpha1));
+     newY=(float)((navigation.getPose().getY())*100*Math.cos(alpha1)-(navigation.getPose().getX())*100*Math.sin(alpha1));
+     if(temp==1) {
+ 		newY=-newY;
+ 	 }
+ 	pidSetPose2.setParameter(8, 0, 80, 0);  //8 0 80 0
+	angularVelocity=-pidSetPose2.getY(Vergleichvalue,newY);
+	if (temp==1) {
+		angularVelocity=-angularVelocity;
+	}
+  }
 	
 	/**
 	 * PARKING along the generated path
 	 */
 	private void exec_PARKCTRL_ALGO(){
+		//Aufgabe 3.4
 		switch (flag5) {
 		case 1:                     //hin
 			 x1a = 0.0;    //Anfangsposition f黵 x1
@@ -546,7 +445,8 @@ public class ControlRST implements IControl {
 		   	        	 flag5=-1;		   	            	     
 			        }
 	         break;
-		case -1:
+		case -1:               //aus
+			 flag5=0;
 			 x1a = 0;    //Anfangsposition  x1
 			 x2a = 0;    //Anfangsposition x2
 		     x1b = 0.23; //Endposition  x1 20
@@ -578,43 +478,9 @@ public class ControlRST implements IControl {
 				angularVelocity=-1.7*dots*(ddx2*dx1 - dx2*ddx1)/(Math.pow(dx1,2) +Math.pow(dx2,2)); // Winkelgeschwindigkeit
 				update_VWCTRL_Parameter();
 			    exec_VWCTRL_ALGO();
-	         }
-		      else {
-		    	  flag5=0;
-			        }
-	         break;
-		}
-
-		if(flag5==0) {
-			      velocity=0;
-	    		  angularVelocity=2.7;
-	      			update_VWCTRL_Parameter();
-	    		    exec_VWCTRL_ALGO();
-		}
-	     if (navigation.getPose().getHeading()>=0)
-        {
-      	 this.leftMotor.stop();
-         this.rightMotor.stop(); 
-         }	
-
-		/**leftMotor.forward();
-		rightMotor.forward();
-		//Aufgabe 3.4
-		//y(t)=P3*X(t)^3+P2*X(t)^2+P1*X(t)+P0;
-		P3=27.089947089946980;
-		P2=-12.190476190476131;
-		P1=2.219047619047612;
-		P0=0;
-		setPointX=currentPosition.getX();
-		setPointY=(((P3*Math.pow(setPointX, 3))+(P2*Math.pow(setPointX, 2))+(P1*setPointX))+P0); //input a,b,c,d aus Guidance
-		setsetPointY1=3*P3*Math.pow(setPointX, 2)+2*P2*setPointX+P1;
-		setsetPointY2=6*P3*setPointX+2*P2;
-		Vges=Math.sqrt(Math.pow(setsetPointY1, 2)+1)*v0;
-		omega=-v0*setsetPointY2/(1+Math.pow(setsetPointY1, 2));
-			
-		update_VWCTRL_Parameter();
-	    exec_VWCTRL_ALGO();*/
-		
+			    break;
+	        }
+	     }
 	}
 	
     private void exec_INACTIVE(){
@@ -636,12 +502,18 @@ public class ControlRST implements IControl {
 		deltvauleLast=deltvaule;
 		deltvaule=w-X;
 		deltvauleInt=deltvauleInt+deltvaule;// intergral
-		//Wtarge=0.08*deltvaule;   //nur P
-		Wtarge=0.14*deltvaule+0.01*(deltvaule-deltvauleLast);  //Wtarge=0.02*deltvaule+0.00023*deltvauleInt+0.0012*(deltvaule-deltvauleLast);  //nur PI:0.08 0.0006oder 0.001(10Kreis)
+//0.2 zu testen
+		 Wtarge=0.14*deltvaule+0.01*(deltvaule-deltvauleLast);   //nur P 0.18
+		//Wtarge=0.2*deltvaule+0.01*(deltvaule-deltvauleLast);//+0.005*(deltvaule-deltvauleLast)  //nur PI:0.08 0.0006oder 0.001(10Kreis)
 		angularVelocity=Wtarge;
+// turn Bedingung schreiben
 		update_VWCTRL_Parameter();
 	    exec_VWCTRL_ALGO();
-
+/**		pidLineFollow1.setParameter(0.2, 0.0026, 0.13,1000);
+		controlOut = pidLineFollow1.getY(X,w);	
+		rightMotor.setPower((int)(highPower+controlOut));
+		leftMotor.setPower((int)(highPower-controlOut));
+		*/
 	}
  /**
      * calculates the left and right angle speed of the both motors with given velocity 
@@ -651,29 +523,22 @@ public class ControlRST implements IControl {
      */
 
 	private void drive(double v, double omega){
-		leftMotor.forward();
-		rightMotor.forward();
 		//Aufgabe 3.2
 		dTime=(double)PidVwControl3.getDTime()/(double)1000;
 		velocityLeft = distancePerDeg*(double)this.encoderLeft.getEncoderMeasurement().getAngleSum()/(double)dTime;// cm/s
-		velocityRight = distancePerDeg*(double)this.encoderRight.getEncoderMeasurement().getAngleSum()/(double)dTime; // cm/s
+		velocityRight = distancePerDeg*(double)this.encoderRight.getEncoderMeasurement().getAngleSum()/(double)dTime; //  cm/s
 		rightSpeed=v+(omega*trackWidth/2);
 		leftSpeed=v-(omega*trackWidth/2);
 		if(Drehungrichtung==0) {
 		     rightSpeed = -rightSpeed ;
 		     leftSpeed = -leftSpeed;
 		 }
-
-	     PidVwControl1.setParameter(0.8, 0.01, 0, 1000);//ursprunglich (0.8, 0.3, 0, 1000)
+		 double deltS=velocityRight*dTime;
+         S=S+deltS;
+// pid-parameter zu testen
+	     PidVwControl1.setParameter(0.8, 0.01, 0, 1000);//ursprunglich 0.8
 		 PidVwControl2.setParameter(0.8, 0.01, 0, 1000);
-		 if(flag2==0) {
-		              this.leftPower=((int)((float)PidVwControl1.getY(velocityLeft, leftSpeed)));
-		              this.rightPower=((int)(1.2*(float)PidVwControl2.getY(velocityRight, rightSpeed))); 
-		 }
-		 else if(flag2==1){
-			 this.leftPower=((int)((float)PidVwControl1.getY(velocityLeft, leftSpeed)));
-			 this.rightPower=((int)((float)PidVwControl2.getY(velocityRight, rightSpeed))); 
-	    }
+//mal Koeffiezient?
 		 if(flag5==1) {
 			 this.leftPower=((int)((float)PidVwControl1.getY(velocityLeft, leftSpeed)));
 			 this.rightPower=((int)(1.59*(float)PidVwControl2.getY(velocityRight, rightSpeed)));  //1.5
@@ -683,40 +548,34 @@ public class ControlRST implements IControl {
 			 this.rightPower=((int)(1.6*(float)PidVwControl2.getY(velocityRight, rightSpeed)));  //1.6
 			 }
 		 else if(flag5==0) {
-			 this.leftPower=((int)((float)PidVwControl1.getY(velocityLeft, leftSpeed)));
-			 this.rightPower=((int)(1.5*(float)PidVwControl2.getY(velocityRight, rightSpeed)));  //1.5
+			 this.leftPower=(int) (Math.round((float)PidVwControl1.getY(velocityLeft, leftSpeed)));
+			 this.rightPower=(int) (Math.round((float)PidVwControl2.getY(velocityRight, rightSpeed)));
 			 }
+
 		 leftMotor.setPower(leftPower);
 		 rightMotor.setPower(rightPower);
 		       //RConsole.println(leftAngSpeed  +", "+rightAngSpeed +";");
-		       //RConsole.println(velocityLeft  +", "+velocityRight +";");
-		 if(flag2==0) {
-		               if(temp==0) {
-		                    if(navigation.getPose().getX()*100>=(S0-2)) {
-				                                                        flag=1;
-				                                                        this.Drehungrichtung=1;
-				     
-				                                                      }  		    	
-		                             }
-		              else if(temp==1){
-			                            if(navigation.getPose().getY()*100>=(S0+3)) {
-				                                                                     flag=2;
-				                                                                   this.Drehungrichtung=0;
-
-		                                                                              }
-		                              }
-				     
-		if(Drehungrichtung==1) {  
-                             if (navigation.getPose().getHeading()/Math.PI*180>=90)      {
-			                                                                              flag0=1;
-                                                                                          }
-                               }
-        else if(Drehungrichtung==0) {
-                                 if (navigation.getPose().getHeading()/Math.PI*180<=0){
-			                                                                             flag0=1;
-                                                                                       }		                 
-                                                         } 
-	                  }
+		       //RConsole.println(velocityLeft  +", "+velocityRight +";");	   
+		 /**		 if(S>=10) {
+		    	flag=2;
+		    	this.Drehungrichtung=1;
+		    } 
+		 
+		 
+		 if(Drehungrichtung==1) {  
+             if (navigation.getPose().getHeading()/Math.PI*180>=0)    //(S>=(Math.PI*trackWidth/2-1.2))  //Drehung um 90Â° in math. pos. Richtung, 15Â°/s  
+               {
+            	 this.leftMotor.stop();
+                 this.rightMotor.stop(); 
+                }
+           }
+          else if(Drehungrichtung==0) {
+             if (navigation.getPose().getHeading()/Math.PI*180<=(-88))//(S<=(6.8-Math.PI*trackWidth/4))  //Drehung um 90Â° in math. neg. Richtung, 30Â°/s  
+              {
+                flag=1;
+                this.Drehungrichtung=2;
+               }		                 
+          }  */
 }
 	
 	
