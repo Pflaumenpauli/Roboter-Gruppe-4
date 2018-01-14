@@ -1,10 +1,15 @@
 package parkingRobot.hsamr0;
 
 import lejos.geom.Line;
+import lejos.geom.Point;
+//import lejos.nxt.LCD;
+import lejos.nxt.Sound;
 import lejos.robotics.navigation.Pose;
 
 import parkingRobot.INavigation;
 import parkingRobot.IPerception;
+//import parkingRobot.INavigation.ParkingSlot;
+import parkingRobot.INavigation.ParkingSlot.ParkingSlotStatus;
 import parkingRobot.IMonitor;
 
 import parkingRobot.hsamr0.NavigationThread;
@@ -82,21 +87,57 @@ public class NavigationAT implements INavigation{
 	 * distance from optical sensor pointing to the right side of robot to obstacle in mm (sensor mounted at the back)
 	 */
 	double backSideSensorDistance	=	0;
-
-
+	
 	/**
 	 * robot specific constant: radius of left wheel
 	 */
-	static final double LEFT_WHEEL_RADIUS	= 	0.028; // only rough guess, to be measured exactly and maybe refined by experiments
+	static final double LEFT_WHEEL_RADIUS	= 	0.02810; // only rough guess, to be measured exactly and maybe refined by experiments
 	/**
 	 * robot specific constant: radius of right wheel
 	 */
-	static final double RIGHT_WHEEL_RADIUS	= 	0.028; // only rough guess, to be measured exactly and maybe refined by experiments
+	static final double RIGHT_WHEEL_RADIUS	= 	0.02765; // only rough guess, to be measured exactly and maybe refined by experiments
 	/**
 	 * robot specific constant: distance between wheels
 	 */
-	static final double WHEEL_DISTANCE		= 	0.114; // only rough guess, to be measured exactly and maybe refined by experiments
-
+	static final double WHEEL_DISTANCE		= 	0.1511; // only rough guess, to be measured exactly and maybe refined by experiments
+	/**
+	 * robot specific constant: usual distance between trail and wall
+	 */
+	static final double TRSH_SG = 0.13;	
+	/**
+	 * robot specific constant: length of robot
+	 */
+	static final double LGNT_ROBOT = 0.45;
+	
+	// Pose verification
+	int 	Po_CORNER_ID = 0;
+	double 	Po_ExpAng = 0;
+	
+	short 	Po_Corn		= 0;
+	short 	Po_AxeP 	= 0;
+	short	Po_RoundF	= 0;
+	
+	static final double TRSH_W = 60;
+	static final double TRSH_G = 90;
+	
+	// Parking
+	double[] Pk_DIST_FS = {0,0,0,0,0};
+	double[] Pk_DIST_BS = {0,0,0,0,0};
+	
+	short Pk_burstFS = 0;
+	short Pk_burstRS = 0;
+	short Pk_burstFE = 1;
+	short Pk_burstRE = 1;
+	
+	Point Pk_PosF1 = new Point(0,0);
+	Point Pk_PosF2 = new Point(0,0);
+	Point Pk_PosR1 = new Point(0,0);
+	Point Pk_PosR2 = new Point(0,0);
+	
+	int Pk_counter = 0;
+	int Pk_update  = 0;
+	
+	public INavigation.ParkingSlot[] Pk_slotList = new ParkingSlot[10];
 	
 	/**
 	 * map array of line references, whose corresponding lines form a closed chain and represent the map of the robot course
@@ -124,7 +165,6 @@ public class NavigationAT implements INavigation{
 	 */
 	NavigationThread navThread = new NavigationThread(this);
 
-	
 	/**
 	 * provides the reference transfer so that the class knows its corresponding perception object (to obtain the measurement
 	 * information from) and starts the navigation thread.
@@ -144,7 +184,6 @@ public class NavigationAT implements INavigation{
 		navThread.start();
 	}
 	
-	
 	// Inputs
 	
 	/* (non-Javadoc)
@@ -159,7 +198,6 @@ public class NavigationAT implements INavigation{
 	public void setDetectionState(boolean isOn){
 		this.parkingSlotDetectionIsOn = isOn;
 	}
-	
 	
 	// 	Class control
 	
@@ -176,7 +214,6 @@ public class NavigationAT implements INavigation{
 //		monitor.writeNavigationComment("Navigation");
 	}
 	
-	
 	// Outputs
 	
 	/* (non-Javadoc)
@@ -192,13 +229,12 @@ public class NavigationAT implements INavigation{
 		return null;
 	}
 	
-	
 	// Private methods
-	
 	/**
 	 * calls the perception methods for obtaining actual measurement data and writes the data into members
 	 */
-	private void updateSensors(){		
+	private void updateSensors()
+	{		
 		this.lineSensorRight		= perception.getRightLineSensor();
 		this.lineSensorLeft  		= perception.getLeftLineSensor();
 		
@@ -214,52 +250,484 @@ public class NavigationAT implements INavigation{
 	}		 	
 	
 	/**
+	 * calculates the axe of the movement
+	 */
+	private short getHeadingAxe()
+	{
+		// Condition based on the angle change
+		double difA = 0;
+		short  movDir = 0;
+
+		// Difference between the real and ideal angle
+		difA = Math.abs((this.pose.getHeading()/Math.PI*180) - Po_ExpAng);
+		//LCD.drawString("Diff A: " + (difA), 0, 3);
+		
+		// Axe detection
+		if ((Po_CORNER_ID % 2) == 0)
+		{
+			if (difA > 80)
+			{
+				movDir = 1;			// y direction
+				//Sound.beepSequenceUp();
+			}
+			else
+			{
+				movDir = 0;			// x direction
+			}
+		}
+		else
+		{
+			if (difA > 80)
+			{
+				movDir = 0;			// x direction
+				//Sound.beepSequence();
+			}
+			else
+			{
+				movDir = 1;			// y direction
+			}
+		}
+		
+		if (((Po_AxeP == 0) && (movDir == 1)) || ((Po_AxeP == 1) && (movDir == 0)))
+		{
+			if (Po_CORNER_ID < 7)
+			{
+				Po_CORNER_ID = Po_CORNER_ID + 1;
+			}
+			else
+			{
+				Po_CORNER_ID = 0;
+				
+				if (this.parkingSlotDetectionIsOn)
+				{
+					Po_RoundF = 1;		// Round finished, don't add any new parking slots
+				}
+			}
+
+			Po_Corn = 1;
+			Sound.twoBeeps();
+		}
+		else
+		{
+			Po_Corn = 0;
+		}
+		
+		Po_AxeP = movDir;
+		
+		return movDir;
+	}
+	
+	/**
 	 * calculates the robot pose from the measurements
 	 */
-	private void calculateLocation(){
+	private void calculateLocation()
+	{
 		double leftAngleSpeed 	= this.angleMeasurementLeft.getAngleSum()  / ((double)this.angleMeasurementLeft.getDeltaT()/1000);  //degree/seconds
 		double rightAngleSpeed 	= this.angleMeasurementRight.getAngleSum() / ((double)this.angleMeasurementRight.getDeltaT()/1000); //degree/seconds
 
-		double vLeft		= (leftAngleSpeed  * Math.PI * LEFT_WHEEL_RADIUS ) / 180 ; //velocity of left  wheel in m/s
-		double vRight		= (rightAngleSpeed * Math.PI * RIGHT_WHEEL_RADIUS) / 180 ; //velocity of right wheel in m/s		
-		double w 			= (vRight - vLeft) / WHEEL_DISTANCE; //angular velocity of robot in rad/s
+		double vLeft	= (leftAngleSpeed  * Math.PI * LEFT_WHEEL_RADIUS ) / 180 ; //velocity of left  wheel in m/s
+		double vRight	= (rightAngleSpeed * Math.PI * RIGHT_WHEEL_RADIUS) / 180 ; //velocity of right wheel in m/s		
+		double w 		= (vRight - vLeft) / WHEEL_DISTANCE; //angular velocity of robot in rad/s
 		
-		Double R 			= new Double(( WHEEL_DISTANCE / 2 ) * ( (vLeft + vRight) / (vRight - vLeft) ));								
+		Double R 	= new Double(( WHEEL_DISTANCE / 2 ) * ( (vLeft + vRight) / (vRight - vLeft) ));								
 		
-		double ICCx 		= 0;
-		double ICCy 		= 0;
+		double ICCx = 0;
+		double ICCy = 0;
 
-		double xResult 		= 0;
-		double yResult 		= 0;
-		double angleResult 	= 0;
+		double W_xResult 		= 0;
+		double W_yResult 		= 0;
+		double W_angleResult 	= 0;
+		
+		double E_xResult 		= 0;
+		double E_yResult 		= 0;
+		double E_angleResult 	= 0;
+		
+		double xId = 0;
+		double yId = 0;
+		
+		short axe = 0;
 		
 		double deltaT       = ((double)this.angleMeasurementLeft.getDeltaT())/1000;
 		
-		if (R.isNaN()) { //robot don't move
-			xResult			= this.pose.getX();
-			yResult			= this.pose.getY();
-			angleResult 	= this.pose.getHeading();
-		} else if (R.isInfinite()) { //robot moves straight forward/backward, vLeft==vRight
-			xResult			= this.pose.getX() + vLeft * Math.cos(this.pose.getHeading()) * deltaT;
-			yResult			= this.pose.getY() + vLeft * Math.sin(this.pose.getHeading()) * deltaT;
-			angleResult 	= this.pose.getHeading();
-		} else {			
+		// Odometry calculations
+		if (R.isNaN()) 				//robot don't move
+		{
+			W_xResult		= this.pose.getX();
+			W_yResult		= this.pose.getY();
+			W_angleResult 	= this.pose.getHeading();
+		} 
+		else if (R.isInfinite()) 	//robot moves straight forward/backward, vLeft==vRight
+		{ 
+			W_xResult		= this.pose.getX() + vLeft * Math.cos(this.pose.getHeading()) * deltaT;
+			W_yResult		= this.pose.getY() + vLeft * Math.sin(this.pose.getHeading()) * deltaT;
+			W_angleResult 	= this.pose.getHeading();
+		} 
+		else 
+		{			
 			ICCx = this.pose.getX() - R.doubleValue() * Math.sin(this.pose.getHeading());
 			ICCy = this.pose.getY() + R.doubleValue() * Math.cos(this.pose.getHeading());
 		
-			xResult 		= Math.cos(w * deltaT) * (this.pose.getX()-ICCx) - Math.sin(w * deltaT) * (this.pose.getY() - ICCy) + ICCx;
-			yResult 		= Math.sin(w * deltaT) * (this.pose.getX()-ICCx) + Math.cos(w * deltaT) * (this.pose.getY() - ICCy) + ICCy;
-			angleResult 	= this.pose.getHeading() + w * deltaT;
+			W_xResult 		= Math.cos(w * deltaT) * (this.pose.getX()-ICCx) - Math.sin(w * deltaT) * (this.pose.getY() - ICCy) + ICCx;
+			W_yResult 		= Math.sin(w * deltaT) * (this.pose.getX()-ICCx) + Math.cos(w * deltaT) * (this.pose.getY() - ICCy) + ICCy;
+			W_angleResult 	= this.pose.getHeading() + w * deltaT;
 		}
 		
-		this.pose.setLocation((float)xResult, (float)yResult);
-		this.pose.setHeading((float)angleResult);		 
+		this.pose.setLocation((float)W_xResult, (float)W_yResult);
+		this.pose.setHeading((float)W_angleResult);
+		
+		// Conversion to grads
+		W_angleResult = W_angleResult/Math.PI*180;
+		
+		// Get the heading axe
+		axe = getHeadingAxe();
+		
+		// Verify the coordinates and the heading angle
+		if (Po_Corn == 1)
+		{
+			switch (Po_CORNER_ID)
+			{
+				case 0:
+					E_xResult = 0;
+					E_yResult = 0;
+					Po_ExpAng = 0;
+					break;
+				case 1:
+					E_xResult = 1.8;
+					E_yResult = 0;
+					Po_ExpAng = 90;
+					break;
+				case 2:
+					E_xResult = 1.8;
+					E_yResult = 0.6;
+					Po_ExpAng = 180;
+					break;
+				case 3:
+					E_xResult = 1.5;
+					E_yResult = 0.6;
+					Po_ExpAng = 270;
+					break;
+				case 4:
+					E_xResult = 1.5;
+					E_yResult = 0.3;
+					Po_ExpAng = 180;
+					break;
+				case 5:
+					E_xResult = 0.3;
+					E_yResult = 0.3;
+					Po_ExpAng = 90;
+					break;
+				case 6:
+					E_xResult = 0.3;
+					E_yResult = 0.6;
+					Po_ExpAng = 180;
+					break;
+				case 7:
+					E_xResult = 0;
+					E_yResult = 0.6;
+					Po_ExpAng = 270;
+					break;	
+			}
+			
+			E_angleResult = W_angleResult;
+			/*
+			//Test
+			E_xResult = W_xResult;
+			E_yResult = W_yResult;
+			*/
+		}
+		else
+		{
+			// white = 0, black = 2, grey = 1
+			if ((lineSensorLeft == 0) && (lineSensorRight == 0)) 	// Robot moves on the black line
+			{
+				if (axe == 0)		// movement in x direction
+				{
+					switch (Po_CORNER_ID)
+					{
+					case 0:  
+						yId = 0;
+						if (this.pose.getX() < 1.6)
+							E_angleResult = Po_ExpAng;
+						else
+							E_angleResult = W_angleResult;
+						break;
+					case 2:
+						yId = 0.6;
+						if (this.pose.getX() > 1.6)
+							E_angleResult = Po_ExpAng;
+						else
+							E_angleResult = W_angleResult;
+						break;
+					case 4:  
+						yId = 0.3;
+						if (this.pose.getX() > 0.4)
+							E_angleResult = Po_ExpAng;
+						else
+							E_angleResult = W_angleResult;
+						break;
+					case 6:  
+						yId = 0.6;
+						if (this.pose.getX() > 0.1)
+							E_angleResult = Po_ExpAng;
+						else
+							E_angleResult = W_angleResult;
+						break;
+					default: 
+						yId = W_yResult;
+						E_angleResult = W_angleResult;
+						break;
+					}
+					
+					E_xResult = W_xResult;
+					E_yResult = yId;
+				}
+				else if (axe == 1)	// movement in y direction
+				{
+					switch (Po_CORNER_ID)
+					{
+					case 1:  
+						xId = 1.8;
+						if (this.pose.getY() < 0.5)
+							E_angleResult = Po_ExpAng;
+						else
+							E_angleResult = W_angleResult;
+						break;
+					case 3:
+						if (this.pose.getY() > 0.4)
+							E_angleResult = Po_ExpAng;
+						else
+							E_angleResult = W_angleResult;
+						xId = 1.5; 
+						break;
+					case 5:
+						if (this.pose.getY() < 0.5)
+							E_angleResult = Po_ExpAng;
+						else
+							E_angleResult = W_angleResult;
+						xId = 0.3; 
+						break;
+					case 7:
+						if (this.pose.getY() > 0.1)
+							E_angleResult = Po_ExpAng;
+						else
+							E_angleResult = W_angleResult;
+						xId = 0; 
+						break;
+					default: 
+						xId = W_xResult;
+						E_angleResult = W_angleResult;
+						break;
+					}
+					
+					E_yResult = W_yResult;
+					E_xResult = xId;
+				}
+			}
+			else if(((lineSensorLeft == 0) && (lineSensorRight == 2)) || ((lineSensorLeft == 2) && (lineSensorRight == 0)))
+			{
+				E_xResult = W_xResult;
+				E_yResult = W_yResult;
+				
+	        	if (W_angleResult >= TRSH_W)
+	        	{
+	        		E_angleResult = TRSH_W;
+	        	}
+	        	else if (W_angleResult >= (360 - TRSH_W))
+	        	{
+	        		E_angleResult = 360 - TRSH_W;
+	        	}
+	        	else
+	        	{
+	        		E_angleResult = W_angleResult;
+	        	}
+			}
+			else if(((lineSensorLeft == 0) && (lineSensorRight == 1)) || ((lineSensorLeft == 1) && (lineSensorRight == 0)))
+			{
+				E_xResult = W_xResult;
+				E_yResult = W_yResult;
+				
+	        	if (W_angleResult >= TRSH_G)
+	        	{
+	        		E_angleResult = TRSH_G;
+	        	}
+	        	else if (W_angleResult >= (360 - TRSH_G))
+	        	{
+	        		E_angleResult = 360 - TRSH_G;
+	        	}
+	        	else
+	        	{
+	        		E_angleResult = W_angleResult;
+	        	}
+			}
+			else
+			{
+				E_xResult = W_xResult;
+				E_yResult = W_yResult;
+				E_angleResult = W_angleResult;
+			}
+		}
+		
+		// Conversion to rads
+		W_angleResult = W_angleResult*Math.PI/180;
+		E_angleResult = E_angleResult*Math.PI/180;
+		
+		this.pose.setLocation((float)E_xResult, (float)E_yResult);
+		this.pose.setHeading((float)E_angleResult);
+		
+		/*
+		// Integration deviation correction
+		this.pose.setLocation((float)(W_xResult), (float)(W_yResult + (0.01*22.4)/175));
+		this.pose.setHeading((float)((W_angleResult + 14/175)*Math.PI/180));
+		*/
 	}
 
 	/**
 	 * detects parking slots and manage them by initializing new slots, re-characterizing old slots or merge old and detected slots. 
 	 */
-	private void detectParkingSlot(){
-		return; // has to be implemented by students
+	private void detectParkingSlot()
+	{		
+		Point PosS = new Point(0,0);
+		Point PosE = new Point(0,0);
+		
+		double sum_F = 0;
+		double sum_B = 0;
+		
+		double distance_F = 0;
+		double distance_B = 0;
+		
+		int SlotID = Pk_counter;
+		INavigation.ParkingSlot.ParkingSlotStatus SlotStatus = ParkingSlotStatus.NOT_SUITABLE_FOR_PARKING;
+		
+		short axe = getHeadingAxe();
+		
+		for (int i = 1; i <= 4; i++)
+		{
+			Pk_DIST_FS[i] = Pk_DIST_FS[i-1];
+			sum_F = Pk_DIST_FS[i] + sum_F;
+			
+			Pk_DIST_BS[i] = Pk_DIST_BS[i-1];
+			sum_B = Pk_DIST_BS[i] + sum_B;
+		}
+		
+		Pk_DIST_FS[0] = frontSensorDistance;
+		distance_F = (sum_F + Pk_DIST_FS[0])/5;
+		
+		Pk_DIST_BS[0] = backSideSensorDistance;
+		distance_B = (sum_B + Pk_DIST_BS[0])/5;
+		
+		// Saving the begin point of the PS
+		if ((distance_F <= TRSH_SG) && (Pk_burstFS == 0))
+		{
+			Pk_PosF1.setLocation(this.pose.getX(), this.pose.getY());
+			Pk_burstFS = 1;
+			Pk_burstFE = 0;
+		}
+		
+		if ((distance_B <= TRSH_SG) && (Pk_burstRS == 0))
+		{
+			Pk_PosR1.setLocation(this.pose.getX(), this.pose.getY());
+			Pk_burstRS = 1;
+			Pk_burstRE = 0;
+		}
+				
+		// Saving the end point of the PS
+		if ((distance_F >= TRSH_SG) && (Pk_burstFE == 0))
+		{
+			Pk_PosF2.setLocation(this.pose.getX(), this.pose.getY());
+			Pk_burstFS = 0;
+			Pk_burstFE = 1;
+		}
+		
+		if ((distance_B >= TRSH_SG) && (Pk_burstRE == 0))
+		{
+			Pk_PosR2.setLocation(this.pose.getX(), this.pose.getY());
+			Pk_burstRS = 0;
+			//burstRE = 1;
+		}
+		
+		if (Po_RoundF == 0)			// Saving new parking slots
+		{
+			if ((Pk_burstRS == 0) && (Pk_burstRE == 0) && (Pk_counter < 10))
+			{
+				PosS.setLocation(((Pk_PosF1.getX() + Pk_PosR1.getX())/2), ((Pk_PosF1.getY() + Pk_PosR1.getY())/2));
+				PosE.setLocation(((Pk_PosF2.getX() + Pk_PosR2.getX())/2), ((Pk_PosF2.getY() + Pk_PosR2.getY())/2));
+				
+				// Evaluation of the slot
+				if (axe == 0)
+				{
+					if ((PosE.getX() - PosS.getX()) > LGNT_ROBOT)
+					{
+						SlotStatus = ParkingSlotStatus.SUITABLE_FOR_PARKING;
+					}
+					else
+					{
+						SlotStatus = ParkingSlotStatus.NOT_SUITABLE_FOR_PARKING;
+					}
+				}
+				else
+				{
+					if ((PosE.getY() - PosS.getY()) > LGNT_ROBOT)
+					{
+						SlotStatus = ParkingSlotStatus.SUITABLE_FOR_PARKING;
+					}
+					else
+					{
+						SlotStatus = ParkingSlotStatus.NOT_SUITABLE_FOR_PARKING;
+					}
+				}
+				
+				Pk_slotList[Pk_counter] = new INavigation.ParkingSlot(SlotID, PosE, PosS, SlotStatus, 0);
+				Pk_counter ++;
+				
+				Pk_burstRE = 1;
+			}
+		}
+		else					// Updating the old slots
+		{
+			if ((Pk_burstRS == 0) && (Pk_burstRE == 0) && (Pk_update <= Pk_counter))
+			{
+				PosS.setLocation(((Pk_PosF1.getX() + Pk_PosR1.getX())/2), ((Pk_PosF1.getY() + Pk_PosR1.getY())/2));
+				PosE.setLocation(((Pk_PosF2.getX() + Pk_PosR2.getX())/2), ((Pk_PosF2.getY() + Pk_PosR2.getY())/2));
+				
+				// Evaluation of the slot
+				if (axe == 0)
+				{
+					if ((PosE.getX() - PosS.getX()) > LGNT_ROBOT)
+					{
+						SlotStatus = ParkingSlotStatus.SUITABLE_FOR_PARKING;
+					}
+					else
+					{
+						SlotStatus = ParkingSlotStatus.NOT_SUITABLE_FOR_PARKING;
+					}
+				}
+				else
+				{
+					if ((PosE.getY() - PosS.getY()) > LGNT_ROBOT)
+					{
+						SlotStatus = ParkingSlotStatus.SUITABLE_FOR_PARKING;
+					}
+					else
+					{
+						SlotStatus = ParkingSlotStatus.NOT_SUITABLE_FOR_PARKING;
+					}
+				}
+				
+				Pk_slotList[Pk_update] = new INavigation.ParkingSlot(SlotID, PosE, PosS, SlotStatus, 0);
+				
+				if (Pk_update < Pk_counter)
+				{
+					Pk_update ++;
+				}
+				else
+				{
+					Pk_update = 0;
+				}
+				
+				Pk_burstRE = 1;
+			}
+		}
+		
+		return; // data are saved in the shared variable
 	}
 }
