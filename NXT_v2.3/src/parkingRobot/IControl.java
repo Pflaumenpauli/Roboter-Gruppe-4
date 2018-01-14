@@ -98,5 +98,8 @@ public interface IControl {
 	 */
 	public void exec_CTRL_ALGO();
 
+
+	public void setParkingDirection(int i);
+
 }
 
