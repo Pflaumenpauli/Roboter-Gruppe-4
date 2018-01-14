@@ -71,19 +71,30 @@ public class BluetoothActivity extends Activity {
         //add paired devices to the ArrayAdapter
         addPairedDevices();
     }
-	
+
+
+	/**
+	 * Called when the activity is becoming visible to the user.
+	 * Followed by onResume() if the activity comes to the foreground, or onStop() if it becomes hidden.
+	 */
 	public void onStart(){ 
 		//ensure bluetooth is enabled 
 		ensureBluetoothIsEnabled();
 		super.onStart(); 	
 	}
-	
+
+	/**
+	 * This method is called if the user returns to the activity.
+	 */
 	public void onResume(){
 		//necessary if bluetooth-enabling-dialog appears   
 		addPairedDevices();
 		super.onResume();
 	}
-	
+
+	/**
+	 * This method ensures that the Bluetooth is enabled. If it is not, the Bluettoth will be enable.
+	 */
 	private void ensureBluetoothIsEnabled(){
 		//if Bluetooth is not enabled, enable it now
 		if (!mBtAdapter.isEnabled()) {    		
@@ -91,7 +102,11 @@ public class BluetoothActivity extends Activity {
     	    startActivityForResult(enableBtIntent, REQUEST_ENABLE_BT);
     	}
 	}
-	
+
+
+	/**
+	 * This method add devices to the robot which are paired with the robot.
+	 */
 	private void addPairedDevices(){
 		// ensure devices wont be added twice
 		mPairedDevicesArrayAdapter.clear();
@@ -117,7 +132,14 @@ public class BluetoothActivity extends Activity {
 	    	}
 		}
 	}
-    
+
+
+	/**
+	 * When the user is done with the subsequent activity and returns, the system calls the activity's onActivityResult() method.
+	 * @param requestCode
+	 * @param resultCode
+	 * @param data
+	 */
     public void onActivityResult(int requestCode, int resultCode, Intent data){
     	if(!mBtAdapter.isEnabled()){
 			Toast.makeText(this, "Please ensure bluetooth is enabled!", Toast.LENGTH_LONG).show();
@@ -128,8 +150,14 @@ public class BluetoothActivity extends Activity {
 			BluetoothActivity.this.finish();
 		}
     }
-    
-    @Override
+
+	/**
+	 * This method specifies what the activity has to do if the user press the back key.
+	 * @param keyCode
+	 * @param event
+	 * @return
+	 */
+	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event)  {
 		//handle click on back button
 	    if (keyCode == KeyEvent.KEYCODE_BACK) {
@@ -138,8 +166,10 @@ public class BluetoothActivity extends Activity {
 	    }
 	    return super.onKeyDown(keyCode, event);
 	}
-    
- // The on-click listener for all devices in the ListViews
+
+	/**
+	 *  The on-click listener for all devices in the ListViews
+	 */
     private OnItemClickListener mDeviceClickListener = new OnItemClickListener(){
     	public void onItemClick(AdapterView<?> av,View v, int arg2, long arg3){
 			// Cancel discovery because it's costly and we're about to connect
@@ -159,15 +189,21 @@ public class BluetoothActivity extends Activity {
             
     	}
     };
-    
-    private void returnToPriviousActivityWithoutDevice(){
+
+	/**
+	 * This method would be called if the Bluetooth connections fails or doesn't get any result.
+	 */
+	private void returnToPriviousActivityWithoutDevice(){
     	Intent finishIntent = new Intent();
         finishIntent.putExtra(EXTRA_DEVICE_ADDRESS, "finish");
         setResult(Activity.RESULT_CANCELED, finishIntent);
         BluetoothActivity.this.finish();
     }
 
-	 public void discoverDevices(){
+	/**
+	 * searching for devices to pair with
+	 */
+	public void discoverDevices(){
     	// If we're already discovering, stop it
         if (mBtAdapter.isDiscovering()) {
             mBtAdapter.cancelDiscovery();
@@ -176,8 +212,10 @@ public class BluetoothActivity extends Activity {
         Toast.makeText(this, "Listining for paired devices.", Toast.LENGTH_LONG).show();
     	mBtAdapter.startDiscovery();   
     }
-		
-	//The BroadcastReceiver that listens for discovered devices 
+
+	/**
+	 * The BroadcastReceiver that listens for discovered devices
+	 */
     private final BroadcastReceiver mReceiver = new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -196,6 +234,9 @@ public class BluetoothActivity extends Activity {
         }
     };
 
+	/**
+	 * called if another activity comes in the foreground
+	 */
 	@Override
 	protected void onPause() {
 		super.onPause();

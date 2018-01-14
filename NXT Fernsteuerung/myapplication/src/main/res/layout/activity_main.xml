@@ -104,8 +104,8 @@
             android:text="driven distance: "
             android:layout_toEndOf="@+id/textViewModeValue"
             android:layout_toRightOf="@+id/textViewModeValue"
-            android:layout_marginLeft="75dp"
-            android:layout_marginStart="75dp"
+            android:layout_marginLeft="65dp"
+            android:layout_marginStart="65dp"
             android:layout_below="@+id/imageParcours"
             android:layout_marginTop="25dp"
             android:textSize="20sp"/>
@@ -114,7 +114,7 @@
             android:id="@+id/textViewDistanceValue"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="0.0 cm"
+            android:text="0.00 cm"
             android:layout_toRightOf="@+id/textViewDistance"
             android:layout_toEndOf="@+id/textViewDistance"
             android:layout_marginLeft="25dp"
@@ -122,6 +122,22 @@
             android:layout_below="@+id/imageParcours"
             android:layout_marginTop="25dp"
             android:textSize="20sp"/>
+
+
+        <ToggleButton
+            android:id="@+id/buttonTesten"
+            android:layout_width="120dp"
+            android:layout_height="50dp"
+            android:layout_alignParentRight="true"
+            android:layout_alignParentEnd="true"
+            android:layout_alignParentBottom="true"
+            android:layout_marginRight="12dp"
+            android:layout_marginEnd="12dp"
+            android:layout_marginBottom="70dp"
+            android:textSize="20sp"
+            android:textOff="TESTEN"
+            android:textOn="TESTEN"
+            android:text="TESTEN" />
 
 
 
