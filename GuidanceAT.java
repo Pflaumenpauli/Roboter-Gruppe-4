@@ -150,6 +150,7 @@ public class GuidanceAT {
 	 */
 	static Line[] map = {line0, line1, line2, line3, line4, line5, line6, line7};
 	
+	static boolean parkedin = false;					//Hilfsvariable f¨¹r ausparken
 	
 	/**
 	 * main method of project 'ParkingRobot'
@@ -189,7 +190,6 @@ public class GuidanceAT {
 	    ParkingSlot[] slotList = navigation.getParkingSlots();			//Liste der Parkl¨¹ken
 		ParkingSlot slot = null;				    //Aktuelle Parkl¨¹ke
 		Pose pose = null;						//Positionsvariable
-		boolean parkedin = false;					//Hilfsvariable f¨¹r ausparken
 		navigation.setDetectionState(false);		//Parkl¨¹ken detektieren
 		boolean stateJudge = true;	           //Zustand¨¹bergang pr¨¹fen
 		
@@ -435,7 +435,7 @@ public class GuidanceAT {
 								
 						case WINKEL_ADJUSTMENT:
 							
-							if ( slot.getID()==1||slot.getID()==2)
+							if ( slot.getID()==0||slot.getID()==1)
 							{
 							 while (pose.getHeading()/Math.PI*180>0)
 							   {
@@ -454,7 +454,7 @@ public class GuidanceAT {
 								   missionThis = SubMissionParkThis.PARK_IN;	//Zustandsuebrgang
 							   }
 							}
-							if (slot.getID()==3)
+							if (slot.getID()==2)
 							{
 								while (pose.getHeading()/Math.PI*180>90)
 								   {
@@ -474,7 +474,7 @@ public class GuidanceAT {
 								   }
 							}
 							
-							if (slot.getID()==4)
+							if (slot.getID()==3)
 							{
 								while (pose.getHeading()/Math.PI*180>180)
 								   {
