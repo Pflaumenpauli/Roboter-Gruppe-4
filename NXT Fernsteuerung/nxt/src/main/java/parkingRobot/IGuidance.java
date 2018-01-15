@@ -15,9 +15,13 @@ public interface IGuidance {
          */
         DRIVING,
         /**
-         * indicates that robot is performing an parking maneuver
+         * indicates that robot is not doing anything -> pause
          */
         INACTIVE,
+        /**
+         * indicates that robot is performing an parking maneuver
+         */
+        PARKING,
         /**
          * indicates that shutdown of main program has initiated
          */

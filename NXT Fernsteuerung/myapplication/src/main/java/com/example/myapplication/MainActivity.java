@@ -715,7 +715,6 @@ public class MainActivity extends AppCompatActivity {
         IAndroidHmi.ParkingSlot parkingSlot;
 
 
-        System.out.println("number of Parkingslots: " + hmiModule.getNoOfParkingSlots());
         if (hmiModule != null) {
             numberNew = hmiModule.getNoOfParkingSlots();
         } else {
@@ -767,21 +766,19 @@ public class MainActivity extends AppCompatActivity {
 
                 btn.setX(xSet);
                 btn.setY(ySet);
-                btn.setTextColor(Color.BLACK);
 
                 //set the color of the button
                 if (parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
                     btn.setBackgroundColor(Color.GREEN);
+                    btn.setTextColor(Color.BLACK);
                     status = "suitable";
-                     //choose button
-                    btn.setEnabled(true);
+
                     btn.setText("suitable");
                 } else {
                     btn.setBackgroundColor(Color.RED);
+                    btn.setTextColor(Color.DKGRAY);
                     status = "notsuitable";
 
-                    //enable button becuase the parking slot is not suitable for the robot
-                    btn.setEnabled(false);
                     btn.setText("not suitable");
                 }
 
@@ -796,10 +793,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Button btn = (Button) findViewById(view.getId());
 
-                         Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
-
                          //if the button is enable, the status of the parking slot is suitable
-                        if (btn.isEnabled() == true) {
+                        if (btn.getCurrentTextColor() == Color.BLACK) {
                             //set ParkSlot
                             //convert String in Integer
                             int id = Integer.parseInt(btn.getHint().toString());
@@ -812,6 +807,9 @@ public class MainActivity extends AppCompatActivity {
                             //change the label of the button
                             final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
                             scoutButton.setEnabled(false);
+
+                            //Ausgabe für den Benutzer
+                            Toast.makeText(MainActivity.this, "Einparkvorgang eingeleitet.", Toast.LENGTH_LONG).show();
 
                         } else if (btn.isEnabled() == false) {
                             Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
@@ -848,22 +846,19 @@ public class MainActivity extends AppCompatActivity {
 
                 btn.setX(xSet);
                 btn.setY(ySet);
-                btn.setTextColor(Color.BLACK);
 
                 //set the color of the button
                 if (parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
                     btn.setBackgroundColor(Color.GREEN);
+                    btn.setTextColor(Color.BLACK);
                     status = "suitable";
 
-                    //Button has to be enable
-                    btn.setEnabled(true);
                     btn.setText("suitable");
                 } else {
                     btn.setBackgroundColor(Color.RED);
+                    btn.setTextColor(Color.DKGRAY);
                     status = "notsuitable";
 
-                    //button has to be disabled
-                    btn.setEnabled(false);
                     btn.setText("not suitable");
                 }
 
@@ -878,10 +873,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Button btn = (Button) findViewById(view.getId());
 
-                        Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
-
                         //if the button is enabled, the status of the parking slot is suitable
-                        if (btn.isEnabled() == true) {
+                        if (btn.getCurrentTextColor() == Color.BLACK) {
                             //set parking slot
                             //convert String in Integer
                             int id = Integer.parseInt(btn.getHint().toString());
@@ -895,7 +888,10 @@ public class MainActivity extends AppCompatActivity {
                             final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
                             scoutButton.setEnabled(false);
 
-                        } else if (btn.isEnabled() == false) {
+                            //Ausgabe für den Benutzer
+                            Toast.makeText(MainActivity.this, "Einparkvorgang eingeleitet.", Toast.LENGTH_SHORT).show();
+
+                        } else if (btn.getCurrentTextColor() == Color.DKGRAY) {
                             Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
@@ -933,22 +929,19 @@ public class MainActivity extends AppCompatActivity {
 
                 btn.setX(xSet);
                 btn.setY(ySet);
-                btn.setTextColor(Color.BLACK);
 
                  //set the color of the button
                 if (parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
                     btn.setBackgroundColor(Color.GREEN);
+                    btn.setTextColor(Color.BLACK);
                     status = "suitable";
 
-                    //make the Button enable
-                    btn.setEnabled(true);
                     btn.setText("suitaböe");
                 } else {
                     btn.setBackgroundColor(Color.RED);
+                    btn.setTextColor(Color.DKGRAY);
                     status = "notsuitable";
 
-                    //make the Button disable
-                    btn.setEnabled(false);
                     btn.setText("not suitable");
                 }
 
@@ -963,10 +956,8 @@ public class MainActivity extends AppCompatActivity {
                     public void onClick(View view) {
                         Button btn = (Button) findViewById(view.getId());
 
-                        Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
-
                         //if the button is enable, the status is suitable
-                        if (btn.isEnabled() == true) {
+                        if (btn.getCurrentTextColor() == Color.BLACK) {
                             //set ParkSlot
                             //convert String in Integer
                             int id = Integer.parseInt(btn.getHint().toString());
@@ -980,7 +971,10 @@ public class MainActivity extends AppCompatActivity {
                             final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
                             scoutButton.setEnabled(false);
 
-                        } else if (btn.isEnabled() == false) {
+                            //Ausgabe für den Benutzer
+                            Toast.makeText(MainActivity.this, "Einparkvorgang eingeleitet.", Toast.LENGTH_SHORT).show();
+
+                        } else if (btn.getCurrentTextColor() == Color.DKGRAY) {
                             Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
                         } else {
                             Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
@@ -1065,28 +1059,20 @@ public class MainActivity extends AppCompatActivity {
 
                     btn.setX(xSet);
                     btn.setY(ySet);
-                    btn.setTextColor(Color.BLACK);
 
                     //set the colour of the button
                     if (parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
                         btn.setBackgroundColor(Color.GREEN);
+                        btn.setTextColor(Color.BLACK);
                         status = "suitable";
 
-                        //BUtton enable
-                        btn.setEnabled(true);
                         btn.setText("suitable");
                     } else {
                         btn.setBackgroundColor(Color.RED);
+                        btn.setTextColor(Color.DKGRAY);
                         status = "notsuitable";
 
-                        //disable Button
-                        btn.setEnabled(false);
                         btn.setText("not suitable");
-
-                        //ID des Buttons ändern
-                       /* btn.setId(R.id.notSuitable);
-                        oneNotSuitable = true;
-                        System.out.println(oneNotSuitable);*/
                     }
 
                     //change the label of the button
@@ -1098,10 +1084,8 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             Button btn = (Button) findViewById(view.getId());
 
-                            Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
-
                             // if the button is enable, the status is suitable
-                            if (btn.isEnabled() == true) {
+                            if (btn.getCurrentTextColor() == Color.BLACK) {
                                 // set the parking slot -> but here doesn't exist any hmiModule (so you can't do this step)
 
                                 if (hmiModule != null) {
@@ -1112,14 +1096,19 @@ public class MainActivity extends AppCompatActivity {
 
                                     // change to the mode ParkThis and start the autonomous parking process
                                     hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
+
+                                    //Ausgabe für den Benutzer
+                                    Toast.makeText(MainActivity.this, "Einparkvorgang eingeleitet.", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(MainActivity.this, "Parklücke " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_SHORT).show();
                                 }
 
                                 //change the label of the button
                                 final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
                                 scoutButton.setEnabled(false);
 
-                            } else if (btn.isEnabled() == false) {
-                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else if (btn.getCurrentTextColor() == Color.DKGRAY) {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
                             }
@@ -1153,28 +1142,20 @@ public class MainActivity extends AppCompatActivity {
 
                     btn.setX(xSet);
                     btn.setY(ySet);
-                    btn.setTextColor(Color.BLACK);
 
                     //set the colour of the button
                     if (parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
                         btn.setBackgroundColor(Color.GREEN);
+                        btn.setTextColor(Color.BLACK);
                         status = "suitable";
 
-                        //enable the Button
-                        btn.setEnabled(true);
                         btn.setText("suitable");
                     } else {
                         btn.setBackgroundColor(Color.RED);
+                        btn.setTextColor(Color.DKGRAY);
                         status = "notsuitable";
 
-                        //disable the Button
-                        btn.setEnabled(false);
                         btn.setText("not suitable");
-
-                        //ID des Buttons ändern
-                       /* btn.setId(R.id.notSuitable);
-                        oneNotSuitable = true;
-                        System.out.println(oneNotSuitable);*/
                     }
 
                     //change the label of the button
@@ -1186,10 +1167,8 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             Button btn = (Button) findViewById(view.getId());
 
-                            Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
-
                             //if the button is enable, the status is suitable
-                            if (btn.isEnabled() == true) {
+                            if (btn.getCurrentTextColor() == Color.BLACK) {
                                 // set parking slot -> it doesn't exist any hmiModule (so you can't do this step)
 
                                 if (hmiModule != null) {
@@ -1200,14 +1179,19 @@ public class MainActivity extends AppCompatActivity {
 
                                     // change to the mode ParkThis and start the autonomous parking process
                                     hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
+
+                                    //Ausgabe für den Benutzer
+                                    Toast.makeText(MainActivity.this, "Einparkvorgang eingeleitet.", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(MainActivity.this, "Parklücke " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_SHORT).show();
                                 }
 
                                 //change the label of the button
                                 final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
                                 scoutButton.setEnabled(false);
 
-                            } else if (btn.isEnabled() == false) {
-                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else if (btn.getCurrentTextColor() == Color.DKGRAY) {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
                             }
@@ -1244,23 +1228,20 @@ public class MainActivity extends AppCompatActivity {
 
                     btn.setX(xSet);
                     btn.setY(ySet);
-                    btn.setTextColor(Color.BLACK);
 
 
                     //set the colour of the button
                     if (parkingSlot.getParkingSlotStatus() == IAndroidHmi.ParkingSlot.ParkingSlotStatus.SUITABLE_FOR_PARKING) {
                         btn.setBackgroundColor(Color.GREEN);
+                        btn.setTextColor(Color.BLACK);
                         status = "suitable";
 
-                        //enable the Button
-                        btn.setEnabled(true);
-                        btn.setText("suitaböe");
+                        btn.setText("suitable");
                     } else {
                         btn.setBackgroundColor(Color.RED);
+                        btn.setTextColor(Color.DKGRAY);
                         status = "notsuitable";
 
-                        //disable the Button
-                        btn.setEnabled(false);
                         btn.setText("not suitable");
                     }
 
@@ -1273,10 +1254,8 @@ public class MainActivity extends AppCompatActivity {
                         public void onClick(View view) {
                             Button btn = (Button) findViewById(view.getId());
 
-                            Toast.makeText(MainActivity.this, "Button " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_LONG).show();
-
                             //if the button is enable, the status is suitable
-                            if (btn.isEnabled() == true) {
+                            if (btn.getCurrentTextColor() == Color.BLACK) {
                                 // set the parking slot -> it doesn't exist any hmiModule (so you can't do this step)
 
                                 if (hmiModule != null) {
@@ -1287,14 +1266,19 @@ public class MainActivity extends AppCompatActivity {
 
                                     // change to the mode ParkThis and start the autonomous parking process
                                     hmiModule.setMode(INxtHmi.Mode.PARK_THIS);
+
+                                    //Ausgabe für den Benutzer
+                                    Toast.makeText(MainActivity.this, "Einparkvorgang eingeleitet.", Toast.LENGTH_SHORT).show();
+                                }else{
+                                    Toast.makeText(MainActivity.this, "Parklücke " + btn.getText() + " wurde angeklickt.", Toast.LENGTH_SHORT).show();
                                 }
 
                                 //change the label of the button
                                 final ToggleButton scoutButton = (ToggleButton) findViewById(R.id.toggleMode);
                                 scoutButton.setEnabled(false);
 
-                            } else if (btn.isEnabled() == false) {
-                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_LONG).show();
+                            } else if (btn.getCurrentTextColor() == Color.DKGRAY) {
+                                Toast.makeText(MainActivity.this, "Diese Parklücke ist zum Einparken nicht geeignet.", Toast.LENGTH_SHORT).show();
                             } else {
                                 Toast.makeText(MainActivity.this, "Es ist ein Fehler aufgetreten.", Toast.LENGTH_LONG).show();
                             }

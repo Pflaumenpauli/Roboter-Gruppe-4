@@ -65,7 +65,7 @@
       <file leaf-file-name="AndroidHmiPLT.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/myapplication/src/main/java/amr/plt/rcParkingRobot/AndroidHmiPLT.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="20">
+            <state relative-caret-position="2300">
               <caret line="140" column="0" lean-forward="false" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
               <folding>
                 <element signature="e#3829#3830#0" expanded="true" />
@@ -75,21 +75,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BTCommunicationThread.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/myapplication/src/main/java/amr/plt/rcParkingRobot/BTCommunicationThread.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2460">
-              <caret line="134" column="16" lean-forward="false" selection-start-line="134" selection-start-column="16" selection-end-line="134" selection-end-column="16" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="MainActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/myapplication/src/main/java/com/example/myapplication/MainActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="5569">
-              <caret line="996" column="5" lean-forward="true" selection-start-line="996" selection-start-column="5" selection-end-line="996" selection-end-column="5" />
+            <state relative-caret-position="602">
+              <caret line="976" column="76" lean-forward="false" selection-start-line="976" selection-start-column="76" selection-end-line="976" selection-end-column="76" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="e#4982#5874#0" expanded="true" />
@@ -106,19 +96,29 @@
                 <element signature="e#14500#15984#0" expanded="true" />
                 <element signature="e#15983#15984#0" expanded="true" />
                 <element signature="e#16009#16010#0" expanded="true" />
-                <element signature="e#29108#30748#0" expanded="true" />
-                <element signature="e#30747#30748#0" expanded="true" />
-                <element signature="e#32935#34578#0" expanded="true" />
-                <element signature="e#34577#34578#0" expanded="true" />
-                <element signature="e#36809#38431#0" expanded="true" />
-                <element signature="e#38430#38431#0" expanded="true" />
-                <element signature="e#43042#44862#0" expanded="true" />
-                <element signature="e#44861#44862#0" expanded="true" />
-                <element signature="e#47347#49156#0" expanded="true" />
-                <element signature="e#49155#49156#0" expanded="true" />
-                <element signature="e#51491#53304#0" expanded="true" />
-                <element signature="e#53303#53304#0" expanded="true" />
+                <element signature="e#28862#30558#0" expanded="true" />
+                <element signature="e#30557#30558#0" expanded="true" />
+                <element signature="e#32622#34340#0" expanded="true" />
+                <element signature="e#34339#34340#0" expanded="true" />
+                <element signature="e#36451#38148#0" expanded="true" />
+                <element signature="e#38147#38148#0" expanded="true" />
+                <element signature="e#42432#44530#0" expanded="true" />
+                <element signature="e#44529#44530#0" expanded="true" />
+                <element signature="e#46680#48767#0" expanded="true" />
+                <element signature="e#48766#48767#0" expanded="true" />
+                <element signature="e#50980#53071#0" expanded="true" />
+                <element signature="e#53070#53071#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="IGuidance.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/IGuidance.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="280">
+              <caret line="17" column="62" lean-forward="false" selection-start-line="17" selection-start-column="62" selection-end-line="17" selection-end-column="62" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -139,22 +139,19 @@
       <file leaf-file-name="HmiPLT.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/hsamr0/HmiPLT.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1720">
+            <state relative-caret-position="-491">
               <caret line="100" column="36" lean-forward="false" selection-start-line="100" selection-start-column="26" selection-end-line="100" selection-end-column="36" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="NavigationAT.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/hsamr0/NavigationAT.java">
+      <file leaf-file-name="INxtHmi.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/INxtHmi.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1615">
-              <caret line="261" column="17" lean-forward="false" selection-start-line="261" selection-start-column="17" selection-end-line="261" selection-end-column="17" />
-              <folding>
-                <element signature="e#9421#9422#0" expanded="true" />
-                <element signature="e#9471#9472#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="309">
+              <caret line="29" column="18" lean-forward="false" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -162,7 +159,7 @@
       <file leaf-file-name="BluetoothActivity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/myapplication/src/main/java/com/example/myapplication/BluetoothActivity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4440">
+            <state relative-caret-position="1289">
               <caret line="240" column="30" lean-forward="false" selection-start-line="240" selection-start-column="30" selection-end-line="240" selection-end-column="30" />
               <folding />
             </state>
@@ -2320,7 +2317,6 @@
         <option value="$PROJECT_DIR$/myapplication/build.gradle" />
         <option value="$PROJECT_DIR$/myapplication/src/main/res/layout/activity_data.xml" />
         <option value="$PROJECT_DIR$/myapplication/src/main/java/amr/plt/rcParkingRobot/BTCommunicationThread.java" />
-        <option value="$PROJECT_DIR$/nxt/src/main/java/parkingRobot/IGuidance.java" />
         <option value="$PROJECT_DIR$/myapplication/build/generated/source/r/debug/com/example/myapplication/R.java" />
         <option value="$PROJECT_DIR$/myapplication/src/main/java/com/example/myapplication/DataActivity.java" />
         <option value="$PROJECT_DIR$/myapplication/src/main/java/amr/plt/rcParkingRobot/AndroidHmiPLT.java" />
@@ -2335,7 +2331,11 @@
         <option value="$PROJECT_DIR$/myapplication/src/main/res/values/ids.xml" />
         <option value="$PROJECT_DIR$/myapplication/src/main/java/com/example/myapplication/BluetoothActivity.java" />
         <option value="$PROJECT_DIR$/myapplication/src/main/res/layout/activity_main.xml" />
+        <option value="$PROJECT_DIR$/nxt/src/main/java/parkingRobot/hsamr0/NavigationAT.java" />
+        <option value="$PROJECT_DIR$/nxt/src/main/java/parkingRobot/hsamr0/GuidanceAT.java" />
+        <option value="$PROJECT_DIR$/nxt/src/main/java/parkingRobot/INavigation.java" />
         <option value="$PROJECT_DIR$/myapplication/src/main/java/com/example/myapplication/MainActivity.java" />
+        <option value="$PROJECT_DIR$/nxt/src/main/java/parkingRobot/IGuidance.java" />
       </list>
     </option>
   </component>
@@ -2446,32 +2446,14 @@
               <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidPsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="NXT Fernsteuerung" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.AndroidViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="myapplication" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidModuleNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="java" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidSourceTypeNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="myapplication" />
-              <option name="myItemType" value="com.android.tools.idea.navigator.nodes.android.AndroidPsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
-      <pane id="Scratches" />
       <pane id="Scope" />
+      <pane id="Scratches" />
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="settings.editor.selected.configurable" value="preferences.pluginManager" />
+    <property name="settings.editor.selected.configurable" value="File.Encoding" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../Sicherung Quellcode/2017_12_20 funktionierend/NXT Fernsteuerung" />
     <property name="device.picker.selection" value="c1607fa13fe376f" />
     <property name="show.do.not.ask.upgrade.gradle.plugin" value="2.3.3" />
@@ -2540,7 +2522,7 @@
       <option name="ACTIVITY_CLASS" value="com.example.myapplication.DataActivity" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515959509014" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1516027622474" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidJUnit" factoryName="Android JUnit">
@@ -2613,7 +2595,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515959509014" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1516027622475" />
       </method>
     </configuration>
     <configuration default="true" type="AndroidTestRunConfigurationType" factoryName="Android Instrumented Tests">
@@ -2661,7 +2643,7 @@
       </Profilers>
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515959509015" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1516027622475" />
       </method>
     </configuration>
     <configuration default="true" type="Application" factoryName="Application">
@@ -2844,7 +2826,7 @@
       <option name="ACTIVITY_CLASS" value="" />
       <method>
         <option name="Android.Gradle.BeforeRunTask" enabled="true" />
-        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1515959509016" />
+        <option name="com.android.instantApps.provision.BeforeRunTask" enabled="true" clearCache="false" clearProvisionedDevices="false" myTimestamp="1516027622477" />
       </method>
     </configuration>
     <list size="2">
@@ -2902,31 +2884,32 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="64" y="-11" width="1857" height="1092" extended-state="6" />
-    <editor active="true" />
     <layout>
-      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.32939914" sideWeight="0.49806523" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Profiler" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.49806523" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21503593" sideWeight="0.5056" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.34604755" order="14" side_tool="true" content_ui="tabs" x="87" y="374" width="1809" height="279" />
+      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.49806523" order="8" side_tool="false" content_ui="tabs" />
+      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
+      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
+      <window_info id="Inspection Results" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
+      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2100608" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3390558" sideWeight="0.49806523" order="6" side_tool="false" content_ui="combo" />
       <window_info id="simpleUML" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.41072416" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
-      <window_info id="Build Variants" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21503593" sideWeight="0.5056" order="7" side_tool="true" content_ui="tabs" />
+      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25214592" sideWeight="0.46268657" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Palette&#9;" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
-      <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="WINDOWED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.34604755" order="14" side_tool="true" content_ui="tabs" x="87" y="374" width="1809" height="279" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32939914" sideWeight="0.6539525" order="2" side_tool="false" content_ui="tabs" x="65" y="24" width="1855" height="1056" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="false" weight="0.33" sideWeight="0.5" order="10" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.49806523" order="11" side_tool="false" content_ui="tabs" />
-      <window_info id="Logcat" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32939914" sideWeight="0.49806523" order="8" side_tool="false" content_ui="tabs" />
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="13" side_tool="true" content_ui="tabs" />
-      <window_info id="Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.17191818" sideWeight="0.4944" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.17191818" sideWeight="0.4944" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32946378" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
-      <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.2100608" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
-      <window_info id="Device File Explorer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="true" content_ui="tabs" />
       <window_info id="Theme Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
-      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.21503593" sideWeight="0.5056" order="6" side_tool="true" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -2935,7 +2918,6 @@
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Android Model" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="true" content_ui="tabs" />
-      <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25214592" sideWeight="0.46268657" order="9" side_tool="false" content_ui="tabs" />
       <window_info id="Inspection" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.4" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Preview" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="8" side_tool="false" content_ui="tabs" />
     </layout>
@@ -3043,14 +3025,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/myapplication/src/main/res/drawable-hdpi/autoSensoren.png" />
     <entry file="file://$PROJECT_DIR$/myapplication/src/main/AndroidManifest.xml">
+      <provider editor-type-id="android-manifest">
+        <state />
+      </provider>
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="420">
           <caret line="21" column="48" lean-forward="false" selection-start-line="21" selection-start-column="48" selection-end-line="21" selection-end-column="48" />
           <folding />
         </state>
-      </provider>
-      <provider editor-type-id="android-manifest">
-        <state />
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/myapplication/src/main/java/lejos/pc/comm/NXTCommAndroid.java">
@@ -3071,13 +3053,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="200">
           <caret line="10" column="13" lean-forward="false" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/hsamr0/GuidanceAT.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="301">
-          <caret line="39" column="13" lean-forward="false" selection-start-line="39" selection-start-column="13" selection-end-line="39" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -3123,13 +3098,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/INxtHmi.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="160">
-          <caret line="8" column="19" lean-forward="false" selection-start-line="8" selection-start-column="19" selection-end-line="8" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/IPerception.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="160">
@@ -3165,20 +3133,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/IGuidance.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="380">
-          <caret line="19" column="17" lean-forward="false" selection-start-line="19" selection-start-column="17" selection-end-line="19" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/INavigation.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="640">
-          <caret line="34" column="16" lean-forward="false" selection-start-line="34" selection-start-column="16" selection-end-line="34" selection-end-column="16" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/myapplication/src/main/res/values/ids.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="320">
@@ -3203,14 +3157,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/myapplication/src/main/java/com/example/myapplication/BluetoothActivity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4440">
-          <caret line="240" column="30" lean-forward="false" selection-start-line="240" selection-start-column="30" selection-end-line="240" selection-end-column="30" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/myapplication/src/main/res/layout/activity_main.xml">
       <provider editor-type-id="android-designer2">
         <state />
@@ -3218,14 +3164,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="2140">
           <caret line="107" column="41" lean-forward="false" selection-start-line="107" selection-start-column="41" selection-end-line="107" selection-end-column="41" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/hsamr0/HmiPLT.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1720">
-          <caret line="100" column="36" lean-forward="false" selection-start-line="100" selection-start-column="26" selection-end-line="100" selection-end-column="36" />
           <folding />
         </state>
       </provider>
@@ -3240,7 +3178,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/myapplication/src/main/java/amr/plt/rcParkingRobot/AndroidHmiPLT.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="20">
+        <state relative-caret-position="2300">
           <caret line="140" column="0" lean-forward="false" selection-start-line="140" selection-start-column="0" selection-end-line="140" selection-end-column="0" />
           <folding>
             <element signature="e#3829#3830#0" expanded="true" />
@@ -3251,19 +3189,70 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/hsamr0/NavigationAT.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1615">
+        <state relative-caret-position="4840">
           <caret line="261" column="17" lean-forward="false" selection-start-line="261" selection-start-column="17" selection-end-line="261" selection-end-column="17" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/INavigation.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="213">
+          <caret line="70" column="48" lean-forward="false" selection-start-line="70" selection-start-column="48" selection-end-line="70" selection-end-column="48" />
           <folding>
-            <element signature="e#9421#9422#0" expanded="true" />
-            <element signature="e#9471#9472#0" expanded="true" />
+            <element signature="imports" expanded="false" />
+            <element signature="e#3801#3802#0" expanded="false" />
+            <element signature="e#3822#3823#0" expanded="false" />
+            <element signature="e#4964#4965#0" expanded="false" />
+            <element signature="e#4985#4986#0" expanded="false" />
+            <element signature="e#5670#5671#0" expanded="false" />
+            <element signature="e#5699#5700#0" expanded="false" />
+            <element signature="e#6069#6070#0" expanded="false" />
+            <element signature="e#6087#6088#0" expanded="false" />
+            <element signature="e#6261#6262#0" expanded="false" />
+            <element signature="e#6297#6298#0" expanded="false" />
+            <element signature="e#6475#6476#0" expanded="false" />
+            <element signature="e#6512#6513#0" expanded="false" />
+            <element signature="e#6629#6630#0" expanded="false" />
+            <element signature="e#6651#6652#0" expanded="false" />
+            <element signature="e#6751#6752#0" expanded="false" />
+            <element signature="e#6785#6786#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/hsamr0/GuidanceAT.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2780">
+          <caret line="139" column="30" lean-forward="false" selection-start-line="139" selection-start-column="30" selection-end-line="139" selection-end-column="30" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#6600#6601#0" expanded="true" />
+            <element signature="e#6627#6628#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/hsamr0/HmiPLT.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-491">
+          <caret line="100" column="36" lean-forward="false" selection-start-line="100" selection-start-column="26" selection-end-line="100" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/myapplication/src/main/java/com/example/myapplication/BluetoothActivity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1289">
+          <caret line="240" column="30" lean-forward="false" selection-start-line="240" selection-start-column="30" selection-end-line="240" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/myapplication/src/main/java/com/example/myapplication/MainActivity.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="5569">
-          <caret line="996" column="5" lean-forward="true" selection-start-line="996" selection-start-column="5" selection-end-line="996" selection-end-column="5" />
+        <state relative-caret-position="602">
+          <caret line="976" column="76" lean-forward="false" selection-start-line="976" selection-start-column="76" selection-end-line="976" selection-end-column="76" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="e#4982#5874#0" expanded="true" />
@@ -3280,19 +3269,35 @@
             <element signature="e#14500#15984#0" expanded="true" />
             <element signature="e#15983#15984#0" expanded="true" />
             <element signature="e#16009#16010#0" expanded="true" />
-            <element signature="e#29108#30748#0" expanded="true" />
-            <element signature="e#30747#30748#0" expanded="true" />
-            <element signature="e#32935#34578#0" expanded="true" />
-            <element signature="e#34577#34578#0" expanded="true" />
-            <element signature="e#36809#38431#0" expanded="true" />
-            <element signature="e#38430#38431#0" expanded="true" />
-            <element signature="e#43042#44862#0" expanded="true" />
-            <element signature="e#44861#44862#0" expanded="true" />
-            <element signature="e#47347#49156#0" expanded="true" />
-            <element signature="e#49155#49156#0" expanded="true" />
-            <element signature="e#51491#53304#0" expanded="true" />
-            <element signature="e#53303#53304#0" expanded="true" />
+            <element signature="e#28862#30558#0" expanded="true" />
+            <element signature="e#30557#30558#0" expanded="true" />
+            <element signature="e#32622#34340#0" expanded="true" />
+            <element signature="e#34339#34340#0" expanded="true" />
+            <element signature="e#36451#38148#0" expanded="true" />
+            <element signature="e#38147#38148#0" expanded="true" />
+            <element signature="e#42432#44530#0" expanded="true" />
+            <element signature="e#44529#44530#0" expanded="true" />
+            <element signature="e#46680#48767#0" expanded="true" />
+            <element signature="e#48766#48767#0" expanded="true" />
+            <element signature="e#50980#53071#0" expanded="true" />
+            <element signature="e#53070#53071#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/INxtHmi.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="29" column="18" lean-forward="false" selection-start-line="29" selection-start-column="18" selection-end-line="29" selection-end-column="18" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/nxt/src/main/java/parkingRobot/IGuidance.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="280">
+          <caret line="17" column="62" lean-forward="false" selection-start-line="17" selection-start-column="62" selection-end-line="17" selection-end-column="62" />
+          <folding />
         </state>
       </provider>
     </entry>
