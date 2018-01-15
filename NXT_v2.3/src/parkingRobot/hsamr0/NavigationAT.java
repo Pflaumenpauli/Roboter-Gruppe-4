@@ -1,8 +1,8 @@
-package parkingRobot.hsamr4;
+package parkingRobot.hsamr0;
 
 import lejos.geom.Line;
 import lejos.geom.Point;
-//import lejos.nxt.LCD;
+import lejos.nxt.LCD;
 import lejos.nxt.Sound;
 import lejos.robotics.navigation.Pose;
 
@@ -12,7 +12,7 @@ import parkingRobot.IPerception;
 import parkingRobot.INavigation.ParkingSlot.ParkingSlotStatus;
 import parkingRobot.IMonitor;
 
-import parkingRobot.hsamr4.NavigationThread;
+import parkingRobot.hsamr0.NavigationThread;
 
 
 /**
@@ -260,7 +260,6 @@ public class NavigationAT implements INavigation{
 
 		// Difference between the real and ideal angle
 		difA = Math.abs((this.pose.getHeading()/Math.PI*180) - Po_ExpAng);
-		//LCD.drawString("Diff A: " + (difA), 0, 3);
 		
 		// Axe detection
 		if ((Po_CORNER_ID % 2) == 0)
@@ -315,6 +314,8 @@ public class NavigationAT implements INavigation{
 		}
 		
 		Po_AxeP = movDir;
+		
+		LCD.drawString("Corn_ID: " + (Po_CORNER_ID), 0, 3);
 		
 		return movDir;
 	}
@@ -447,32 +448,52 @@ public class NavigationAT implements INavigation{
 					switch (Po_CORNER_ID)
 					{
 					case 0:  
-						yId = 0;
 						if (this.pose.getX() < 1.6)
+						{
 							E_angleResult = Po_ExpAng;
+							yId = 0;
+						}
 						else
+						{
 							E_angleResult = W_angleResult;
+							yId = W_yResult;
+						}
 						break;
 					case 2:
-						yId = 0.6;
 						if (this.pose.getX() > 1.6)
+						{
 							E_angleResult = Po_ExpAng;
+							yId = 0.6;
+						}
 						else
+						{
 							E_angleResult = W_angleResult;
+							yId = W_yResult;
+						}
 						break;
 					case 4:  
-						yId = 0.3;
 						if (this.pose.getX() > 0.4)
+						{
 							E_angleResult = Po_ExpAng;
+							yId = 0.3;
+						}
 						else
+						{
 							E_angleResult = W_angleResult;
+							yId = W_yResult;
+						}
 						break;
 					case 6:  
-						yId = 0.6;
 						if (this.pose.getX() > 0.1)
+						{
 							E_angleResult = Po_ExpAng;
+							yId = 0.6;
+						}
 						else
+						{
 							E_angleResult = W_angleResult;
+							yId = W_yResult;
+						}
 						break;
 					default: 
 						yId = W_yResult;
@@ -488,32 +509,52 @@ public class NavigationAT implements INavigation{
 					switch (Po_CORNER_ID)
 					{
 					case 1:  
-						xId = 1.8;
-						if (this.pose.getY() < 0.5)
+						if (this.pose.getY() < 0.4)
+						{
 							E_angleResult = Po_ExpAng;
+							xId = 1.8;
+						}
 						else
-							E_angleResult = W_angleResult;
+						{
+							E_angleResult = W_angleResult; 
+							xId = W_xResult;
+						}
 						break;
 					case 3:
 						if (this.pose.getY() > 0.4)
+						{
 							E_angleResult = Po_ExpAng;
+							xId = 1.5; 
+						}
 						else
-							E_angleResult = W_angleResult;
-						xId = 1.5; 
+						{
+							E_angleResult = W_angleResult; 
+							xId = W_xResult;
+						}
 						break;
 					case 5:
 						if (this.pose.getY() < 0.5)
+						{
 							E_angleResult = Po_ExpAng;
+							xId = 0.3;
+						}
 						else
-							E_angleResult = W_angleResult;
-						xId = 0.3; 
+						{
+							E_angleResult = W_angleResult; 
+							xId = W_xResult;
+						}
 						break;
 					case 7:
 						if (this.pose.getY() > 0.1)
+						{
 							E_angleResult = Po_ExpAng;
+							xId = 0;
+						}
 						else
-							E_angleResult = W_angleResult;
-						xId = 0; 
+						{
+							E_angleResult = W_angleResult; 
+							xId = W_xResult;
+						}
 						break;
 					default: 
 						xId = W_xResult;
