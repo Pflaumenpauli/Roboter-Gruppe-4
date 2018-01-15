@@ -1,4 +1,4 @@
-package parkingRobot.hsamr0;
+package parkingRobot.hsamr4;
 
 import lejos.geom.Line;
 import lejos.geom.Point;
@@ -12,7 +12,7 @@ import parkingRobot.IPerception;
 import parkingRobot.INavigation.ParkingSlot.ParkingSlotStatus;
 import parkingRobot.IMonitor;
 
-import parkingRobot.hsamr0.NavigationThread;
+import parkingRobot.hsamr4.NavigationThread;
 
 
 /**
@@ -265,7 +265,8 @@ public class NavigationAT implements INavigation{
 		// Axe detection
 		if ((Po_CORNER_ID % 2) == 0)
 		{
-			if (difA > 80)
+			// Movement in x
+			if (difA > 65)
 			{
 				movDir = 1;			// y direction
 				Sound.beepSequenceUp();
@@ -277,7 +278,8 @@ public class NavigationAT implements INavigation{
 		}
 		else
 		{
-			if (difA > 80)
+			// Movement in y
+			if (difA > 65)
 			{
 				movDir = 0;			// x direction
 				Sound.beepSequence();
@@ -305,7 +307,7 @@ public class NavigationAT implements INavigation{
 			}
 
 			Po_Corn = 1;
-			Sound.twoBeeps();
+			//Sound.twoBeeps();
 		}
 		else
 		{
