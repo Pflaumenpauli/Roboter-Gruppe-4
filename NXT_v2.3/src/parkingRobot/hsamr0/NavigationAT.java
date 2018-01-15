@@ -265,7 +265,7 @@ public class NavigationAT implements INavigation{
 		if ((Po_CORNER_ID % 2) == 0)
 		{
 			// Movement in x
-			if (difA > 65)
+			if ((difA > 65) || ((Po_CORNER_ID == 2) && (this.pose.getX() < 155)) || ((Po_CORNER_ID == 4) && (this.pose.getX() < 35)) || ((Po_CORNER_ID == 6) && (this.pose.getX() < 5)))
 			{
 				movDir = 1;			// y direction
 				Sound.beepSequenceUp();
@@ -278,7 +278,7 @@ public class NavigationAT implements INavigation{
 		else
 		{
 			// Movement in y
-			if (difA > 65)
+			if ((difA > 65) || ((Po_CORNER_ID == 1) && (this.pose.getY() < 55)) || ((Po_CORNER_ID == 3) && (this.pose.getY() < 35)) || ((Po_CORNER_ID == 5) && (this.pose.getY() > 55)) || ((Po_CORNER_ID == 7) && (this.pose.getY() < 5)))
 			{
 				movDir = 0;			// x direction
 				Sound.beepSequence();
@@ -315,7 +315,7 @@ public class NavigationAT implements INavigation{
 		
 		Po_AxeP = movDir;
 		
-		LCD.drawString("Corn_ID: " + (Po_CORNER_ID), 0, 3);
+		LCD.drawString("Corn_ID: " + (Po_CORNER_ID), 0, 6);
 		
 		return movDir;
 	}
@@ -658,6 +658,9 @@ public class NavigationAT implements INavigation{
 		Pk_DIST_BS[0] = backSideSensorDistance;
 		distance_B = (sum_B + Pk_DIST_BS[0])/5;
 		
+		//LCD.drawString("Dist_F: " + (distance_F), 0, 6);
+		//LCD.drawString("Dist_B: " + (distance_B), 0, 6);
+		
 		// Saving the begin point of the PS
 		if ((distance_F <= TRSH_SG) && (Pk_burstFS == 0))
 		{
@@ -692,6 +695,8 @@ public class NavigationAT implements INavigation{
 		{
 			if ((Pk_burstRS == 0) && (Pk_burstRE == 0) && (Pk_counter < 10))
 			{
+				Sound.twoBeeps();
+				
 				PosS.setLocation(((Pk_PosF1.getX() + Pk_PosR1.getX())/2), ((Pk_PosF1.getY() + Pk_PosR1.getY())/2));
 				PosE.setLocation(((Pk_PosF2.getX() + Pk_PosR2.getX())/2), ((Pk_PosF2.getY() + Pk_PosR2.getY())/2));
 				
