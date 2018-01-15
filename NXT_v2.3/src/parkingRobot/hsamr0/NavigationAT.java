@@ -268,7 +268,7 @@ public class NavigationAT implements INavigation{
 			if (difA > 80)
 			{
 				movDir = 1;			// y direction
-				//Sound.beepSequenceUp();
+				Sound.beepSequenceUp();
 			}
 			else
 			{
@@ -280,7 +280,7 @@ public class NavigationAT implements INavigation{
 			if (difA > 80)
 			{
 				movDir = 0;			// x direction
-				//Sound.beepSequence();
+				Sound.beepSequence();
 			}
 			else
 			{
