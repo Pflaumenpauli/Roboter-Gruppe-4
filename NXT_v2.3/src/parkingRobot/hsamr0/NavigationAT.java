@@ -238,7 +238,7 @@ public class NavigationAT implements INavigation{
 		
 		INavigation.ParkingSlot[] listOut = new ParkingSlot[i];
 		
-		for (j = 0; Pk_slotList[j] != null; j++)
+		for (j = 0; j <= i; j++)
 		{
 			listOut[j] = Pk_slotList[j];
 		}
@@ -648,8 +648,7 @@ public class NavigationAT implements INavigation{
 		LCD.drawString("Dist_B: " + (distance_B), 0, 7);
 		
 		// Saving the begin point of the PS
-		// Mozna pridat prumer
-		if ((Pk_DIST_FS[0] >= TRSH_SG) && (distance_F >= TRSH_SG) && (Pk_burstFS == 0))
+		if ((Pk_DIST_FS[0] >= TRSH_SG) && (distance_F >= TRSH_SG) && (Pk_burstFS == 0) && (((100*this.pose.getX() > 0) && (100*this.pose.getX() < 180)) || ((100*this.pose.getX() > 135) && (100*this.pose.getX() < 45))|| ((100*this.pose.getY() > 10) && (100*this.pose.getY() < 50))))
 		{
 			Pk_PosF1.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstFS = 1;
@@ -657,7 +656,7 @@ public class NavigationAT implements INavigation{
 			//Sound.beep();
 		}
 		
-		if ((Pk_DIST_BS[0] >= TRSH_SG) && (distance_B >= TRSH_SG) && (Pk_burstRS == 0))
+		if ((Pk_DIST_BS[0] >= TRSH_SG) && (distance_B >= TRSH_SG) && (Pk_burstRS == 0) && (((100*this.pose.getX() > 0) && (100*this.pose.getX() < 180)) || ((100*this.pose.getX() > 135) && (100*this.pose.getX() < 45))|| ((100*this.pose.getY() > 10) && (100*this.pose.getY() < 50))))
 		{
 			Pk_PosR1.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstRS = 1;
@@ -666,7 +665,7 @@ public class NavigationAT implements INavigation{
 		}
 				
 		// Saving the end point of the PS
-		if ((Pk_DIST_FS[0] <= TRSH_SG) && (distance_F <= TRSH_SG) && (Pk_burstFE == 0))
+		if ((Pk_DIST_FS[0] <= TRSH_SG) && (distance_F <= TRSH_SG) && (Pk_burstFE == 0) && (((100*this.pose.getX() > 0) && (100*this.pose.getX() < 180)) || ((100*this.pose.getX() > 135) && (100*this.pose.getX() < 45))|| ((100*this.pose.getY() > 10) && (100*this.pose.getY() < 50))))
 		{
 			Pk_PosF2.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstFS = 0;
@@ -674,7 +673,7 @@ public class NavigationAT implements INavigation{
 			//Sound.beep();
 		}
 		
-		if ((Pk_DIST_BS[0] <= TRSH_SG) && (distance_B <= TRSH_SG) && (Pk_burstRE == 0))
+		if ((Pk_DIST_BS[0] <= TRSH_SG) && (distance_B <= TRSH_SG) && (Pk_burstRE == 0) && (((100*this.pose.getX() > 0) && (100*this.pose.getX() < 180)) || ((100*this.pose.getX() > 135) && (100*this.pose.getX() < 45))|| ((100*this.pose.getY() > 10) && (100*this.pose.getY() < 50))))
 		{
 			Pk_PosR2.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstRS = 0;
@@ -684,7 +683,7 @@ public class NavigationAT implements INavigation{
 		
 		if (Po_RoundF == 0)			// Saving new parking slots
 		{	
-			if ((Pk_burstRS == 0) && (Pk_burstRE == 0) && (Pk_counter < 10) && (((100*this.pose.getX() > 10) && (100*this.pose.getX() < 170)) || ((100*this.pose.getX() > 135) && (100*this.pose.getX() < 45))|| ((100*this.pose.getY() > 10) && (100*this.pose.getY() < 50))))
+			if ((Pk_burstRS == 0) && (Pk_burstRE == 0) && (Pk_counter < 10))
 			{
 				PosS.setLocation(((Pk_PosF1.getX() + Pk_PosR1.getX())/2), ((Pk_PosF1.getY() + Pk_PosR1.getY())/2));
 				PosE.setLocation(((Pk_PosF2.getX() + Pk_PosR2.getX())/2), ((Pk_PosF2.getY() + Pk_PosR2.getY())/2));
