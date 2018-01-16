@@ -103,7 +103,7 @@ public class NavigationAT implements INavigation{
 	/**
 	 * robot specific constant: usual distance between trail and wall
 	 */
-	static final double TRSH_SG = 0.13;	
+	static final double TRSH_SG = 40;	
 	/**
 	 * robot specific constant: length of robot
 	 */
@@ -121,8 +121,8 @@ public class NavigationAT implements INavigation{
 	static final double TRSH_G = 90;
 	
 	// Parking
-	double[] Pk_DIST_FS = {0,0,0,0,0};
-	double[] Pk_DIST_BS = {0,0,0,0,0};
+	double[] Pk_DIST_FS = {0,0,0,0,0,0,0,0};
+	double[] Pk_DIST_BS = {0,0,0,0,0,0,0,0};
 	
 	short Pk_burstFS = 0;
 	short Pk_burstRS = 0;
@@ -229,6 +229,7 @@ public class NavigationAT implements INavigation{
 	 * @see parkingRobot.INavigation#getParkingSlots()
 	 */
 	public synchronized ParkingSlot[] getParkingSlots() {
+		//return Pk_slotList;
 		return null;
 	}
 	
@@ -268,9 +269,8 @@ public class NavigationAT implements INavigation{
 		if ((Po_CORNER_ID % 2) == 0)
 		{
 			// Movement in x
-			//if (((Po_CORNER_ID == 0) && (difA > 65)) || ((Po_CORNER_ID == 2) && ((this.pose.getX()*100) < 155)) || ((Po_CORNER_ID == 4) && ((this.pose.getX()*100) < 32)) || ((Po_CORNER_ID == 6) && ((this.pose.getX()*100) < 2)))
+			if (((Po_CORNER_ID == 0) && ((difA > 70) && (100*this.pose.getX() > 165))) || ((Po_CORNER_ID == 2) && ((difA > 70) && (100*this.pose.getX() < 160))) || ((Po_CORNER_ID == 4) && ((difA > 70) && (100*this.pose.getX() < 35))) || ((Po_CORNER_ID == 6) && ((difA > 70) && (100*this.pose.getX() < 5))))
 			//if (difA > 70)
-			if (((Po_CORNER_ID == 0) && (difA > 65)) || ((Po_CORNER_ID == 2) && ((difA > 65) && (100*this.pose.getX() < 160))) || ((Po_CORNER_ID == 4) && (difA > 70)) || ((Po_CORNER_ID == 6) && (difA > 70)))
 			{
 				movDir = 1;			// y direction
 				Sound.beepSequenceUp();
@@ -283,7 +283,7 @@ public class NavigationAT implements INavigation{
 		else
 		{
 			// Movement in y
-			if (((Po_CORNER_ID == 1) && ((difA > 25) && (100*this.pose.getY() > 50))) || ((Po_CORNER_ID == 3) && (difA > 70)) || ((Po_CORNER_ID == 5) && (difA > 70)) || ((Po_CORNER_ID == 7) && (difA > 70)))
+			if (((Po_CORNER_ID == 1) && ((difA > 30) && (100*this.pose.getY() > 55))) || ((Po_CORNER_ID == 3) && ((100*this.pose.getY() < 35))) || ((Po_CORNER_ID == 5) && ((difA > 70) && (100*this.pose.getY() > 55))) || ((Po_CORNER_ID == 7) && (difA > 70) && (100*this.pose.getY() < 5)))
 			//if (difA > 70)
 			{
 				movDir = 0;			// x direction
@@ -350,10 +350,7 @@ public class NavigationAT implements INavigation{
 		double E_yResult 		= 0;
 		double E_angleResult 	= 0;
 		
-		double xId = 0;
-		double yId = 0;
-		
-		short axe = 0;
+		//short axe = 0;
 		
 		double deltaT       = ((double)this.angleMeasurementLeft.getDeltaT())/1000;
 		
@@ -387,7 +384,8 @@ public class NavigationAT implements INavigation{
 		W_angleResult = W_angleResult/Math.PI*180;
 		
 		// Get the heading axe
-		axe = getHeadingAxe();
+		//axe = getHeadingAxe();
+		getHeadingAxe();
 		
 		// Verify the coordinates and the heading angle
 		if (Po_Corn == 1)
@@ -401,17 +399,17 @@ public class NavigationAT implements INavigation{
 					break;
 				case 1:
 					E_xResult = 1.8;
-					E_yResult = 0;
+					E_yResult = 0.11;
 					Po_ExpAng = 90;
 					break;
 				case 2:
-					E_xResult = 1.8;
+					E_xResult = 1.6;
 					E_yResult = 0.6;
 					Po_ExpAng = 180;
 					break;
 				case 3:
 					E_xResult = 1.5;
-					E_yResult = 0.6;
+					E_yResult = 0.45;
 					Po_ExpAng = 270;
 					break;
 				case 4:
@@ -436,172 +434,137 @@ public class NavigationAT implements INavigation{
 					break;	
 			}
 			
-			//E_angleResult = W_angleResult;
-			E_angleResult = Po_ExpAng;
+			E_angleResult = W_angleResult;
+			Po_Corn = 0;
 		}
 		else
 		{
+			int block = 0;
 			// white = 0, black = 2, grey = 1
-			if ((lineSensorLeft == 0) && (lineSensorRight == 0)) 	// Robot moves on the black line
+			if ((lineSensorLeft == 0) && (lineSensorRight == 0) && (block == 0)) 	// Robot moves on the black line
 			{
-				if (axe == 0)		// movement in x direction
+				switch (Po_CORNER_ID)								// Even numbers - x, Odd numbers - y
 				{
-					switch (Po_CORNER_ID)
+				case 0:  
+					if (this.pose.getX() < 1.6)
 					{
-					case 0:  
-						if (this.pose.getX() < 1.6)
-						{
-							E_angleResult = Po_ExpAng;
-							yId = 0;
-						}
-						else
-						{
-							E_angleResult = W_angleResult;
-							yId = W_yResult;
-						}
-						break;
-					case 2:
-						if (this.pose.getX() > 1.6)
-						{
-							E_angleResult = Po_ExpAng;
-							yId = 0.6;
-						}
-						else
-						{
-							E_angleResult = W_angleResult;
-							yId = W_yResult;
-						}
-						break;
-					case 4:  
-						if (this.pose.getX() > 0.4)
-						{
-							E_angleResult = Po_ExpAng;
-							yId = 0.3;
-						}
-						else
-						{
-							E_angleResult = W_angleResult;
-							yId = W_yResult;
-						}
-						break;
-					case 6:  
-						if (this.pose.getX() > 0.1)
-						{
-							E_angleResult = Po_ExpAng;
-							yId = 0.6;
-						}
-						else
-						{
-							E_angleResult = W_angleResult;
-							yId = W_yResult;
-						}
-						break;
-					default: 
-						yId = W_yResult;
-						E_angleResult = W_angleResult;
-						break;
+						E_angleResult = Po_ExpAng;
+						E_yResult = 0;
 					}
-					
+					else
+					{
+						E_angleResult = W_angleResult;
+						E_yResult = W_yResult;
+					}
 					E_xResult = W_xResult;
-					E_yResult = yId;
-				}
-				else if (axe == 1)	// movement in y direction
-				{
-					switch (Po_CORNER_ID)
-					{
-					case 1:  
-						if (this.pose.getY() < 0.4)
-						{
-							E_angleResult = Po_ExpAng;
-							xId = 1.8;
-						}
-						else
-						{
-							E_angleResult = W_angleResult; 
-							xId = W_xResult;
-						}
-						break;
-					case 3:
-						if (this.pose.getY() > 0.4)
-						{
-							E_angleResult = Po_ExpAng;
-							xId = 1.5; 
-						}
-						else
-						{
-							E_angleResult = W_angleResult; 
-							xId = W_xResult;
-						}
-						break;
-					case 5:
-						if (this.pose.getY() < 0.5)
-						{
-							E_angleResult = Po_ExpAng;
-							xId = 0.3;
-						}
-						else
-						{
-							E_angleResult = W_angleResult; 
-							xId = W_xResult;
-						}
-						break;
-					case 7:
-						if (this.pose.getY() > 0.1)
-						{
-							E_angleResult = Po_ExpAng;
-							xId = 0;
-						}
-						else
-						{
-							E_angleResult = W_angleResult; 
-							xId = W_xResult;
-						}
-						break;
-					default: 
-						xId = W_xResult;
-						E_angleResult = W_angleResult;
-						break;
-					}
+					break;
 					
+				case 1:  
+					if (this.pose.getY() < 0.4)
+					{
+						E_angleResult = Po_ExpAng;
+						E_xResult = 1.8;
+					}
+					else
+					{
+						E_angleResult = W_angleResult; 
+						E_xResult = W_xResult;
+					}
 					E_yResult = W_yResult;
-					E_xResult = xId;
+					break;
+					
+				case 2:
+					if (this.pose.getX() > 1.65)
+					{
+						E_angleResult = Po_ExpAng;
+						E_yResult = 0.6;
+					}
+					else
+					{
+						E_angleResult = W_angleResult;
+						E_yResult = W_yResult;
+					}
+					E_xResult = W_xResult;
+					break;
+					
+				case 3:
+					if (this.pose.getY() > 0.4)
+					{
+						E_angleResult = Po_ExpAng;
+						E_xResult = 1.5;
+						
+						E_angleResult = W_angleResult; 
+					}
+					else
+					{
+						E_angleResult = W_angleResult; 
+						E_xResult = W_xResult;
+					}
+					E_yResult = W_yResult;
+					break;
+					
+				case 4:  
+					if (this.pose.getX() > 0.4)
+					{
+						E_angleResult = Po_ExpAng;
+						E_yResult = 0.3;
+					}
+					else
+					{
+						E_angleResult = W_angleResult;
+						E_yResult = W_yResult;
+					}
+					E_xResult = W_xResult;
+					break;
+					
+				case 5:
+					if (this.pose.getY() < 0.5)
+					{
+						E_angleResult = Po_ExpAng;
+						E_xResult = 0.3;
+					}
+					else
+					{
+						E_angleResult = W_angleResult; 
+						E_xResult = W_xResult;
+					}
+					E_yResult = W_yResult;
+					break;
+					
+				case 6:  
+					if (this.pose.getX() > 0.1)
+					{
+						E_angleResult = Po_ExpAng;
+						E_yResult = 0.6;
+					}
+					else
+					{
+						E_angleResult = W_angleResult;
+						E_yResult = W_yResult;
+					}
+					E_xResult = W_xResult;
+					break;
+					
+				case 7:
+					if (this.pose.getY() > 0.1)
+					{
+						E_angleResult = Po_ExpAng;
+						E_xResult = 0;
+					}
+					else
+					{
+						E_angleResult = W_angleResult; 
+						E_xResult = W_xResult;
+					}
+					E_yResult = W_yResult;
+					break;
+					
+				default: 
+					E_angleResult = W_angleResult;
+					E_yResult = W_yResult;
+					E_xResult = W_xResult;
+					break;
 				}
-			}
-			else if(((lineSensorLeft == 0) && (lineSensorRight == 2)) || ((lineSensorLeft == 2) && (lineSensorRight == 0)))
-			{
-				E_xResult = W_xResult;
-				E_yResult = W_yResult;
-				
-	        	if (W_angleResult >= TRSH_W)
-	        	{
-	        		E_angleResult = TRSH_W;
-	        	}
-	        	else if (W_angleResult >= (360 - TRSH_W))
-	        	{
-	        		E_angleResult = 360 - TRSH_W;
-	        	}
-	        	else
-	        	{
-	        		E_angleResult = W_angleResult;
-	        	}
-			}
-			else if(((lineSensorLeft == 0) && (lineSensorRight == 1)) || ((lineSensorLeft == 1) && (lineSensorRight == 0)))
-			{
-				E_xResult = W_xResult;
-				E_yResult = W_yResult;
-				
-	        	if (W_angleResult >= TRSH_G)
-	        	{
-	        		E_angleResult = TRSH_G;
-	        	}
-	        	else if (W_angleResult >= (360 - TRSH_G))
-	        	{
-	        		E_angleResult = 360 - TRSH_G;
-	        	}
-	        	else
-	        	{
-	        		E_angleResult = W_angleResult;
-	        	}
 			}
 			else
 			{
@@ -611,9 +574,16 @@ public class NavigationAT implements INavigation{
 			}
 		}
 		
+		LCD.drawString("AngRs: " + (E_angleResult), 0, 7);
+		
 		// Conversion to rads
 		W_angleResult = W_angleResult*Math.PI/180;
 		E_angleResult = E_angleResult*Math.PI/180;
+		
+		if ((Po_CORNER_ID == 3) && (100*this.pose.getY() < 45))
+		{
+			E_angleResult = 3*Math.PI/180;;
+		}
 		
 		this.pose.setLocation((float)E_xResult, (float)E_yResult);
 		this.pose.setHeading((float)E_angleResult);
@@ -644,7 +614,7 @@ public class NavigationAT implements INavigation{
 		
 		short axe = getHeadingAxe();
 		
-		for (int i = 1; i <= 4; i++)
+		for (int i = 1; i <= 7; i++)
 		{
 			Pk_DIST_FS[i] = Pk_DIST_FS[i-1];
 			sum_F = Pk_DIST_FS[i] + sum_F;
@@ -654,13 +624,15 @@ public class NavigationAT implements INavigation{
 		}
 		
 		Pk_DIST_FS[0] = frontSensorDistance;
-		distance_F = (sum_F + Pk_DIST_FS[0])/5;
+		distance_F = (sum_F + Pk_DIST_FS[0])/8;
+		//distance_F = frontSensorDistance;
 		
 		Pk_DIST_BS[0] = backSideSensorDistance;
-		distance_B = (sum_B + Pk_DIST_BS[0])/5;
+		distance_B = (sum_B + Pk_DIST_BS[0])/8;
+		//distance_B = backSideSensorDistance;
 		
 		//LCD.drawString("Dist_F: " + (distance_F), 0, 6);
-		//LCD.drawString("Dist_B: " + (distance_B), 0, 6);
+		//LCD.drawString("Dist_B: " + (distance_B), 0, 7);
 		
 		// Saving the begin point of the PS
 		if ((distance_F <= TRSH_SG) && (Pk_burstFS == 0))
@@ -668,6 +640,7 @@ public class NavigationAT implements INavigation{
 			Pk_PosF1.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstFS = 1;
 			Pk_burstFE = 0;
+			//Sound.beep();
 		}
 		
 		if ((distance_B <= TRSH_SG) && (Pk_burstRS == 0))
@@ -675,6 +648,7 @@ public class NavigationAT implements INavigation{
 			Pk_PosR1.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstRS = 1;
 			Pk_burstRE = 0;
+			//Sound.twoBeeps();
 		}
 				
 		// Saving the end point of the PS
@@ -683,6 +657,7 @@ public class NavigationAT implements INavigation{
 			Pk_PosF2.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstFS = 0;
 			Pk_burstFE = 1;
+			//Sound.beep();
 		}
 		
 		if ((distance_B >= TRSH_SG) && (Pk_burstRE == 0))
@@ -690,14 +665,13 @@ public class NavigationAT implements INavigation{
 			Pk_PosR2.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstRS = 0;
 			//burstRE = 1;
+			//Sound.twoBeeps();
 		}
 		
 		if (Po_RoundF == 0)			// Saving new parking slots
-		{
-			if ((Pk_burstRS == 0) && (Pk_burstRE == 0) && (Pk_counter < 10))
+		{	
+			if ((Pk_burstRS == 0) && (Pk_burstRE == 0) && (Pk_counter < 10) && (((100*this.pose.getX() > 10) && (100*this.pose.getX() < 170)) || ((100*this.pose.getX() > 135) && (100*this.pose.getX() < 45))|| ((100*this.pose.getY() > 10) && (100*this.pose.getY() < 50))))
 			{
-				Sound.twoBeeps();
-				
 				PosS.setLocation(((Pk_PosF1.getX() + Pk_PosR1.getX())/2), ((Pk_PosF1.getY() + Pk_PosR1.getY())/2));
 				PosE.setLocation(((Pk_PosF2.getX() + Pk_PosR2.getX())/2), ((Pk_PosF2.getY() + Pk_PosR2.getY())/2));
 				
@@ -729,6 +703,8 @@ public class NavigationAT implements INavigation{
 				Pk_counter ++;
 				
 				Pk_burstRE = 1;
+				
+				Sound.beepSequence();
 			}
 		}
 		else					// Updating the old slots
