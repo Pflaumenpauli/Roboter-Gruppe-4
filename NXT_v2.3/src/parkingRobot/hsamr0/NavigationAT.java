@@ -512,10 +512,6 @@ public class NavigationAT implements INavigation{
 					{
 						E_angleResult = Po_ExpAng;
 						E_xResult = 1.5;
-						
-						// Test
-						E_angleResult = W_angleResult;
-						E_xResult = W_xResult;
 					}
 					else
 					{
@@ -601,11 +597,6 @@ public class NavigationAT implements INavigation{
 		// Conversion to rads
 		W_angleResult = W_angleResult*Math.PI/180;
 		E_angleResult = E_angleResult*Math.PI/180;
-		
-		if ((Po_CORNER_ID == 3) && (100*this.pose.getY() < 45))
-		{
-			E_angleResult = 3*Math.PI/180;;
-		}
 		
 		this.pose.setLocation((float)E_xResult, (float)E_yResult);
 		this.pose.setHeading((float)E_angleResult);
