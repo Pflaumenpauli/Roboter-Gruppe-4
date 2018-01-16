@@ -103,7 +103,7 @@ public class NavigationAT implements INavigation{
 	/**
 	 * robot specific constant: usual distance between trail and wall
 	 */
-	static final double TRSH_SG = 0.13;	
+	static final double TRSH_SG = 40;	
 	/**
 	 * robot specific constant: length of robot
 	 */
@@ -121,8 +121,8 @@ public class NavigationAT implements INavigation{
 	static final double TRSH_G = 90;
 	
 	// Parking
-	double[] Pk_DIST_FS = {0,0,0,0,0};
-	double[] Pk_DIST_BS = {0,0,0,0,0};
+	double[] Pk_DIST_FS = {0,0,0,0,0,0,0,0};
+	double[] Pk_DIST_BS = {0,0,0,0,0,0,0,0};
 	
 	short Pk_burstFS = 0;
 	short Pk_burstRS = 0;
@@ -137,10 +137,12 @@ public class NavigationAT implements INavigation{
 	int Pk_counter = 0;
 	int Pk_update  = 0;
 	
+	int Pk_new = 0;
+	
 	/**
 	 * 
 	 */
-	public INavigation.ParkingSlot[] Pk_slotList = new ParkingSlot[10];
+	INavigation.ParkingSlot[] Pk_slotList = new ParkingSlot[10];
 	
 	/**
 	 * map array of line references, whose corresponding lines form a closed chain and represent the map of the robot course
@@ -228,8 +230,16 @@ public class NavigationAT implements INavigation{
 	/* (non-Javadoc)
 	 * @see parkingRobot.INavigation#getParkingSlots()
 	 */
-	public synchronized ParkingSlot[] getParkingSlots() {
-		return null;
+	public synchronized ParkingSlot[] getParkingSlots() 
+	{
+		if (Pk_new == 1)
+		{
+			return Pk_slotList;
+		}
+		else
+		{
+			return null;
+		}
 	}
 	
 	// Private methods
@@ -282,7 +292,7 @@ public class NavigationAT implements INavigation{
 		else
 		{
 			// Movement in y
-			if (((Po_CORNER_ID == 1) && ((difA > 70) && (100*this.pose.getY() > 55))) || ((Po_CORNER_ID == 3) && ((difA > 70) && (100*this.pose.getY() < 45))) || ((Po_CORNER_ID == 5) && ((difA > 70) && (100*this.pose.getY() > 55))) || ((Po_CORNER_ID == 7) && (difA > 70) && (100*this.pose.getY() < 5)))
+			if (((Po_CORNER_ID == 1) && ((difA > 30) && (100*this.pose.getY() > 55))) || ((Po_CORNER_ID == 3) && ((100*this.pose.getY() < 35))) || ((Po_CORNER_ID == 5) && ((difA > 70) && (100*this.pose.getY() > 55))) || ((Po_CORNER_ID == 7) && (difA > 70) && (100*this.pose.getY() < 5)))
 			//if (difA > 70)
 			{
 				movDir = 0;			// x direction
@@ -398,17 +408,17 @@ public class NavigationAT implements INavigation{
 					break;
 				case 1:
 					E_xResult = 1.8;
-					E_yResult = 0;
+					E_yResult = 0.11;
 					Po_ExpAng = 90;
 					break;
 				case 2:
-					E_xResult = 1.8;
+					E_xResult = 1.6;
 					E_yResult = 0.6;
 					Po_ExpAng = 180;
 					break;
 				case 3:
 					E_xResult = 1.5;
-					E_yResult = 0.6;
+					E_yResult = 0.5;
 					Po_ExpAng = 270;
 					break;
 				case 4:
@@ -434,11 +444,13 @@ public class NavigationAT implements INavigation{
 			}
 			
 			E_angleResult = W_angleResult;
+			Po_Corn = 0;
 		}
 		else
 		{
+			int block = 0;
 			// white = 0, black = 2, grey = 1
-			if ((lineSensorLeft == 0) && (lineSensorRight == 0)) 	// Robot moves on the black line
+			if ((lineSensorLeft == 0) && (lineSensorRight == 0) && (block == 0)) 	// Robot moves on the black line
 			{
 				switch (Po_CORNER_ID)								// Even numbers - x, Odd numbers - y
 				{
@@ -471,7 +483,7 @@ public class NavigationAT implements INavigation{
 					break;
 					
 				case 2:
-					if (this.pose.getX() > 1.6)
+					if (this.pose.getX() > 1.65)
 					{
 						E_angleResult = Po_ExpAng;
 						E_yResult = 0.6;
@@ -488,7 +500,9 @@ public class NavigationAT implements INavigation{
 					if (this.pose.getY() > 0.4)
 					{
 						E_angleResult = Po_ExpAng;
-						E_xResult = 1.5; 
+						E_xResult = 1.5;
+						
+						E_angleResult = W_angleResult; 
 					}
 					else
 					{
@@ -561,42 +575,6 @@ public class NavigationAT implements INavigation{
 					break;
 				}
 			}
-			else if(((lineSensorLeft == 0) && (lineSensorRight == 2)) || ((lineSensorLeft == 2) && (lineSensorRight == 0)))
-			{
-				E_xResult = W_xResult;
-				E_yResult = W_yResult;
-				
-	        	if (W_angleResult >= TRSH_W)
-	        	{
-	        		E_angleResult = TRSH_W;
-	        	}
-	        	else if (W_angleResult >= (360 - TRSH_W))
-	        	{
-	        		E_angleResult = 360 - TRSH_W;
-	        	}
-	        	else
-	        	{
-	        		E_angleResult = W_angleResult;
-	        	}
-			}
-			else if(((lineSensorLeft == 0) && (lineSensorRight == 1)) || ((lineSensorLeft == 1) && (lineSensorRight == 0)))
-			{
-				E_xResult = W_xResult;
-				E_yResult = W_yResult;
-				
-	        	if (W_angleResult >= TRSH_G)
-	        	{
-	        		E_angleResult = TRSH_G;
-	        	}
-	        	else if (W_angleResult >= (360 - TRSH_G))
-	        	{
-	        		E_angleResult = 360 - TRSH_G;
-	        	}
-	        	else
-	        	{
-	        		E_angleResult = W_angleResult;
-	        	}
-			}
 			else
 			{
 				E_xResult = W_xResult;
@@ -605,9 +583,16 @@ public class NavigationAT implements INavigation{
 			}
 		}
 		
+		LCD.drawString("AngRs: " + (E_angleResult), 0, 7);
+		
 		// Conversion to rads
 		W_angleResult = W_angleResult*Math.PI/180;
 		E_angleResult = E_angleResult*Math.PI/180;
+		
+		if ((Po_CORNER_ID == 3) && (100*this.pose.getY() < 45))
+		{
+			E_angleResult = 3*Math.PI/180;;
+		}
 		
 		this.pose.setLocation((float)E_xResult, (float)E_yResult);
 		this.pose.setHeading((float)E_angleResult);
@@ -638,7 +623,7 @@ public class NavigationAT implements INavigation{
 		
 		short axe = getHeadingAxe();
 		
-		for (int i = 1; i <= 4; i++)
+		for (int i = 1; i <= 7; i++)
 		{
 			Pk_DIST_FS[i] = Pk_DIST_FS[i-1];
 			sum_F = Pk_DIST_FS[i] + sum_F;
@@ -648,10 +633,12 @@ public class NavigationAT implements INavigation{
 		}
 		
 		Pk_DIST_FS[0] = frontSensorDistance;
-		distance_F = (sum_F + Pk_DIST_FS[0])/5;
+		distance_F = (sum_F + Pk_DIST_FS[0])/8;
+		//distance_F = frontSensorDistance;
 		
 		Pk_DIST_BS[0] = backSideSensorDistance;
-		distance_B = (sum_B + Pk_DIST_BS[0])/5;
+		distance_B = (sum_B + Pk_DIST_BS[0])/8;
+		//distance_B = backSideSensorDistance;
 		
 		//LCD.drawString("Dist_F: " + (distance_F), 0, 6);
 		//LCD.drawString("Dist_B: " + (distance_B), 0, 7);
@@ -662,6 +649,7 @@ public class NavigationAT implements INavigation{
 			Pk_PosF1.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstFS = 1;
 			Pk_burstFE = 0;
+			//Sound.beep();
 		}
 		
 		if ((distance_B <= TRSH_SG) && (Pk_burstRS == 0))
@@ -669,6 +657,7 @@ public class NavigationAT implements INavigation{
 			Pk_PosR1.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstRS = 1;
 			Pk_burstRE = 0;
+			//Sound.twoBeeps();
 		}
 				
 		// Saving the end point of the PS
@@ -677,6 +666,7 @@ public class NavigationAT implements INavigation{
 			Pk_PosF2.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstFS = 0;
 			Pk_burstFE = 1;
+			//Sound.beep();
 		}
 		
 		if ((distance_B >= TRSH_SG) && (Pk_burstRE == 0))
@@ -684,14 +674,13 @@ public class NavigationAT implements INavigation{
 			Pk_PosR2.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstRS = 0;
 			//burstRE = 1;
+			//Sound.twoBeeps();
 		}
 		
 		if (Po_RoundF == 0)			// Saving new parking slots
-		{
-			if ((Pk_burstRS == 0) && (Pk_burstRE == 0) && (Pk_counter < 10))
+		{	
+			if ((Pk_burstRS == 0) && (Pk_burstRE == 0) && (Pk_counter < 10) && (((100*this.pose.getX() > 10) && (100*this.pose.getX() < 170)) || ((100*this.pose.getX() > 135) && (100*this.pose.getX() < 45))|| ((100*this.pose.getY() > 10) && (100*this.pose.getY() < 50))))
 			{
-				Sound.twoBeeps();
-				
 				PosS.setLocation(((Pk_PosF1.getX() + Pk_PosR1.getX())/2), ((Pk_PosF1.getY() + Pk_PosR1.getY())/2));
 				PosE.setLocation(((Pk_PosF2.getX() + Pk_PosR2.getX())/2), ((Pk_PosF2.getY() + Pk_PosR2.getY())/2));
 				
@@ -723,6 +712,9 @@ public class NavigationAT implements INavigation{
 				Pk_counter ++;
 				
 				Pk_burstRE = 1;
+				Pk_new = 1;
+				
+				Sound.beepSequence();
 			}
 		}
 		else					// Updating the old slots
