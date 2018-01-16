@@ -340,7 +340,7 @@ public class NavigationAT implements INavigation{
 		
 		Po_AxeP = movDir;
 		
-		LCD.drawString("Corn_ID: " + (Po_CORNER_ID), 0, 6);
+		//LCD.drawString("Corn_ID: " + (Po_CORNER_ID), 0, 6);
 		
 		return movDir;
 	}
@@ -592,7 +592,7 @@ public class NavigationAT implements INavigation{
 			}
 		}
 		
-		LCD.drawString("AngRs: " + (E_angleResult), 0, 7);
+		//LCD.drawString("AngRs: " + (E_angleResult), 0, 7);
 		
 		// Conversion to rads
 		W_angleResult = W_angleResult*Math.PI/180;
@@ -644,12 +644,12 @@ public class NavigationAT implements INavigation{
 		distance_B = (sum_B + Pk_DIST_BS[0])/4;
 		//distance_B = backSideSensorDistance;
 		
-		//LCD.drawString("Dist_F: " + (distance_F), 0, 6);
-		//LCD.drawString("Dist_B: " + (distance_B), 0, 7);
+		LCD.drawString("Dist_F: " + (distance_F), 0, 6);
+		LCD.drawString("Dist_B: " + (distance_B), 0, 7);
 		
 		// Saving the begin point of the PS
 		// Mozna pridat prumer
-		if ((Pk_DIST_FS[0] <= TRSH_SG) && (distance_F <= TRSH_SG) && (Pk_burstFS == 0))
+		if ((Pk_DIST_FS[0] >= TRSH_SG) && (distance_F >= TRSH_SG) && (Pk_burstFS == 0))
 		{
 			Pk_PosF1.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstFS = 1;
@@ -657,7 +657,7 @@ public class NavigationAT implements INavigation{
 			//Sound.beep();
 		}
 		
-		if ((Pk_DIST_BS[0] <= TRSH_SG) && (distance_B <= TRSH_SG) && (Pk_burstRS == 0))
+		if ((Pk_DIST_BS[0] >= TRSH_SG) && (distance_B >= TRSH_SG) && (Pk_burstRS == 0))
 		{
 			Pk_PosR1.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstRS = 1;
@@ -666,7 +666,7 @@ public class NavigationAT implements INavigation{
 		}
 				
 		// Saving the end point of the PS
-		if ((Pk_DIST_FS[0] >= TRSH_SG) && (distance_F >= TRSH_SG) && (Pk_burstFE == 0))
+		if ((Pk_DIST_FS[0] <= TRSH_SG) && (distance_F <= TRSH_SG) && (Pk_burstFE == 0))
 		{
 			Pk_PosF2.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstFS = 0;
@@ -674,7 +674,7 @@ public class NavigationAT implements INavigation{
 			//Sound.beep();
 		}
 		
-		if ((Pk_DIST_BS[0] >= TRSH_SG) && (distance_B >= TRSH_SG) && (Pk_burstRE == 0))
+		if ((Pk_DIST_BS[0] <= TRSH_SG) && (distance_B <= TRSH_SG) && (Pk_burstRE == 0))
 		{
 			Pk_PosR2.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstRS = 0;
