@@ -121,8 +121,8 @@ public class NavigationAT implements INavigation{
 	static final double TRSH_G = 90;
 	
 	// Parking
-	double[] Pk_DIST_FS = {0,0,0,0,0,0,0,0};
-	double[] Pk_DIST_BS = {0,0,0,0,0,0,0,0};
+	double[] Pk_DIST_FS = new double [4];
+	double[] Pk_DIST_BS = new double [4];
 	
 	short Pk_burstFS = 0;
 	short Pk_burstRS = 0;
@@ -232,9 +232,20 @@ public class NavigationAT implements INavigation{
 	 */
 	public synchronized ParkingSlot[] getParkingSlots() 
 	{
-		if (Pk_new == 1)
+		int i = 0, j = 0;
+		
+		for (i = 0; Pk_slotList[i] != null; i++);
+		
+		INavigation.ParkingSlot[] listOut = new ParkingSlot[i];
+		
+		for (j = 0; Pk_slotList[j] != null; j++)
 		{
-			return Pk_slotList;
+			listOut[j] = Pk_slotList[j];
+		}
+		
+		if (i != 0)
+		{
+			return listOut;
 		}
 		else
 		{
@@ -502,7 +513,9 @@ public class NavigationAT implements INavigation{
 						E_angleResult = Po_ExpAng;
 						E_xResult = 1.5;
 						
-						E_angleResult = W_angleResult; 
+						// Test
+						E_angleResult = W_angleResult;
+						E_xResult = W_xResult;
 					}
 					else
 					{
@@ -623,7 +636,7 @@ public class NavigationAT implements INavigation{
 		
 		short axe = getHeadingAxe();
 		
-		for (int i = 1; i <= 7; i++)
+		for (int i = 1; i <= 3; i++)
 		{
 			Pk_DIST_FS[i] = Pk_DIST_FS[i-1];
 			sum_F = Pk_DIST_FS[i] + sum_F;
@@ -633,18 +646,19 @@ public class NavigationAT implements INavigation{
 		}
 		
 		Pk_DIST_FS[0] = frontSensorDistance;
-		distance_F = (sum_F + Pk_DIST_FS[0])/8;
+		distance_F = (sum_F + Pk_DIST_FS[0])/4;
 		//distance_F = frontSensorDistance;
 		
 		Pk_DIST_BS[0] = backSideSensorDistance;
-		distance_B = (sum_B + Pk_DIST_BS[0])/8;
+		distance_B = (sum_B + Pk_DIST_BS[0])/4;
 		//distance_B = backSideSensorDistance;
 		
 		//LCD.drawString("Dist_F: " + (distance_F), 0, 6);
 		//LCD.drawString("Dist_B: " + (distance_B), 0, 7);
 		
 		// Saving the begin point of the PS
-		if ((distance_F <= TRSH_SG) && (Pk_burstFS == 0))
+		// Mozna pridat prumer
+		if ((Pk_DIST_FS[0] <= TRSH_SG) && (distance_F <= TRSH_SG) && (Pk_burstFS == 0))
 		{
 			Pk_PosF1.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstFS = 1;
@@ -652,7 +666,7 @@ public class NavigationAT implements INavigation{
 			//Sound.beep();
 		}
 		
-		if ((distance_B <= TRSH_SG) && (Pk_burstRS == 0))
+		if ((Pk_DIST_BS[0] <= TRSH_SG) && (distance_B <= TRSH_SG) && (Pk_burstRS == 0))
 		{
 			Pk_PosR1.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstRS = 1;
@@ -661,7 +675,7 @@ public class NavigationAT implements INavigation{
 		}
 				
 		// Saving the end point of the PS
-		if ((distance_F >= TRSH_SG) && (Pk_burstFE == 0))
+		if ((Pk_DIST_FS[0] >= TRSH_SG) && (distance_F >= TRSH_SG) && (Pk_burstFE == 0))
 		{
 			Pk_PosF2.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstFS = 0;
@@ -669,7 +683,7 @@ public class NavigationAT implements INavigation{
 			//Sound.beep();
 		}
 		
-		if ((distance_B >= TRSH_SG) && (Pk_burstRE == 0))
+		if ((Pk_DIST_BS[0] >= TRSH_SG) && (distance_B >= TRSH_SG) && (Pk_burstRE == 0))
 		{
 			Pk_PosR2.setLocation(this.pose.getX(), this.pose.getY());
 			Pk_burstRS = 0;
